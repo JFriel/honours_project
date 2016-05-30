@@ -1,4 +1,3 @@
-from nltk import tokenize,word_tokenize
 
 
 
@@ -9,16 +8,12 @@ def parse_body(body):
     such as dayes, timescales
     #TODO :- Locate subject name(s)
             Work out what other relative info there is
+    ***ASSUME THE DATA IS ALREADY TOKENIZED***
     """
-        tokenized_sentences  = []
-        sentences = tokenize.sent_tokenize(body)
-        for sentence in sentences:
-            tokenized_sentence = word_tokenize(sentence)
-            tokenized_sentences.append(tokenized_sentence)
-        important_sentences = get_times(tokenized_sentences)
-        for i in important_sentences:#this is all sentences that /may/ contain important info
-            print i
-            print "\n\n\n"
+    important_sentences = get_times(body)
+    for i in important_sentences:#this is all sentences that /may/ contain important info
+        print i
+        print "\n\n\n"
 
 
 
@@ -54,5 +49,5 @@ def is_year(string):
             return True
     except:
         return False
-parse()
+
 

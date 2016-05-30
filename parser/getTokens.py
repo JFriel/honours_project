@@ -9,4 +9,3 @@ def tokens(document):
     return tokenized_sentences
 
 
-print tokens("Hello")
