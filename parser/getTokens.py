@@ -5,7 +5,6 @@ def tokens(document):
     sentences = tokenize.sent_tokenize(document)
     for sentence in sentences:
         tokenized_sentence = word_tokenize(sentence)
-        tokenized_sentences.append(tokenized_sentences)
+        tokenized_sentences.append(tokenized_sentence)
     return tokenized_sentences
-
 
