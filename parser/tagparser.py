@@ -9,8 +9,9 @@ def tag_remover(article):
     tokenized_article = tokens(article)
     for sentence in tokenized_article:
         if ('<' or '>') in sentence:
+            #TODO
             #run the metadata parser
         else:
-            #parse_body(sentence)
+            parse_body(sentence)
 
 tag_remover(Y)
