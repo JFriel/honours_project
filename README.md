@@ -7,6 +7,7 @@ Supervisor: Shay Cohen
 #NOTES
 Training data is 1/3 of data give, aprox 2000 items
 
+Uses the goldsmith wikipedia api wrapper for python
 
 #Reference Papers
 http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf
