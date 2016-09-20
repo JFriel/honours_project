@@ -1,6 +1,8 @@
-import sys
+import app.parser.ner as ner
+import app.parser.getData as importArticles
 
-sys.path.insert(0,'/app/parser')
-sys.path.insert(0,'/data')
+articles = importArticles.getData()
 
-from ner import NER
+for article in articles:
+    print ner.NER(article[1])
+    print('\n\n\n')

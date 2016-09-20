@@ -1,9 +1,16 @@
+import os
+
 def getData():
     articles = []
-    with open('../../data/todayinhistory.txt','r') as f:
+    print(os.getcwd())
+    with open( './data/todayinhistory.txt','r') as f:
         count = 0
         for line in f:
-            count +=1
-            if(count % 3 == 0):
-                articles.append(str(line).strip('\n').split(','))
+            try:
+                count +=1
+                if(count % 3 == 0):
+                    line = line.decode('utf-8')
+                    articles.append(str(line).strip('\n').split(','))
+            except:
+                print "Cant read this article"
     return articles
