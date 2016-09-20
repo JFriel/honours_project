@@ -1,7 +1,6 @@
-from app.parser.parser import parse;
-import os;
+import sys
 
-data = open(os.path.join('./data/reuters/reut_002.sgm'));
+sys.path.insert(0,'/app/parser')
+sys.path.insert(0,'/data')
 
-print(parse(data));
-
+from ner import NER
