@@ -1,12 +1,15 @@
 def traverse(t):
-    grammer=['NP','PLACE','ORG','ACTION']
     try:
         t.label()
     except AttributeError:
-        return
+        return []
     else:
-        if (t.label() in grammer):
-            print t#can be changed
+        grammer=['NP','PLACE','ORG','ACTION']
+        data = []
+        if(t.label() in grammer):
+            data.append([" ".join([a for (a,b) in t.leaves()]), t.label()])
         else:
             for child in t:
-                traverse(child)
+                data += traverse(child)
+
+    return data
