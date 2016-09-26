@@ -11,14 +11,14 @@ import app.parser.getArticles as getContent
 import app.analytics.paragraphs as para
 articles = importArticles.getData()
 
-for article in articles[0:5]:
-    paras = []
-    print article
-    print '\n'
-    netdat = ner.NER(article[1])
-    chunked = chunker.regexChunker(netdat)
+for article in articles[0:1]:
+    netdata = ner.NER(article[1])
+    chunked = chunker.regexChunker(netdata)
     titleList = traverser.traverse(chunked)
     entities = EF.entityFinder(titleList)
-    articles =  getContent.getArticles(entities[0])
-    print len(para.paragraphs(articles[0], entities[0]))
-    print("--------------")
+    print entities[1]
+    wikiArticles =  getContent.getArticles(entities[0])
+    for page in wikiArticles:#page = (entity,article)
+        contextParagraphs = para.paragraphs(page, entities[0])
+        print len(contextParagraphs)
+print("--------------")
