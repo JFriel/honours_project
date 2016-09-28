@@ -2,7 +2,6 @@ import os
 
 def getData():
     articles = []
-    print(os.getcwd())
     with open( './data/todayinhistory.txt','r') as f:
         count = 0
         for line in f:

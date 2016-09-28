@@ -1,4 +1,5 @@
 import re
+from nltk import tokenize
 
 def paragraphs(article, entityList):
     releventParagraphs = []
@@ -10,7 +11,8 @@ def paragraphs(article, entityList):
             if entity == article[0]:
                 pass
             if (unicode(entity, "utf-*") in paragraph):
-                releventParagraphs.append(paragraph)
+                paragraphSentences = tokenize.sent_tokenize(paragraph)
+                releventParagraphs.append(paragraphSentences)
                 break;
 
     return releventParagraphs
