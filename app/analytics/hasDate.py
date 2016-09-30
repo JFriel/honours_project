@@ -6,4 +6,3 @@ def hasDate(sentence):
         return parse(sentence, fuzzy=True)
     except:
         return False
-print hasDate("this has a date")

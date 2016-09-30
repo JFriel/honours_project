@@ -12,7 +12,8 @@ import app.analytics.paragraphs as para
 import app.analytics.actionSentences as ac
 articles = importArticles.getData()
 
-for article in articles[1:3]:
+sentences= []
+for article in articles:
     netdata = ner.NER(article[1])
     chunked = chunker.regexChunker(netdata)
     titleList = traverser.traverse(chunked)
@@ -22,7 +23,8 @@ for article in articles[1:3]:
         for page in wikiArticles:#page = (entity,article)
             contextParagraphs = para.paragraphs(page, entities[0])
             for paragraph in contextParagraphs:
-                if len(ac.getActionSentences(entities[1],paragraph)) > 0: print ac.getActionSentences(entities[1],paragraph)
+                if len(ac.getActionSentences(entities[1],paragraph)) > 0: sentences.append(ac.getActionSentences(entities[1],paragraph))
     except:
         pass
+print len(sentences)/len(articles)
 print("--------------")
