@@ -13,7 +13,14 @@ import app.analytics.actionSentences as ac
 articles = importArticles.getData()
 
 sentences= []
-for article in articles:
+count = 0
+for article in articles[0:100]:
+
+    count = count +1
+    print(str(count) + '/')
+    print len(articles)
+    print "%%%%"
+
     netdata = ner.NER(article[1])
     chunked = chunker.regexChunker(netdata)
     titleList = traverser.traverse(chunked)
@@ -26,5 +33,6 @@ for article in articles:
                 if len(ac.getActionSentences(entities[1],paragraph)) > 0: sentences.append(ac.getActionSentences(entities[1],paragraph))
     except:
         pass
+    print len(sentences)
 print len(sentences)/len(articles)
 print("--------------")
