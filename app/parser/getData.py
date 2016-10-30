@@ -2,7 +2,7 @@ import os
 
 def getData():
     articles = []
-    with open( './data/todayinhistory.txt','r') as f:
+    with open( './data/train.txt','r') as f:
         count = 0
         for line in f:
             try:
