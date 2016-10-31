@@ -7,4 +7,6 @@ def stanfordOpenIE(sentence):
 	'annotators': 'tokenize, ssplit, pos, lemma,  depparse, natlog, openie',
 	'outputFormat': 'json'
 	})
-        return data['sentences'][0]['openie'][0]
+        returndata = {}
+        return data['sentences'][0]['openie']
+
