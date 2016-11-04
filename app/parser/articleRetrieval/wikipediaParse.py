@@ -2,6 +2,6 @@ import wikipedia
 
 def getArticle(articleName):
     try:
-        return wikipedia.page(articleName).content
+        return wikipedia.summary(articleName)
     except:
         return
