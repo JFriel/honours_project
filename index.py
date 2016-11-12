@@ -17,7 +17,7 @@ articles = importArticles.getData()
 
 sentences= []
 count = 0
-for article in articles[0:100]:
+for article in articles[0:10]:
     #print article
     chunks = gc.getChunks(article[1])
     tags =  tag.getTags(article[1],chunks)
@@ -34,7 +34,11 @@ for article in articles[0:100]:
     article = wp.getArticle(subject)
     sentences = sent.getSentences(article)
 
-    print ft.getFeatures(subject, objects,sentences)
+    features= ft.getFeatures(subject, objects, relation, sentences)
+    print len(features)
+
+    #for feature in features:
+        #print feature[0]
     #action.getActionSentences(sentences,objects,relation)
     #print sentences
     #print subject
