@@ -2,30 +2,44 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
 import app.parser.getData as importArticles
 import app.parser.articleRetrieval.getArticles as getContent
-#import app.analytics.paragraphs as para
-#import app.analytics.actionSentences as ac
-#import app.analytics.stanford as sf
-#import app.analytics.hasDate as hd
 import app.parser.getChunks as gc
 import app.analytics.tag as tag
+import app.parser.articleRetrieval.wikipediaParse as wp
+import app.parser.sentences as sent
+import app.analytics.sentenceFiltering.actionSentences as action
+import app.analytics.functions.hasDate as hd
+import app.analytics.functions.synonym as sn
+import app.analytics.getFeatures as ft
 
 articles = importArticles.getData()
 
 sentences= []
 count = 0
-for article in articles[0:10]:
+for article in articles[0:100]:
+    #print article
     chunks = gc.getChunks(article[1])
     tags =  tag.getTags(article[1],chunks)
     if tags == []:
         continue # check this is right. go to next itteration
-    print tags
     """The Stanford Open IE tags"""
     subject = tags['subject']
     relation = tags['relation']
     objects = tags['object']
+    objects = objects.split()
+    #print sn.synonym(relation)
+    #print '\n\n'
+
+    article = wp.getArticle(subject)
+    sentences = sent.getSentences(article)
+
+    print ft.getFeatures(subject, objects,sentences)
+    #action.getActionSentences(sentences,objects,relation)
+    #print sentences
+    #print subject
+    #print objects
+#    print '\n\n\n'
 
     #entities has [0] as objects and [1] as relations
     """wikiArticles =  getContent.getArticles(entities[0])
