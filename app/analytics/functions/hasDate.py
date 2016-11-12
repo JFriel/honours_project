@@ -1,8 +1,31 @@
-from dateutil.parser import parse
+import dateutil.parser as dparse
+import collections
+
+
+def flatten(x):
+    if isinstance(x, collections.Iterable):
+        return [a for i in x for a in flatten(i)]
+    else:
+        return [x]
+
 
 
 def hasDate(sentence):
     try:
-        return parse(sentence, fuzzy=True)
+        date =  dparse.parse(sentence, fuzzy=True)
+        if date.year != 2016:
+            return date
+        else:
+            return []
     except:
-        return False
+        words= sentence.split()
+        dates= []
+        for word in words:
+            try:
+                date =  dparse.parse(word, fuzzy=True)
+                if date.year != 2016:
+                    dates.append(date)
+            except:
+                pass
+        return flatten(dates)
+

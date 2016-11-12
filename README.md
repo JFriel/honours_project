@@ -5,9 +5,11 @@ Supervisor: Shay Cohen
 
 
 #NOTES
-Training data is 1/3 of data give, aprox 2000 items
+Training data is 1/1/8 sets for train/dev/test
 
 Uses the goldsmith wikipedia api wrapper for python
+
+having trouble parsing dates from the sentneces, dateutil.parses seems to miss quite a lot
 
 #Reference Papers
 http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf
