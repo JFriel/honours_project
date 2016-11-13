@@ -18,7 +18,7 @@ articles = importArticles.getData()
 sentences= []
 count = 0
 for article in articles[0:10]:
-    #print article
+    print article[0]
     chunks = gc.getChunks(article[1])
     tags =  tag.getTags(article[1],chunks)
     if tags == []:
@@ -28,39 +28,10 @@ for article in articles[0:10]:
     relation = tags['relation']
     objects = tags['object']
     objects = objects.split()
-    #print sn.synonym(relation)
-    #print '\n\n'
 
     article = wp.getArticle(subject)
     sentences = sent.getSentences(article)
 
     features= ft.getFeatures(subject, objects, relation, sentences)
-    print len(features)
-
-    #for feature in features:
-        #print feature[0]
-    #action.getActionSentences(sentences,objects,relation)
-    #print sentences
-    #print subject
-    #print objects
-#    print '\n\n\n'
-
-    #entities has [0] as objects and [1] as relations
-    """wikiArticles =  getContent.getArticles(entities[0])
-    try:
-        for page in wikiArticles:#page = (entity,article)
-            contextParagraphs = para.paragraphs(page, entities[0])
-            for paragraph in contextParagraphs:
-                if len(ac.getActionSentences(entities[1],paragraph)) > 0: sentences.append(ac.getActionSentences(entities[1],paragraph))
-    except:
-        pass
-    #count =0
-    if len(sentences) >0:
-        for sentence in sentences:
-
-            for item in sentence:
-                sent = hd.hasDate(item)
-                if(sent != False):
-     #               count +=1
-                    print "\n" + str(sent)
-    #print count"""
+    print features
+    print '\n\n'
