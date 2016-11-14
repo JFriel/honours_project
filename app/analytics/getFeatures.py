@@ -9,6 +9,8 @@ def getFeatures(subject, objects, relation, sentences):
     synonyms = sy.synonym(relation)
     for sentence in sentences:
         dates=[]
+        if 'Retrieved' in sentence:
+            next
         try:
             date = hd.hasDate(sentence)
             if (date != []):
@@ -18,7 +20,9 @@ def getFeatures(subject, objects, relation, sentences):
             next
 
     total= (len(objects) + 2)* len(foundSentences)
-
+    for s in foundSentences:
+        print s
+    print '\n\n'
 
     for (sent,dt) in foundSentences:
         prob = 0
@@ -36,4 +40,4 @@ def getFeatures(subject, objects, relation, sentences):
     max_value = max(probabilities)
     max_index = probabilities.index(max_value)
 
-    return foundSentences[max_index][1]
+    return probabilities#foundSentences[max_index][1]
