@@ -1,12 +1,12 @@
 import functions.hasDate as hd
 import functions.synonym as sy
+import short_sentence_similarity as sim
 
-def getFeatures(subject, objects, relation, sentences):
+def getFeatures(article, sentences,subject):
 
     probabilities = []
     foundSentences = []
     usedSentences = []
-    synonyms = sy.synonym(relation)
     for sentence in sentences:
         dates=[]
         if 'Retrieved' in sentence:
@@ -18,11 +18,12 @@ def getFeatures(subject, objects, relation, sentences):
                 dates.append(date)
         except:
             next
-
-    total= (len(objects) + 2)* len(foundSentences)
+    for (sent,date) in foundSentences:
+        if(subject in sent):
+            probabilities.append(sim.similarity(article,sent,True))
+    """total= (len(objects) + 2)* len(foundSentences)
     for s in foundSentences:
         print s
-    print '\n\n'
 
     for (sent,dt) in foundSentences:
         prob = 0
@@ -36,8 +37,11 @@ def getFeatures(subject, objects, relation, sentences):
                 prob+=1
                 break
         probabilities.append(float(prob) / total)
-
-    max_value = max(probabilities)
-    max_index = probabilities.index(max_value)
-
-    return probabilities#foundSentences[max_index][1]
+    """
+    try:
+        max_value = max(probabilities)
+        max_index = probabilities.index(max_value)
+    except:
+        return 'NO USEFUL SENTENCES'
+    #[x for y, x in sorted(zip(foundSentences, probabilites))]
+    return sorted(zip(probabilities,foundSentences), reverse=True)#foundSentences[max_index]

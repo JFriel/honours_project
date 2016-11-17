@@ -13,7 +13,8 @@ def flatten(x):
 def hasDate(sentence):
     try:
         date =  dparse.parse(sentence, fuzzy=True)
-        if date.year <2016 and len(date.year) == 4:
+
+        if ( 1000 < date.year <2016):
             return date
         else:
             return []
@@ -23,7 +24,7 @@ def hasDate(sentence):
         for word in words:
             try:
                 date =  dparse.parse(word, fuzzy=True)
-                if date.year != 2016:
+                if 1000 < date.year < 2016:
                     dates.append(date)
             except:
                 pass
