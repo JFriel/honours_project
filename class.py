@@ -1,8 +1,11 @@
-from textblob.classifiers import NaiveBayesClassifier
+from textblob.classifiers import MaxEntClassifier
 
 
-with open('data/train.csv', 'r') as fp:
-    cl = NaiveBayesClassifier(fp, format="csv")
+
+with open('data/train-toy.csv', 'r') as fp:
+    cl = MaxEntClassifier(fp, format="csv")
 
 
-print cl.classify("International Book Year")
+with open('data/test-toy.csv', 'r') as gp:
+    print cl.accuracy(gp, format="csv")
+
