@@ -1,7 +1,7 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
+import time
 import app.parser.getData as importArticles
 import app.parser.articleRetrieval.getArticles as getContent
 import app.parser.sentences as sent
@@ -10,6 +10,7 @@ import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.featureExtraction as fe
 from sklearn import tree, feature_extraction
+from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 
 articles=importArticles.getData()
@@ -32,8 +33,6 @@ for article in articles[0:10]:
         content = wp.getArticle(subject)
         rawSentences = sent.getSentences(content)
         sentences= fe.featureExtraction(rawSentences)
-        print sentences
-        print '\n\n\n'
         singleSets.append({'title':article[1], 'sentences':sentences, 'year':article[0]})
     except:
         pass
@@ -53,16 +52,22 @@ features = []
 
 for item in doubleSets:
     bools.append(item['year'])
-    features.append( [feature_extraction.DictVectorizer(item['sentences1']), feature_extraction.DictVectorizer(item['sentences2'])])
+    vec = feature_extraction.DictVectorizer()
+    vec.fit_transform([item['sentences1'], item['sentences2']]).toarray()
+    features.append(vec)
 
-
-print type(features)
-print type(features[0])
-print type(features[0][0])
 X = np.array(features)
 Y = np.array(bools)
 
+#print type(features)
+print type(features[0])
+#print type(features[0][0])
+#print type(features[0][0][0])
+
 #Need to let it take i a dict or something)
 clf = tree.DecisionTreeClassifier()
+print 'begining fit' + str(time.time())
 clf=clf.fit(X,Y)
+
+print 'completed fit' + str(time.time())
 
