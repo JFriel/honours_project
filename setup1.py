@@ -8,19 +8,20 @@ import app.parser.sentences as sent
 import app.parser.getChunks as gc
 import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
-import app.analytics.featureExtraction as fe
+import app.analytics.features as fe
 from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
-import classScratchpad as sp
-
+import time
 articles=importArticles.getData()
+
+print time.gmtime()
 
 singleSets=[]
 doubleSets = []
 listOfYears = []
 #A
-for article in articles[0:10]:
+for article in articles[0:100]:
     try:
         chunks = gc.getChunks(article[1])
         tags =  tag.getTags(article[1],chunks)
@@ -48,7 +49,7 @@ for i in range(len(singleSets)):
             b = 0
         doubleSets.append({'title1':singleSets[i]['title'],'sentences1':singleSets[i]['sentences'],\
                             'title2':singleSets[j]['title'],'sentences2': singleSets[j]['sentences'],\
-                            'year':b, 'vocab':set(singleSets[i]['sentences'] + singleSet[j]['sentences'])})
+                            'year':b, 'vocab':set(singleSets[i]['sentences'] + singleSets[j]['sentences'])})
 
 #C
 bools = []
@@ -60,7 +61,7 @@ for item in doubleSets:
     #diclen = min(len(item['sentences1']),len(item['sentences2'])) #find len of shirteds BoW
     #vec = vec.fit_transform([item['sentences1'], item['sentences2']]).toarray()
     #print vec.shape
-    vec = sp.test(item['sentences1'].item['sentences2'])
+    vec = fe.get(item['sentences1'],item['sentences2'])
     features.append(vec)
 
 #X = np.array(features)
@@ -73,9 +74,8 @@ for item in doubleSets:
 
 #Need to let it take i a dict or something)
 clf = tree.DecisionTreeClassifier()
-print features
 
-print 'begining fit' + str(time.time())
+print time.gmtime()
 clf=clf.fit(features,bools)
-print 'completed fit' + str(time.time())
+print time.gmtime()
 
