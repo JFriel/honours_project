@@ -14,7 +14,7 @@ def getWords(sentence):
             returnWords.append(w)
     return returnWords
 
-def bagOfWords(texts):
+def bagOfWordsDict(texts):
     #vectorizer = CountVectorizer(preprocessor=preprocessor).fit(texts)
     #bagOfWords = vectorizer.vocabulary_
     #sorted_bagOfWords = sorted(bagOfWords.items(), key=operator.itemgetter(1))
@@ -24,11 +24,20 @@ def bagOfWords(texts):
     #bagsofwords = [w for w in bagsofwords if not w in stopwords.words("english")]
     filtered_words = [word for word in bagsofwords if word not in stopwords.words('english')]
     sumbags = sum(filtered_words, collections.Counter())
-    return dict(sumbags)
+    print sumbags
+    print sumbags[0]
+    print type(sumbags[0])
+    return sumbags
 
+def bagOfWordsList(sentences):
+    words = []
+    for sentence in sentences:
+        words.append(getWords(sentence))
+    return set(words)
 
 def featureExtraction(sentences):
-    bow = bagOfWords(sentences)
+    bow = bagOfWordsDict(sentences)
+    #bow = bagOfWordsList(sentences)
     return bow
 
 
