@@ -12,6 +12,7 @@ import app.analytics.featureExtraction as fe
 from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
+import classScratchpad as sp
 
 articles=importArticles.getData()
 
@@ -33,9 +34,9 @@ for article in articles[0:10]:
 
         content = wp.getArticle(subject)
         rawSentences = sent.getSentences(content)
-        sentences= fe.featureExtraction(rawSentences)
+        #sentences= fe.featureExtraction(rawSentences)
         listOfYears.append(article[0])
-        singleSets.append({'title':article[1], 'sentences':sentences, 'year':article[0]})
+        singleSets.append({'title':article[1], 'sentences':rawSentences, 'year':article[0]})
     except:
         pass
 #B
@@ -55,10 +56,11 @@ features = []
 
 for item in doubleSets:
     bools.append(item['year'])
-    vec = feature_extraction.DictVectorizer()
+    #vec = feature_extraction.DictVectorizer()
     #diclen = min(len(item['sentences1']),len(item['sentences2'])) #find len of shirteds BoW
-    vec = vec.fit_transform([item['sentences1'], item['sentences2']]).toarray()
-    print vec.shape
+    #vec = vec.fit_transform([item['sentences1'], item['sentences2']]).toarray()
+    #print vec.shape
+    vec = sp.test(item['sentences1'].item['sentences2'])
     features.append(vec)
 
 #X = np.array(features)
@@ -70,8 +72,10 @@ for item in doubleSets:
 #print type(features[0][0][0])
 
 #Need to let it take i a dict or something)
-#clf = tree.DecisionTreeClassifier()
+clf = tree.DecisionTreeClassifier()
+print features
+
 print 'begining fit' + str(time.time())
-#iclf=clf.fit(features,bools)
+clf=clf.fit(features,bools)
 print 'completed fit' + str(time.time())
 
