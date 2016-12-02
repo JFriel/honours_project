@@ -1,8 +1,9 @@
 import os
 
-def getData():
+def getData(typ):
     articles = []
-    with open( './data/train.txt','r') as f:
+    fl = "./data/" + typ + '.txt'
+    with open( fl,'r') as f:
         count = 0
         for line in f:
             try:
