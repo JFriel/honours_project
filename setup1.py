@@ -14,12 +14,13 @@ import numpy as np
 import datetime
 trainArticles=importArticles.getData('train')
 testArticles = importArticles.getData('test')
-
+#print len(trainArticles)
 listOfYears = []
 clf = tree.DecisionTreeClassifier()
 
 #A
 def getArticles(articleList):
+    f = open('singleSets.txt', 'w')
     singleSets = []
     for article in articleList:
         try:
@@ -36,9 +37,14 @@ def getArticles(articleList):
             content = wp.getArticle(subject)
             rawSentences = sent.getSentences(content)
             listOfYears.append(article[0])
-            singleSets.append({'title':article[1], 'sentences':rawSentences, 'year':article[0]})
+            SS = {'title':article[1], 'sentences':rawSentences, 'year':article[0]}
+            singleSets.append(SS)
+            print SS
+            f.write(SS)
         except:
             pass
+    f.write("====================================================")
+    f.close()
     return singleSets
 #B
 def generateDataPoints(singleSets):
@@ -52,6 +58,8 @@ def generateDataPoints(singleSets):
             doubleSets.append({'title1':singleSets[i]['title'],'sentences1':singleSets[i]['sentences'],\
                             'title2':singleSets[j]['title'],'sentences2': singleSets[j]['sentences'],\
                             'year':b, 'vocab':set(singleSets[i]['sentences'] + singleSets[j]['sentences'])})
+
+    print "Generated DoubleSets" + datetime.datetime.now()
     return doubleSets
 #C
 def train(doubleSets):
@@ -87,13 +95,14 @@ def train(doubleSets):
     print "correct : " + str(correct)
     print "Incorrect: " + str(incorrect)
 
-print datetime.datetime.now()
-train(generateDataPoints(getArticles(trainArticles)))
-print "Training Complere. Now For Testing"
+#print datetime.datetime.now()
+getArticles(trainArticles)
+#train(generateDataPoints(getArticles(trainArticles)))
+#print "Training Complere. Now For Testing"
 
-print datetime.datetime.now()
+#print datetime.datetime.now()
 
-test(generateDataPoints(getArticles(testArticles)))
+#test(generateDataPoints(getArticles(testArticles)))
 
 
-print datetime.datetime.now()
+#print datetime.datetime.now()
