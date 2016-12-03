@@ -12,15 +12,14 @@ from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 import datetime
-trainArticles=importArticles.getData('train')
-testArticles = importArticles.getData('test')
+trainArticles= open('singleSets.txt','r')#=importArticles.getData('train')
+testArticles = open('singleSetTest.txt','r')#= importArticles.getData('test')
 #print len(trainArticles)
 listOfYears = []
 clf = tree.DecisionTreeClassifier()
 
 #A
 def getArticles(articleList):
-    f = open('singleSets.txt', 'w')
     singleSets = []
     for article in articleList:
         try:
@@ -43,8 +42,6 @@ def getArticles(articleList):
             f.write(SS)
         except:
             pass
-    f.write("====================================================")
-    f.close()
     return singleSets
 #B
 def generateDataPoints(singleSets):
@@ -59,7 +56,6 @@ def generateDataPoints(singleSets):
                             'title2':singleSets[j]['title'],'sentences2': singleSets[j]['sentences'],\
                             'year':b, 'vocab':set(singleSets[i]['sentences'] + singleSets[j]['sentences'])})
 
-    print "Generated DoubleSets" + datetime.datetime.now()
     return doubleSets
 #C
 def train(doubleSets):
@@ -73,7 +69,7 @@ def train(doubleSets):
     print "Training The Classifier."
     clf.fit(features,bools)
 
-def train(doubleSets):
+def test(doubleSets):
     bools = []
     features = []
     correct = 0
@@ -83,7 +79,7 @@ def train(doubleSets):
         vec = fe.get(item['sentences1'],item['sentences2'])
         features.append(vec)
 
-    for feature in range(features):
+    for feature in range(len(features)):
         predict = clf.predict(features[feature])
         prob = clf.predict_proba(features[feature])
         if(prob == bools[feature]):
@@ -95,14 +91,13 @@ def train(doubleSets):
     print "correct : " + str(correct)
     print "Incorrect: " + str(incorrect)
 
-#print datetime.datetime.now()
-getArticles(trainArticles)
-#train(generateDataPoints(getArticles(trainArticles)))
-#print "Training Complere. Now For Testing"
+print datetime.datetime.now()
+train(generateDataPoints(getArticles(trainArticles)))
+print "Training Complere. Now For Testing"
 
-#print datetime.datetime.now()
+print datetime.datetime.now()
 
-#test(generateDataPoints(getArticles(testArticles)))
+test(generateDataPoints(getArticles(testArticles)))
 
 
-#print datetime.datetime.now()
+print datetime.datetime.now()
