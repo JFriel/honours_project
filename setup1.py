@@ -12,12 +12,16 @@ from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 import datetime
-trainArticles= open('singleSets.txt','r')#=importArticles.getData('train')
-testArticles = open('singleSetTest.txt','r')#= importArticles.getData('test')
-#print len(trainArticles)
+trainArticles= open('singleSets.txt','r').readlines()#=importArticles.getData('train')
+testArticles = open('singleSetTest.txt','r').readlines()#= importArticles.getData('test')
+doubles = open('doubleSets.txt','r').readlines()
+doubleSets = eval(doubles[0])
+print len(trainArticles)
+print len(testArticles)
 listOfYears = []
 clf = tree.DecisionTreeClassifier()
-
+probs = []
+titles = []
 #A
 def getArticles(articleList):
     singleSets = []
@@ -38,8 +42,6 @@ def getArticles(articleList):
             listOfYears.append(article[0])
             SS = {'title':article[1], 'sentences':rawSentences, 'year':article[0]}
             singleSets.append(SS)
-            print SS
-            f.write(SS)
         except:
             pass
     return singleSets
@@ -47,15 +49,20 @@ def getArticles(articleList):
 def generateDataPoints(singleSets):
     doubleSets = []
     for i in range(len(singleSets)):
+        print str(i) + str(len(singleSets))
         for j in range(i+1, len(singleSets)):
-            if(singleSets[i]['year'] < singleSets[j]['year']):
+            I = eval(singleSets[i])
+            J = eval(singleSets[j])
+            if(I['year'] < J['year']):
                 b = 1
             else:
                 b = 0
-            doubleSets.append({'title1':singleSets[i]['title'],'sentences1':singleSets[i]['sentences'],\
-                            'title2':singleSets[j]['title'],'sentences2': singleSets[j]['sentences'],\
-                            'year':b, 'vocab':set(singleSets[i]['sentences'] + singleSets[j]['sentences'])})
+            doubleSets.append({'title1':I['title'],'sentences1':I['sentences'],\
+                            'title2':J['title'],'sentences2': J['sentences'],\
+                            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
 
+    doubles.write(str(doubleSets))
+    print doubleSets
     return doubleSets
 #C
 def train(doubleSets):
@@ -77,27 +84,27 @@ def test(doubleSets):
     for item in doubleSets:
         bools.append(item['year'])
         vec = fe.get(item['sentences1'],item['sentences2'])
+        titles.append([item['title1'],item['title2']])
         features.append(vec)
 
     for feature in range(len(features)):
         predict = clf.predict(features[feature])
         prob = clf.predict_proba(features[feature])
-        if(prob == bools[feature]):
-            correct += 1
-        else:
-            incorrect +=1
+        probs.append([predict,prob, bools[feature]])
+        #if(prob == bools[feature]):
+        #    correct += 1
+        #else:
+        #    incorrect +=1
 
-    print "===Accuracy==="
-    print "correct : " + str(correct)
-    print "Incorrect: " + str(incorrect)
-
-print datetime.datetime.now()
-train(generateDataPoints(getArticles(trainArticles)))
+    #print "===Accuracy==="
+    #print "correct : " + str(correct)
+    #print "Incorrect: " + str(incorrect)
+print "beginning training"
+train(doubleSets)
 print "Training Complere. Now For Testing"
 
-print datetime.datetime.now()
 
-test(generateDataPoints(getArticles(testArticles)))
+test(generateDataPoints(testArticles))
 
+print zip(titles,probs)
 
-print datetime.datetime.now()

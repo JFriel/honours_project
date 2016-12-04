@@ -9,7 +9,12 @@ Training data is 1/1/8 sets for train/dev/test
 
 Uses the goldsmith wikipedia api wrapper for python
 
-having trouble parsing dates from the sentneces, dateutil.parses seems to miss quite a lot
+
+#Results
+
+Experiment 1:
+using unfiltered sentences from wikipedia the classifier gets an accuracy of 50%
+Will have to look at better feature extraction
 
 #Reference Papers
 http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf
