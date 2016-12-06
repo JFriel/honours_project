@@ -13,7 +13,7 @@ Uses the goldsmith wikipedia api wrapper for python
 #Results
 
 Experiment 1:
-using unfiltered sentences from wikipedia the classifier gets an accuracy of 50%
+using unfiltered sentences from wikipedia the classifier gets an accuracy of 51%
 Will have to look at better feature extraction
 
 #Reference Papers

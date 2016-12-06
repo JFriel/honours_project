@@ -8,6 +8,7 @@ import app.parser.getChunks as gc
 import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
+import app.analytics.functions.hasDate as hd
 from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
@@ -39,8 +40,12 @@ def getArticles(articleList):
 
             content = wp.getArticle(subject)
             rawSentences = sent.getSentences(content)
+            sentences = []
+            for sentence in rawSentences:
+                if(hd.hasDate(sentence) !== []):
+                    sentences.append(sentence)
             listOfYears.append(article[0])
-            SS = {'title':article[1], 'sentences':rawSentences, 'year':article[0]}
+            SS = {'title':article[1], 'sentences':sentences, 'year':article[0]}
             singleSets.append(SS)
         except:
             pass
