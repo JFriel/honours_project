@@ -8,6 +8,8 @@ import app.parser.getChunks as gc
 import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
+import app.analytics.functions.hasDate as hd
+import app.analytics.filterSentences as fl
 from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
@@ -59,13 +61,15 @@ def generateTrainDataPoints(tpl):
     doubleSets = []
     I = eval(trainArticles[X])
     J = eval(trainArticles[Y])
+    sentencesI = fl.filter(I['sentences'],I['title'])
+    sentencesJ = fl.filter(J['sentences'],J['title'])
     if(I['year'] < J['year']):
         b = 1
     else:
         b = 0
-    val = ({'title1':I['title'],'sentences1':I['sentences'],\
-            'title2':J['title'],'sentences2': J['sentences'],\
-            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
+    val = ({'title1':I['title'],'sentences1':sentencesI,\
+            'title2':J['title'],'sentences2': sentencesJ,\
+            'year':b, 'vocab':set(sentencesI + sentencesJ)})
     return val
 def generateTestDataPoints(tpl):
     X = tpl[0]
@@ -97,8 +101,8 @@ def test(features):
     correct = 0
     probs = []
     for feature in features:
-        predict = clf.predict(feature[0])
-        prob = clf.predict_proba(feature[0])
+        predict = clf.predict(np.array([feature[0]]))
+        prob = clf.predict_proba(np.array([feature[0]]))
         probs.append([predict,prob, feature[2]])
         if(feature[2] == predict):
             correct +=1
@@ -106,7 +110,7 @@ def test(features):
 
 
 print datetime.datetime.now()
-p = Pool(500)
+p = Pool(50)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
 mapping = []
@@ -122,7 +126,7 @@ print datetime.datetime.now()
 train(trainFeatures)
 print datetime.datetime.now()
 #train(generateDataPoints(trainArticles))
-print "Training Complere. Now For Testing"
+print "Training Complete. Now For Testing"
 
 mapping = []
 for i in range(len(testArticles)):

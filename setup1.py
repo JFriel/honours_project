@@ -93,17 +93,10 @@ def test(doubleSets):
         features.append(vec)
 
     for feature in range(len(features)):
-        predict = clf.predict(features[feature])
-        prob = clf.predict_proba(features[feature])
+        predict = clf.predict(np.array9[features[feature]]))
+        prob = clf.predict_proba(np.arrat([features[feature]]))
         probs.append([predict,prob, bools[feature]])
-        #if(prob == bools[feature]):
-        #    correct += 1
-        #else:
-        #    incorrect +=1
 
-    #print "===Accuracy==="
-    #print "correct : " + str(correct)
-    #print "Incorrect: " + str(incorrect)
 print "beginning training"
 train(doubleSets)
 print "Training Complere. Now For Testing"

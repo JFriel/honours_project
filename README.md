@@ -16,6 +16,10 @@ Experiment 1:
 using unfiltered sentences from wikipedia the classifier gets an accuracy of 51%
 Will have to look at better feature extraction
 
+
+Experiment 2:
+Initial resuls show 55% accuracy
+
 #Reference Papers
 http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf
 
