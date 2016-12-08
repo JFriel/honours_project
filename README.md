@@ -9,6 +9,9 @@ Training data is 1/1/8 sets for train/dev/test
 
 Uses the goldsmith wikipedia api wrapper for python
 
+Having spoken to Shay, he is pleased w/ the results so far.
+Next, try trigrams of articles etc
+Improve wikipedia retrieval
 
 #Results
 

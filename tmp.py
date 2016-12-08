@@ -110,7 +110,7 @@ def test(features):
 
 
 print datetime.datetime.now()
-p = Pool(50)
+p = Pool(10)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
 mapping = []

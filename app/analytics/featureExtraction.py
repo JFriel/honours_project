@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.stem import SnowballStemmer
 from nltk.corpus import stopwords
 import operator
+import functions.hasDate as hd
 def preprocessor(data):
     return " ".join([SnowballStemmer("english").stem(word) for word in data.split()])
 
@@ -24,15 +25,13 @@ def bagOfWordsDict(texts):
     #bagsofwords = [w for w in bagsofwords if not w in stopwords.words("english")]
     filtered_words = [word for word in bagsofwords if word not in stopwords.words('english')]
     sumbags = sum(filtered_words, collections.Counter())
-    print sumbags
-    print sumbags[0]
-    print type(sumbags[0])
     return sumbags
 
 def bagOfWordsList(sentences):
     words = []
     for sentence in sentences:
-        words.append(getWords(sentence))
+        if(hd.hasDate(sentence) != []):
+            words.append(getWords(sentence))
     return set(words)
 
 def featureExtraction(sentences):

@@ -1,6 +1,6 @@
 from pycorenlp import StanfordCoreNLP
 
-nlp = StanfordCoreNLP('http://www.corenlp.run')
+nlp = StanfordCoreNLP('http://localhost:9000')
 
 def stanfordOpenIE(sentence):
 	data = nlp.annotate(sentence, properties={
