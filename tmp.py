@@ -16,6 +16,10 @@ from multiprocessing import Pool
 import numpy as np
 import datetime
 
+import networkx as nx
+import matplotlib.pyplot as plt
+
+
 np.seterr(divide='ignore',invalid='ignore')
 
 trainArticles= open('singleShort.txt','r').readlines()#=importArticles.getData('train')
@@ -23,9 +27,20 @@ testArticles = open('singleShortTest.txt','r').readlines()#= importArticles.getD
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
+
+
+testArticleLookupDict = {}
+for title in range(0,len(testArticles)):
+    print (eval(testArticles[title])['title'])
+    testArticleLookupDict[eval(testArticles[title])['title']] = title
+
 clf = tree.DecisionTreeClassifier()
-probs = []
 titles = []
+weights = []
+
+#G = nx.Graph()#G is an empty graph
+
+
 #A
 def getArticle(article):
     singleSets = []
@@ -97,16 +112,25 @@ def train(features):
     Y = [item[2] for item in features]
     clf.fit(X,Y)
 
+
 def test(features):
     correct = 0
-    probs = []
     for feature in features:
         predict = clf.predict(np.array([feature[0]]))
         prob = clf.predict_proba(np.array([feature[0]]))
-        probs.append([predict,prob, feature[2]])
+        #prob = prob[0][predict][0]
+        title1 = feature[1][0]
+        title2 = feature[1][1]
+        #print "title1 = " + str(title1)
+        print prob
+        #print str(title1) + "," + str(title2) + "," + str(float(prob))
+        #G.add_edge(str(title1),str(title2), weight=float(prob)*1000)
         if(feature[2] == predict):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
+
+#def tsp():
+
 
 
 print datetime.datetime.now()
@@ -125,7 +149,6 @@ trainFeatures = p.map(getFeature,doubleSets)
 print datetime.datetime.now()
 train(trainFeatures)
 print datetime.datetime.now()
-#train(generateDataPoints(trainArticles))
 print "Training Complete. Now For Testing"
 
 mapping = []
@@ -140,7 +163,7 @@ testFeatures = p.map(getFeature,doubleSets)
 print datetime.datetime.now()
 test(testFeatures)
 print datetime.datetime.now()
-
+print datetime.datetime.now()
 
 #test(generateDataPoints(testArticles))
 
