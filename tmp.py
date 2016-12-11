@@ -22,8 +22,8 @@ import matplotlib.pyplot as plt
 
 np.seterr(divide='ignore',invalid='ignore')
 
-trainArticles= open('singleShort.txt','r').readlines()#=importArticles.getData('train')
-testArticles = open('singleShortTest.txt','r').readlines()#= importArticles.getData('test')
+trainArticles= open('data/singleShort.txt','r').readlines()#=importArticles.getData('train')
+testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles.getData('test')
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
@@ -38,7 +38,7 @@ clf = tree.DecisionTreeClassifier()
 titles = []
 weights = []
 
-#G = nx.Graph()#G is an empty graph
+G = nx.Graph()#G is an empty graph
 
 
 #A
@@ -118,13 +118,14 @@ def test(features):
     for feature in features:
         predict = clf.predict(np.array([feature[0]]))
         prob = clf.predict_proba(np.array([feature[0]]))
-        #prob = prob[0][predict][0]
+        prob = prob[0][predict][0]
         title1 = feature[1][0]
         title2 = feature[1][1]
         #print "title1 = " + str(title1)
-        print prob
+        #print prob
         #print str(title1) + "," + str(title2) + "," + str(float(prob))
-        #G.add_edge(str(title1),str(title2), weight=float(prob)*1000)
+        if(int(prob) == 1):
+            G.add_edge(str(title1),str(title2))
         if(feature[2] == predict):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
@@ -165,5 +166,52 @@ test(testFeatures)
 print datetime.datetime.now()
 print datetime.datetime.now()
 
+Data = []
+for t in testArticles:
+    Data.append(eval(t))
+
+
+def graph(ttl):
+    T = nx.bfs_tree(G,ttl)
+
+
+    edgeAccuracy = 0
+    years = []
+    for e in T.edges():
+        t1 = e[0]
+        t2 = e[1]
+        y1 = 0
+        y2 = 0
+        for d in Data:
+            if(d['title'] == t1):
+                y1 = d['year']
+            if(d['title'] == t2):
+                y2 = d['year']
+        #print e
+        #print str(y1) + " | " + str(y2)
+        if(y1 > y2):
+            edgeAccuracy += 1
+        if(years == []):
+            years.append(y1)
+            years.append(y2)
+        else:
+            years.append(y2)
+
+    yearsAccuracy = 0
+    for y in range(1,len(years)):
+        if( years[y] > years[y-1]):
+            yearsAccuracy +=1
+
+    #print(T.edges())
+    #print years
+    #print "edge Accuracy = " + str(edgeAccuracy)
+    print ttl + " = " + str(yearsAccuracy)
+
+for d in Data:
+    graph(d['title'])
+
+#nx.draw(G)
+#nx.dfs_edges(G)
+#plt.show()
 #test(generateDataPoints(testArticles))
 
