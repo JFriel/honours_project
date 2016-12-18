@@ -1,0 +1,9 @@
+@paper{ name,
+author = "Me",
+title = "title",
+year = "2000"}
+
+@misc{name2,
+author = "not me",
+title = "title2",
+year = "1200"}

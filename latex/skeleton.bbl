@@ -1,0 +1,11 @@
+\begin{thebibliography}{1}
+
+\bibitem{name}
+Me.
+\newblock title, 2000.
+
+\bibitem{name2}
+not me.
+\newblock title2, 1200.
+
+\end{thebibliography}

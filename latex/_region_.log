@@ -1,0 +1,292 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=prv_skeleton 2016.12.18)  18 DEC 2016 14:19
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**&prv_skeleton _region_.tex
+(./_region_.tex
+LaTeX2e <2016/03/31> patch level 3
+Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
+CUSTOMISED FORMAT. Preloaded files:
+        .
+infthesis.cls    2011/02/02 v3.5 School of Informatics Thesis Class
+geometry.sty    2010/09/12 v5.6 Page Geometry
+  keyval.sty    2014/10/28 v1.15 key=value parser (DPC)
+   ifpdf.sty    2016/05/14 v3.1 Provides the ifpdf switch
+  ifvtex.sty    2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+ ifxetex.sty    2010/09/12 v0.6 Provides ifxetex conditional
+  ifthen.sty    2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+graphics.sty    2016/07/10 v1.0t Standard LaTeX Graphics (DPC,SPQR)
+    trig.sty    2016/01/03 v1.10 sin cos tan (DPC)
+graphics.cfg    2016/06/04 v1.11 sample graphics configuration
+   dvips.def    2016/07/10 v3.1a Driver-dependent file (DPC,SPQR)
+  xspace.sty    2014/10/28 v1.13 Space after command names (DPC,MH)
+eushield.sty    2006/08/28\ v1.1\ Commands for including the EU shield graphic
+  report.cls    2014/09/29 v1.4h Standard LaTeX document class
+  size12.clo    2014/09/29 v1.4h Standard LaTeX file (size option)
+ pslatex.sty    1996/07/24 v1.2 pslatex emulation (DPC)
+ sectsty.sty    2002/02/25 v2.0.2 Commands to change all sectional heading styl
+es
+ caption.sty    2016/02/21 v3.3-144 Customizing captions (AR)
+caption3.sty    2016/05/22 v1.7-166 caption3 kernel (AR)
+ parskip.sty    2001/04/09 non-zero parskip adjustments
+ot1ptmcm.fd    2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
+omlptmcm.fd    2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
+omspzccm.fd    2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
+omxpsycm.fd    2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
+        .
+No file _region_.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
+(/usr/share/texmf/tex/latex/preview/preview.sty
+Package: preview 2010/02/14 11.88 (AUCTeX/preview-latex)
+
+(/usr/share/texmf/tex/latex/preview/prtightpage.def
+\PreviewBorder=\dimen118
+)
+(/usr/share/texmf/tex/latex/preview/prauctex.def
+No auxiliary output files.
+
+
+\hbadness=\count92
+\hfuzz=\dimen119
+(/usr/share/texmf/tex/latex/preview/prauctex.cfg))
+(/usr/share/texmf/tex/latex/preview/prfootnotes.def)
+\pr@snippet=\count93
+\pr@box=\box26
+\pr@output=\toks16
+
+Preview: Fontsize 12pt
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: dvips
+*geometry* verbose mode - [ preamble ] result:
+* driver: dvips
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: twoside 
+* h-part:(L,W,R)=(113.81102pt, 412.56497pt, 71.13188pt)
+* v-part:(T,H,B)=(56.9055pt, 674.33032pt, 113.81102pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=412.56497pt
+* \textheight=674.33032pt
+* \oddsidemargin=41.54103pt
+* \evensidemargin=-1.1381pt
+* \topmargin=-52.36449pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=85.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidetrue
+* \@mparswitchtrue
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: Incompatible package detected (regarding \caption).
+(caption)             \caption = \protected\long macro:->\pr@protect@domacro {}
+{##1{}}\pr@\caption .
+
+Package caption Warning: \caption will not be redefined since it's already
+(caption)                redefined by a document class or package which is
+(caption)                unknown to the caption package.
+See the caption package documentation for explanation.
+
+Package caption Info: End \AtBeginDocument code.
+ !name(skeleton.tex) !offset(-3) 
+LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 53.
+LaTeX Font Info:    Font shape `OT1/phv/m/sl' will be
+(Font)              scaled to size 10.79993pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 53.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 53.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 18.66588pt on input line 53.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 53.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 10.79993pt on input line 53.
+
+! Preview: Snippet 1 started.
+<-><->
+      
+l.55 \section
+             *{Acknowledgements}
+Not a real error.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 55.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 55.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 15.55188pt on input line 55.
+Preview: Tightpage -32891 -32891 32891 32891
+! Preview: Snippet 1 ended.(729750+221160x27037858).
+<-><->
+      
+l.55 \section*{Acknowledgements}
+                                
+Not a real error.
+
+[1]
+! Preview: Snippet 2 started.
+<-><->
+      
+l.58 \tableofcontents
+                     
+Not a real error.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <24.88> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 58.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 22.39185pt on input line 58.
+! Preview: Snippet 2 ended.(6193152+27138x27037858).
+<-><->
+      
+l.58 \tableofcontents
+                     
+Not a real error.
+
+[2
+
+]
+No file _region_.toc.
+! Preview: Snippet 3 started.
+<-><->
+      
+l.63 \chapter
+             {Introduction}
+Not a real error.
+
+Chapter 1.
+! Preview: Snippet 3 ended.(9469952+14662x27037858).
+<-><->
+      
+l.63 \chapter{Introduction}
+                           
+Not a real error.
+
+[3
+
+
+
+
+]
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 68.
+
+! Preview: Snippet 4 started.
+<-><->
+      
+l.95 \section
+             {Using Sections}
+Not a real error.
+
+! Preview: Snippet 4 ended.(755230+221160x27037858).
+<-><->
+      
+l.95 \section{Using Sections}
+                             
+Not a real error.
+
+[4
+
+]
+! Preview: Snippet 5 started.
+<-><->
+      
+l.99 \section
+             {Citations}
+Not a real error.
+
+! Preview: Snippet 5 ended.(755230+18848x27037858).
+<-><->
+      
+l.99 \section{Citations}
+                        
+Not a real error.
+
+[5
+
+]
+
+LaTeX Warning: Citation `P1' on page 4 undefined on input line 102.
+
+
+LaTeX Warning: Citation `P2' on page 4 undefined on input line 102.
+
+! Preview: Snippet 6 started.
+<-><->
+      
+l.108 \section
+              {Options}
+Not a real error.
+
+! Preview: Snippet 6 ended.(755230+214535x27037858).
+<-><->
+      
+l.108 \section{Options}
+                       
+Not a real error.
+
+[6
+
+]
+! Preview: Snippet 7 started.
+<-><->
+      
+l.122 \chapter
+              {The Real Thing}
+Not a real error.
+
+Chapter 2.
+! Preview: Snippet 7 ended.(9469952+318430x27037858).
+<-><->
+      
+l.122 \chapter{The Real Thing}
+                              
+Not a real error.
+
+[7
+
+
+
+
+]
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 207 strings out of 490359
+ 2884 string characters out of 6094672
+ 109125 words of memory out of 5000000
+ 6376 multiletter control sequences out of 15000+600000
+ 21285 words of font info for 51 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 26i,5n,24p,165b,248s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on _region_.dvi (7 pages, 2556 bytes).
