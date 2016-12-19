@@ -10,7 +10,7 @@ import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
 import app.analytics.functions.hasDate as hd
 import app.analytics.filterSentences as fl
-from sklearn import tree, feature_extraction
+from sklearn import tree, feature_extraction, svm
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import numpy as np
@@ -31,10 +31,10 @@ listOfYears = []
 
 testArticleLookupDict = {}
 for title in range(0,len(testArticles)):
-    print (eval(testArticles[title])['title'])
+    #print (eval(testArticles[title])['title'])
     testArticleLookupDict[eval(testArticles[title])['title']] = title
 
-clf = tree.DecisionTreeClassifier()
+clf = svm.SVC(probability=True)#tree.DecisionTreeClassifier()
 titles = []
 weights = []
 
@@ -124,17 +124,15 @@ def test(features):
         #print "title1 = " + str(title1)
         #print prob
         #print str(title1) + "," + str(title2) + "," + str(float(prob))
-        if(int(prob) == 1):
-            G.add_edge(str(title1),str(title2))
+        G.add_edge(str(title1),str(title2), weight=float(prob))
         if(feature[2] == predict):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
 
-#def tsp():
 
 
 
-print datetime.datetime.now()
+#print datetime.datetime.now()
 p = Pool(10)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
@@ -142,7 +140,6 @@ mapping = []
 for i in range(len(trainArticles)):
     for j in range(i+1, len(trainArticles)):
         mapping.append([i,j])
-
 print datetime.datetime.now()
 doubleSets = p.map(generateTrainDataPoints,mapping)
 print datetime.datetime.now()
@@ -207,11 +204,10 @@ def graph(ttl):
     #print "edge Accuracy = " + str(edgeAccuracy)
     print ttl + " = " + str(yearsAccuracy)
 
-for d in Data:
-    graph(d['title'])
+#for d in Data:
+#    graph(d['title'])
 
 #nx.draw(G)
 #nx.dfs_edges(G)
 #plt.show()
 #test(generateDataPoints(testArticles))
-
