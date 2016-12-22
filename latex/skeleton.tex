@@ -35,9 +35,9 @@
 
 \date{\today}
 
-\abstract{
+\abstract{}
 %TODO
-}
+
 
 \maketitle
 
@@ -50,11 +50,16 @@ I'd Like to thank Greggs Bakery for being there for me through tick and thin.
 
 
 \chapter{Introduction}
-The problem this thesis is a similar problem to that tackled
-in \cite{abend2015lexical}. While this paper deals with ordering
-of instructions related to cooking, the underlying theory
-is similar for this thesis.
 \section{The Problem}
+Nominal data is descriptive in nature, making is difficult to assign an cannonical ordering to.
+The problem tackled in this thesis is the ordering of news article headlines to generate
+a most-probable traversal of a weighted directed graph of these events.
+This problem is based off of the paper \cite{abend2015lexical} and some
+techniques discussed and used henseforth are based off of this paper.
+
+
+Our data comes from the Wikipedia ``Today in History'' dataset and the nominal data is retrived
+from wikipedia articles.
 %The problem explored within this thesis is that of graphing nature.
 %Building a most probable path through each node in an edge-weighted directed graph
 %, each node beinga single sentence describing an event from history.
@@ -70,7 +75,33 @@ buld a date estimate from wikipedia. From this data we will conduct several expe
 to maximise the likelyhood of a graph traversal.
 
 
+The core aims of the project were: 
+\begin{itemize}
+  \item Generate probable dates For each event
+  \item Order these events linearly
+\end{itemize}
+
+The further goals of the project were to:
+\begin{itemize}
+  \item Generate edge-weighted directional graphs of the data
+  \item Construct probabilities of maximum spanning walks through the graph
+\end{itemize}
+
+Some initial stretch goals of the project were to construct an interactive
+interface to the resulting graphs to act as a visual aid for the results.
+
 \section{Testing \& Evaluation}
+With our dataset being so large ( around 6250 entries) it can
+easily be split into training, devlopment and testing with no
+need for overlap. For this the data is split 10\% training,
+10\% development and 80\% for testing.
+
+Evaulation of the system was dne using the
+Kendall rank correlation coefficient as is a statistic
+used to measure the ordinal association between two
+measured quantities. This was easy be applied to our results
+by compairing the systems estimated date for each event
+with the label associated with the event from the data.
 
 \chapter{Background}
 
