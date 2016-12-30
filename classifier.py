@@ -8,15 +8,16 @@ import app.parser.getChunks as gc
 import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
-import app.analytics.functions.hasDate as hd
 from sklearn import tree, feature_extraction
 from sklearn.feature_extraction.text import CountVectorizer
+from multiprocessing import Pool
 import numpy as np
 import datetime
-trainArticles= open('singleSets.txt','r').readlines()#=importArticles.getData('train')
-testArticles = open('singleSetTest.txt','r').readlines()#= importArticles.getData('test')
-doubles = open('doubleSets.txt','r').readlines()
-doubleSets = eval(doubles[0])
+
+np.seterr(divide='ignore',invalid='ignore')
+
+trainArticles= open('data/singleShort.txt','r').readlines()#=importArticles.getData('train')
+testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles.getData('test')
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
@@ -24,85 +25,119 @@ clf = tree.DecisionTreeClassifier()
 probs = []
 titles = []
 #A
-def getArticles(articleList):
+def getArticle(article):
     singleSets = []
-    for article in articleList:
-        try:
-            chunks = gc.getChunks(article[1])
-            tags =  tag.getTags(article[1],chunks)
-            if tags == []:
-                continue # check this is right. go to next itteration
-            """The Stanford Open IE tags"""
-            subject = tags['subject']
-            relation = tags['relation']
-            objects = tags['object']
-            objects = objects.split()
+    try:
+        chunks = gc.getChunks(article[1])
+        tags =  tag.getTags(article[1],chunks)
+        #if tags == []:
+        #    continue # check this is right. go to next itteration
+        """The Stanford Open IE tags"""
+        subject = tags['subject']
+        relation = tags['relation']
+        objects = tags['object']
+        objects = objects.split()
 
-            content = wp.getArticle(subject)
-            rawSentences = sent.getSentences(content)
-            sentences = []
-            for sentence in rawSentences:
-                if(hd.hasDate(sentence) !== []):
-                    sentences.append(sentence)
-            listOfYears.append(article[0])
-            SS = {'title':article[1], 'sentences':sentences, 'year':article[0]}
-            singleSets.append(SS)
-        except:
-            pass
+        content = wp.getArticle(subject)
+        rawSentences = sent.getSentences(content)
+        sentences = []
+        for sentence in rawSentences:
+            if(hd.hasDate(sentence) != []):
+                sentences.append(sentence)
+        listOfYears.append(article[0])
+        SS = {'title':article[1], 'sentences':sentences, 'year':article[0]}
+        singleSets.append(SS)
+    except:
+        pass
     return singleSets
+
+
 #B
-def generateDataPoints(singleSets):
+def generateTrainDataPoints(tpl):
+    X = tpl[0]
+    Y = tpl[1]
     doubleSets = []
-    for i in range(len(singleSets)):
-        print str(i) + str(len(singleSets))
-        for j in range(i+1, len(singleSets)):
-            I = eval(singleSets[i])
-            J = eval(singleSets[j])
-            if(I['year'] < J['year']):
-                b = 1
-            else:
-                b = 0
-            doubleSets.append({'title1':I['title'],'sentences1':I['sentences'],\
-                            'title2':J['title'],'sentences2': J['sentences'],\
-                            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
+    I = eval(trainArticles[X])
+    J = eval(trainArticles[Y])
+    if(I['year'] < J['year']):
+        b = 1
+    else:
+        b = 0
+    val = ({'title1':I['title'],'sentences1':I['sentences'],\
+            'title2':J['title'],'sentences2': J['sentences'],\
+            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
+    return val
+def generateTestDataPoints(tpl):
+    X = tpl[0]
+    Y = tpl[1]
+    doubleSets = []
+    I = eval(testArticles[X])
+    J = eval(testArticles[Y])
+    if(I['year'] < J['year']):
+        b = 1
+    else:
+        b = 0
+    val = ({'title1':I['title'],'sentences1':I['sentences'],\
+            'title2':J['title'],'sentences2': J['sentences'],\
+            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
+    return val
 
-    doubles.write(str(doubleSets))
-    print doubleSets
-    return doubleSets
+def getFeature(item):
+    yr = item['year']
+    vec = fe.get(item['sentences1'],item['sentences2'])
+    titles = ([item['title1'],item['title2']])
+    return ([vec,titles,yr])
 #C
-def train(doubleSets):
-    bools = []
-    features = []
+def train(features):
+    print features[0]
+    X = [item[0] for item in features]
+    Y = [item[2] for item in features]
+    clf.fit(X,Y)
 
-    for item in doubleSets:
-        bools.append(item['year'])
-        vec = fe.get(item['sentences1'],item['sentences2'])
-        features.append(vec)
-    print "Training The Classifier."
-    clf.fit(features,bools)
-
-def test(doubleSets):
-    bools = []
-    features = []
+def test(features):
     correct = 0
-    incorrect = 0
-    for item in doubleSets:
-        bools.append(item['year'])
-        vec = fe.get(item['sentences1'],item['sentences2'])
-        titles.append([item['title1'],item['title2']])
-        features.append(vec)
+    probs = []
+    for feature in features:
+        predict = clf.predict(feature[0])
+        prob = clf.predict_proba(feature[0])
+        probs.append([predict,prob, feature[2]])
+        if(feature[2] == predict):
+            correct +=1
+    print "Accuracy = " + str(correct) + '/' + str(len(features))
 
-    for feature in range(len(features)):
-        predict = clf.predict(np.array9[features[feature]]))
-        prob = clf.predict_proba(np.arrat([features[feature]]))
-        probs.append([predict,prob, bools[feature]])
 
-print "beginning training"
-train(doubleSets)
+print datetime.datetime.now()
+p = Pool(500)
+#Used to get Article Content
+#articles = (p.map(getArticle,trainData))
+mapping = []
+for i in range(len(trainArticles)):
+    for j in range(i+1, len(trainArticles)):
+        mapping.append([i,j])
+
+print datetime.datetime.now()
+doubleSets = p.map(generateTrainDataPoints,mapping)
+print datetime.datetime.now()
+trainFeatures = p.map(getFeature,doubleSets)
+print datetime.datetime.now()
+train(trainFeatures)
+print datetime.datetime.now()
+#train(generateDataPoints(trainArticles))
 print "Training Complere. Now For Testing"
 
+mapping = []
+for i in range(len(testArticles)):
+    for j in range(i+1, len(testArticles)):
+        mapping.append([i,j])
 
-test(generateDataPoints(testArticles))
+print datetime.datetime.now()
+doubleSets = p.map(generateTestDataPoints,mapping)
+print datetime.datetime.now()
+testFeatures = p.map(getFeature,doubleSets)
+print datetime.datetime.now()
+test(testFeatures)
+print datetime.datetime.now()
 
-print zip(titles,probs)
+
+#test(generateDataPoints(testArticles))
 

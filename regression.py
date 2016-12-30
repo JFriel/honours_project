@@ -17,8 +17,8 @@ import datetime
 
 np.seterr(divide='ignore',invalid='ignore')
 
-trainArticles= open('singleShort.txt','r').readlines()#=importArticles.getData('train')
-testArticles = open('singleShortTest.txt','r').readlines()#= importArticles.getData('test')
+trainArticles= open('data/singleShort.txt','r').readlines()#=importArticles.getData('train')
+testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles.getData('test')
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
@@ -100,6 +100,7 @@ def test(features):
     correct = 0
     probs = []
     for feature in features:
+        print feature
         predict = reg.predict(feature[0])
         probs.append([predict,feature[2]])
         if(feature[2] == predict):

@@ -108,24 +108,22 @@ def get3(s1,s2,s3):
                 if w == word:
                     D3[-1] += 1
 
-
-
     #print D1
     #print D2
     #print len(D1)
     #print len(D2)
 
     X = np.array([D1,D2,D3])
+    #X = X.reshape
     pca = sklearn.decomposition.TruncatedSVD(n_components=1)
     X = pca.fit_transform(X)
     A = float(X[0][0])
     B = float(X[1][0])
     C = float(X[2][0])
-    print A
-    print B
-    print C
     return [A,B,C]
 
+    
+   
 two = ["Sometimes, all you need to do is completely make an ass of yourself and laugh it off to realise that life isn't so bad after all.","Yeah, I think it's a good environment for learning English.","I want to buy a onesie but know it won't suit me.","Joe made the sugar cookies; Susan decorated them."," He turned in the research paper on Friday; otherwise, he would have not passed the class. ","Is it free?"]
 
 one = ["I really want to go to work, but I am too sick to drive.","A song can make or ruin a person's day if they let it get to them.","My Mum tries to be cool by saying that she likes all the same things that I do.","Everyone was busy, so I went to the movie alone.","She only paints with bold colors; she does not like pastels."]

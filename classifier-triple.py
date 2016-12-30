@@ -110,12 +110,13 @@ def generateTestDataPoints(tpl):
 
 def getFeature(item):
     yr = item['year']
-    vec = fe.get3(item['sentences1'],item['sentences2'],item['sentences3'])
-    titles = ([item['title1'],item['title2'], item['title3']])
+    vec = fe.get3(item['sentences1'],item['sentences2'], item['sentences3'])
+    titles = ([item['title1'],item['title2'],item['title3']])
     return ([vec,titles,yr])
 #C
 def train(features):
-    X = [item[0] for item in features]
+    print features
+    X = [ item[0] for item in features]
     Y = [item[2] for item in features]
     clf.fit(X,Y)
 
