@@ -85,9 +85,9 @@ def generateTrainDataPoints(tpl):
         b = 1
     else:
         b = 0
-    val = ({'title1':I['title'],'sentences1':sentencesI,\
-            'title2':J['title'],'sentences2': sentencesJ,\
-            'title3':K['title'],'sentences3': sentencesK,\
+    val = ({'title1':I['title'],'sentences1':I['sentences'],\
+            'title2':J['title'],'sentences2': J['sentences'],\
+            'title3':K['title'],'sentences3': K['sentences'],\
             'year':b, 'vocab':set(sentencesI +  sentencesJ + sentencesK)})
     return val
 def generateTestDataPoints(tpl):
@@ -159,6 +159,7 @@ print datetime.datetime.now()
 #    tripleSets.append(generateTrainDataPoints(mapping[i]))
 tripleSets = p.map(generateTrainDataPoints,mapping[0:3000])
 print datetime.datetime.now()
+#print tripleSets[0]
 trainFeatures = p.map(getFeature,tripleSets)
 print datetime.datetime.now()
 train(trainFeatures)
@@ -222,8 +223,8 @@ def graph(ttl):
     #print "edge Accuracy = " + str(edgeAccuracy)
     print ttl + " = " + str(yearsAccuracy)
 
-#for d in Data:
-#    graph(d['title'])
+for d in Data:
+    graph(d['title'])
 
 #nx.draw(G)
 #nx.dfs_edges(G)

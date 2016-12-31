@@ -130,3 +130,4 @@ one = ["I really want to go to work, but I am too sick to drive.","A song can ma
 
 #print type(get2(one,two))
 #print type(get(one,two))
+print get3(one,two,one)
