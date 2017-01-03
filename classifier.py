@@ -8,11 +8,15 @@ import app.parser.getChunks as gc
 import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
-from sklearn import tree, feature_extraction
+from sklearn import tree, feature_extraction, svm
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import numpy as np
 import datetime
+
+import networkx as nx
+import matplotlib.pyplot as plt
+G=nx.DiGraph()
 
 np.seterr(divide='ignore',invalid='ignore')
 
@@ -21,7 +25,7 @@ testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
-clf = tree.DecisionTreeClassifier()
+clf = svm.SVC(probability=True)
 probs = []
 titles = []
 #A
@@ -98,9 +102,21 @@ def test(features):
     correct = 0
     probs = []
     for feature in features:
-        predict = clf.predict(feature[0])
-        prob = clf.predict_proba(feature[0])
+        temp = np.array(feature[0]).reshape((1, -1))
+        predict = clf.predict(temp)
+        prob = max(clf.predict_proba(temp)[0])
         probs.append([predict,prob, feature[2]])
+        G.add_node(feature[1][0])
+        G.add_node(feature[1][0])
+        print type(prob)
+        print prob
+        if(predict == 1):
+            if(float(prob) > float(0.6)):
+                G.add_edge(feature[1][0],feature[1][1], weight=prob)
+                
+        else:
+            if(float(prob) > float(0.6)):
+                G.add_edge(feature[1][1],feature[1][0], weight=prob)
         if(feature[2] == predict):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
@@ -137,7 +153,8 @@ testFeatures = p.map(getFeature,doubleSets)
 print datetime.datetime.now()
 test(testFeatures)
 print datetime.datetime.now()
-
-
+nx.draw(G, node_color='c',edge_color='k', with_labels=True)
+plt.show()
+print G.edges()
 #test(generateDataPoints(testArticles))
 

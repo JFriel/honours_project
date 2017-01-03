@@ -38,7 +38,7 @@ clf = svm.SVC(probability=True)#tree.DecisionTreeClassifier()
 titles = []
 weights = []
 
-G = nx.Graph()#G is an empty graph
+G = nx.DiGraph()#G is an empty graph
 
 
 #A
@@ -133,7 +133,9 @@ def test(features):
         #print "title1 = " + str(title1)
         #print prob
         #print str(title1) + "," + str(title2) + "," + str(float(prob))
-        #G.add_edge(str(title1),str(title2), weight=float(prob))
+        G.add_edge(str(title1),str(title2), weight=float(prob))
+        G.add_edge(str(title1),str(title3), weight=float(prob))
+        G.add_edge(str(title2),str(title3), weight=float(prob))
         if(feature[2] == predict):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
@@ -218,15 +220,15 @@ def graph(ttl):
         if( years[y] > years[y-1]):
             yearsAccuracy +=1
 
-    #print(T.edges())
+    print(T.edges())
     #print years
     #print "edge Accuracy = " + str(edgeAccuracy)
     print ttl + " = " + str(yearsAccuracy)
+    
+#for d in Data:
+#graph("1st magazine on microfilm offered to subscribers - Newsweek")
 
-for d in Data:
-    graph(d['title'])
-
-#nx.draw(G)
-#nx.dfs_edges(G)
-#plt.show()
+nx.draw(G, node_color='c', edge_color='k', with_labels=True)
+nx.dfs_edges(G)
+plt.show()
 #test(generateDataPoints(testArticles))
