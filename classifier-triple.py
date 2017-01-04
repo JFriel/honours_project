@@ -83,8 +83,10 @@ def generateTrainDataPoints(tpl):
     sentencesK = fl.filter(K['sentences'],K['title'])
     if(I['year'] < J['year'] < K['year']):
         b = 1
-    else:
+    elif( I['year'] > J['year'] > K['year']):
         b = 0
+    else:
+        b = -1
     val = ({'title1':I['title'],'sentences1':I['sentences'],\
             'title2':J['title'],'sentences2': J['sentences'],\
             'title3':K['title'],'sentences3': K['sentences'],\
@@ -100,8 +102,10 @@ def generateTestDataPoints(tpl):
     K = eval(testArticles[Z])
     if(I['year'] < J['year'] < K['year']):
         b = 1
-    else:
+    elif( I['year'] > J['year'] > K['year']):
         b = 0
+    else:
+        b = -1
     val = ({'title1':I['title'],'sentences1':I['sentences'],\
             'title2':J['title'],'sentences2': J['sentences'],\
             'title3':K['title'],'sentences3': K['sentences'],\
@@ -160,6 +164,10 @@ print datetime.datetime.now()
 #    print i
 #    tripleSets.append(generateTrainDataPoints(mapping[i]))
 tripleSets = p.map(generateTrainDataPoints,mapping[0:3000])
+for i in tripleSets:
+    if(float(i['year']) == float(-1)):
+        tripleSets.remove(i)
+
 print datetime.datetime.now()
 #print tripleSets[0]
 trainFeatures = p.map(getFeature,tripleSets)
@@ -177,6 +185,9 @@ for i in range(len(testArticles)):
             
 print datetime.datetime.now()
 doubleSets = p.map(generateTestDataPoints,mapping)
+for i in doubleSets:
+    if(i['year'] == -1):
+        doubleSets.remove(i)
 print datetime.datetime.now()
 testFeatures = p.map(getFeature,doubleSets)
 print datetime.datetime.now()

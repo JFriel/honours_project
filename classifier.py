@@ -111,19 +111,22 @@ def test(features):
         print type(prob)
         print prob
         if(predict == 1):
-            if(float(prob) > float(0.6)):
-                G.add_edge(feature[1][0],feature[1][1], weight=prob)
+            #if(float(prob) > float(0.6)):
+            G.add_edge(feature[1][0],feature[1][1], weight= -1 *prob)
                 
         else:
-            if(float(prob) > float(0.6)):
-                G.add_edge(feature[1][1],feature[1][0], weight=prob)
+            #if(float(prob) > float(0.6)):
+            G.add_edge(feature[1][1],feature[1][0], weight= -1 *prob)
         if(feature[2] == predict):
+            print str(feature[2])
+            print predict
+            print '---'
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
 
 
 print datetime.datetime.now()
-p = Pool(500)
+p = Pool(50)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
 mapping = []
@@ -142,8 +145,8 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 mapping = []
-for i in range(len(testArticles)):
-    for j in range(i+1, len(testArticles)):
+for i in range(len(testArticles)/2, len(testArticles)):
+    for j in range(i+1,len(testArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -153,8 +156,33 @@ testFeatures = p.map(getFeature,doubleSets)
 print datetime.datetime.now()
 test(testFeatures)
 print datetime.datetime.now()
-nx.draw(G, node_color='c',edge_color='k', with_labels=True)
+
+#nx.draw(G, node_color='c',edge_color='k', with_labels=True)
+
+#path = nx.shortest_path(G)
+#print path
+#path_edges = zip(path,path[1:])
+#pos = nx.spring_layout(G)
+#nx.draw_networkx_nodes(G,pos,nodelist=path,node_color='r')
+#nx.draw_networkx_edges(G,pos,edgelist=path_edges,edge_color='r',width=10)
+#plt.axis('equal')
+#plt.show()
+
+pos = nx.spring_layout(G)
+nx.draw(G,pos,node_color='k', with_labels=True)
+# draw path in red
+path = nx.dag_longest_path(G)
+path_edges = zip(path,path[1:])
+nx.draw_networkx_nodes(G,pos,nodelist=path,node_color='r')
+nx.draw_networkx_edges(G,pos,edgelist=path_edges,edge_color='r',)
+plt.axis('equal')
 plt.show()
-print G.edges()
+
+
+#plt.show()
+#print G.edges()
+#print G.nodes()
+#T = nx.minimum_spanning_tree(G)
+#print sorted(T.edges(data=True))
 #test(generateDataPoints(testArticles))
 
