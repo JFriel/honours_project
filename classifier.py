@@ -14,6 +14,7 @@ from multiprocessing import Pool
 import numpy as np
 import datetime
 
+import app.analytics.filterSentences as fl
 import networkx as nx
 import matplotlib.pyplot as plt
 G=nx.DiGraph()
@@ -63,13 +64,16 @@ def generateTrainDataPoints(tpl):
     doubleSets = []
     I = eval(trainArticles[X])
     J = eval(trainArticles[Y])
+    sentencesI = fl.filter(I['sentences'],I['title'])
+    sentencesJ = fl.filter(J['sentences'],J['title'])
+
     if(I['year'] < J['year']):
         b = 1
     else:
         b = 0
     val = ({'title1':I['title'],'sentences1':I['sentences'],\
             'title2':J['title'],'sentences2': J['sentences'],\
-            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
+            'year':b, 'vocab':set(sentencesI + sentencesJ)})
     return val
 def generateTestDataPoints(tpl):
     X = tpl[0]
@@ -77,13 +81,16 @@ def generateTestDataPoints(tpl):
     doubleSets = []
     I = eval(testArticles[X])
     J = eval(testArticles[Y])
+    sentencesI = fl.filter(I['sentences'],I['title'])
+    sentencesJ = fl.filter(J['sentences'],J['title'])
+
     if(I['year'] < J['year']):
         b = 1
     else:
         b = 0
     val = ({'title1':I['title'],'sentences1':I['sentences'],\
             'title2':J['title'],'sentences2': J['sentences'],\
-            'year':b, 'vocab':set(I['sentences'] + J['sentences'])})
+            'year':b, 'vocab':set(sentencesI + sentencesJ)})
     return val
 
 def getFeature(item):
@@ -108,19 +115,14 @@ def test(features):
         probs.append([predict,prob, feature[2]])
         G.add_node(feature[1][0])
         G.add_node(feature[1][0])
-        print type(prob)
-        print prob
         if(predict == 1):
             #if(float(prob) > float(0.6)):
-            G.add_edge(feature[1][0],feature[1][1], weight= -1 *prob)
+            G.add_edge(feature[1][0],feature[1][1], weight= prob)
                 
         else:
             #if(float(prob) > float(0.6)):
-            G.add_edge(feature[1][1],feature[1][0], weight= -1 *prob)
+            G.add_edge(feature[1][1],feature[1][0], weight= prob)
         if(feature[2] == predict):
-            print str(feature[2])
-            print predict
-            print '---'
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
 
@@ -131,7 +133,7 @@ p = Pool(50)
 #articles = (p.map(getArticle,trainData))
 mapping = []
 for i in range(len(trainArticles)):
-    for j in range(i+1, len(trainArticles)):
+    for j in range(i+1,len(trainArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -145,8 +147,8 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 mapping = []
-for i in range(len(testArticles)/2, len(testArticles)):
-    for j in range(i+1,len(testArticles)):
+for i in range(0,10):#len(testArticles)):
+    for j in range(i+1,10):#len(testArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -171,13 +173,21 @@ print datetime.datetime.now()
 pos = nx.spring_layout(G)
 nx.draw(G,pos,node_color='k', with_labels=True)
 # draw path in red
+largest = max(nx.strongly_connected_components(G), key=len)
+print largest
 path = nx.dag_longest_path(G)
+
+#print path
 path_edges = zip(path,path[1:])
+
+labels = nx.get_edge_attributes(G,'weight')
 nx.draw_networkx_nodes(G,pos,nodelist=path,node_color='r')
-nx.draw_networkx_edges(G,pos,edgelist=path_edges,edge_color='r',)
+nx.draw_networkx_edges(G,pos,edgelist=path_edges,edge_color='r',edge_labels=labels)
+
+nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+
 plt.axis('equal')
 plt.show()
-
 
 #plt.show()
 #print G.edges()
