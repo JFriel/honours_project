@@ -8,15 +8,17 @@ import app.parser.getChunks as gc
 import app.analytics.tag as tag
 import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
-from sklearn import tree, feature_extraction, svm
+from sklearn import tree, feature_extraction, svm, linear_model
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import numpy as np
 import datetime
 
 import app.analytics.filterSentences as fl
+import networkx as nx
 import matplotlib.pyplot as plt
-G = {}
+G=nx.DiGraph()
+
 np.seterr(divide='ignore',invalid='ignore')
 
 trainArticles= open('data/singleShort.txt','r').readlines()#=importArticles.getData('train')
@@ -24,7 +26,7 @@ testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
-clf = svm.SVC(probability=True)
+clf = linear_model.Perceptron(n_iter=100)#svm.SVC(probability=True)
 probs = []
 titles = []
 #A
@@ -109,18 +111,17 @@ def test(features):
     for feature in features:
         temp = np.array(feature[0]).reshape((1, -1))
         predict = clf.predict(temp)
-        prob = max(clf.predict_proba(temp)[0])
-        probs.append([predict,prob, feature[2]])
-        if(feature[1][1] not in G.keys()):
-            G.update({feature[1][1]:[]})
-        if(feature[1][0] not in G.keys()):
-            G.update({feature[1][0]:[]})
+        #prob = max(clf.predict_proba(temp)[0])
+        #probs.append([predict,prob, feature[2]])
+        G.add_node(feature[1][0])
+        G.add_node(feature[1][0])
         if(predict == 1):
             #if(float(prob) > float(0.6)):
-            G[feature[1][0]].append(feature[1][1])    
+            G.add_edge(feature[1][0],feature[1][1])#, weight= prob)
+                
         else:
             #if(float(prob) > float(0.6)):
-            G[feature[1][1]].append(feature[1][0])    
+            G.add_edge(feature[1][1],feature[1][0])#, weight= prob)
         if(feature[2] == predict):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
@@ -146,8 +147,8 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 mapping = []
-for i in range(0,50):#len(testArticles)):
-    for j in range(i+1,50):#len(testArticles)):
+for i in range(len(testArticles)):
+    for j in range(i+1,len(testArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -158,39 +159,40 @@ print datetime.datetime.now()
 test(testFeatures)
 print datetime.datetime.now()
 
-def find_all_paths(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return [path]
-    if not graph.has_key(start):
-        return []
-    paths = []
-    for node in graph[start]:
-        if node not in path:
-           newpaths = find_all_paths(graph, node, end, path)
-           for newpath in newpaths:
-               paths.append(newpath)
-    print datetime.datetime.now()
-    return paths
+#nx.draw(G, node_color='c',edge_color='k', with_labels=True)
 
+#path = nx.shortest_path(G)
+#print path
+#path_edges = zip(path,path[1:])
+#pos = nx.spring_layout(G)
+#nx.draw_networkx_nodes(G,pos,nodelist=path,node_color='r')
+#nx.draw_networkx_edges(G,pos,edgelist=path_edges,edge_color='r',width=10)
+#plt.axis('equal')
+#plt.show()
+"""
+pos = nx.spring_layout(G)
+nx.draw(G,pos,node_color='k', with_labels=True)
+# draw path in red
+largest = max(nx.strongly_connected_components(G), key=len)
+print largest
+path = nx.dag_longest_path(G)
 
-keys = G.keys()
-start = [None,0]
+#print path
+path_edges = zip(path,path[1:])
 
-for k in keys:
-    before = len(G[k])
-    if before > start[1]:
-        start = [k,before]
+labels = nx.get_edge_attributes(G,'weight')
+nx.draw_networkx_nodes(G,pos,nodelist=path,node_color='r')
+nx.draw_networkx_edges(G,pos,edgelist=path_edges,edge_color='r',edge_labels=labels)
 
+nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
 
-maxPath = []
-for k in range(len(keys)):
-    print datetime.datetime.now()
-    print k
-    newPaths =  find_all_paths(G,start[0],keys[k])
-    for path in newPaths:
-        print len(path)
-        if( len(path) >= len(maxPath)):
-            maxPath = path
-print maxPath
-print len(maxPath)
+plt.axis('equal')
+plt.show()
+
+#plt.show()
+#print G.edges()
+#print G.nodes()
+#T = nx.minimum_spanning_tree(G)
+#print sorted(T.edges(data=True))
+
+"""
