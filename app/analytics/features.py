@@ -4,11 +4,13 @@ import sklearn.decomposition
 def get(s1,s2):
     words = []
     for s in s1:
-        for w in s:
-            words.append(w)
+        #for w in s:
+        w = s.split()
+        words.extend(w)
     for s in s2:
-        for w in s:
-            words.append(w)
+        #for w in s:
+        w = s.split()
+        words.extend(w)
 
     words = set(words)
 
@@ -18,14 +20,20 @@ def get(s1,s2):
         D1.append(0)
         D2.append(0)
         for s in s1:
-            for w in s:
+            wr = s.split()
+            for w in wr:
                 if w == word:
                     D1[-1] += 1
         for s in s2:
-            for w in s:
+            wr = s.split()
+            for w in wr:
                 if w == word:
-                    D1[-1] += 1
-
+                    D2[-1] += 1
+                    
+    #print D1
+    #print D2
+    #print len(D1)
+    #print len(D2)
     #print D1
     #print D2
     #print len(D1)

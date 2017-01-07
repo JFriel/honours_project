@@ -170,7 +170,6 @@ def find_all_paths(graph, start, end, path=[]):
            newpaths = find_all_paths(graph, node, end, path)
            for newpath in newpaths:
                paths.append(newpath)
-    print datetime.datetime.now()
     return paths
 
 
@@ -183,14 +182,14 @@ for k in keys:
         start = [k,before]
 
 
+print datetime.datetime.now()
 maxPath = []
 for k in range(len(keys)):
-    print datetime.datetime.now()
-    print k
     newPaths =  find_all_paths(G,start[0],keys[k])
     for path in newPaths:
-        print len(path)
         if( len(path) >= len(maxPath)):
             maxPath = path
 print maxPath
 print len(maxPath)
+
+print datetime.datetime.now()
