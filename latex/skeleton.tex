@@ -76,6 +76,7 @@ to maximise the likelyhood of a graph traversal.
 
 The core aims of the project were: 
 \begin{itemize}
+  \item Investivage the usefulness of wikipedia text in feature generation
   \item Generate probable dates For each event
   \item Order these events linearly
 \end{itemize}
@@ -90,7 +91,7 @@ Some initial stretch goals of the project were to construct an interactive
 interface to the resulting graphs to act as a visual aid for the results.
 
 \section{Testing \& Evaluation}
-With our dataset being so large ( around 6250 entries) it can
+With our dataset being so large (around 6250 entries) it can
 easily be split into training, devlopment and testing with no
 need for overlap. For this the data is split 10\% training,
 10\% development and 80\% for testing.
@@ -112,6 +113,29 @@ with the label associated with the event from the data.
 \chapter{Wikipedia As a Data Source}
 %Intro to the data set
 \section{Text Retrieval}
+Using Wikipedia's article retrieval API, gathering the data from
+the site is trivial. Choosing what to extract is, however, not
+so straightforward.
+
+Stanfords natural language processing (NLP) suite,
+a natural language analysis toolkit,
+was selected to aid in extraction of features from the dataset.
+
+Using this toolkit, the Open Information Extraction (OpenIE) from
+The University of Washington is used to extract Subjects, Objects
+and their relations from our event titles.
+
+OpenIE was choosen as %bit about openie
+
+As an example of OpenIE's extraction, the sentence:
+``The U.S. president Barack Obama gave his speech on Tuesday to thousands of people.''
+Will produce these potential binary relations
+``(Barack Obama, is the president of, the U.S.)''
+``(Barack Obama, gave, his speech)''
+``(Barack Obama, gave his speech, on Tuesday)''
+``(Barack Obama, gave his speech, to thousands of people)''
+
+
 \section{Feature Extraction}
 \subsection{Bag-Of-Words}
 \subsection{Word Embedding}
