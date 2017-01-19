@@ -26,7 +26,7 @@ testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
-clf = linear_model.Perceptron(n_iter=100)#svm.SVC(probability=True)
+clf = linear_model.Perceptron(n_iter=12)#svm.SVC(probability=True)
 probs = []
 titles = []
 #A
@@ -76,23 +76,25 @@ def generateTrainDataPoints(tpl):
             'year':b, 'vocab':set(sentencesI + sentencesJ)})
     return val
 def generateTestDataPoints(tpl):
-    X = tpl[0]
-    Y = tpl[1]
-    doubleSets = []
-    I = eval(testArticles[X])
-    J = eval(testArticles[Y])
-    sentencesI = fl.filter(I['sentences'],I['title'])
-    sentencesJ = fl.filter(J['sentences'],J['title'])
+    try:
+        X = tpl[0]
+        Y = tpl[1]
+        doubleSets = []
+        I = eval(testArticles[X])
+        J = eval(testArticles[Y])
+        sentencesI = fl.filter(I['sentences'],I['title'])
+        sentencesJ = fl.filter(J['sentences'],J['title'])
 
-    if(I['year'] < J['year']):
-        b = 1
-    else:
-        b = 0
-    val = ({'title1':I['title'],'sentences1':I['sentences'],\
+        if(I['year'] < J['year']):
+            b = 1
+        else:
+            b = 0
+        val = ({'title1':I['title'],'sentences1':I['sentences'],\
             'title2':J['title'],'sentences2': J['sentences'],\
             'year':b, 'vocab':set(sentencesI + sentencesJ)})
-    return val
-
+        return val
+    except:
+        print "Tuple " + str(tpl) + " Broke."
 def getFeature(item):
     yr = item['year']
     vec = fe.get(item['sentences1'],item['sentences2'])
@@ -118,7 +120,7 @@ def test(features):
         if(predict == 1):
             #if(float(prob) > float(0.6)):
             G.add_edge(feature[1][0],feature[1][1])#, weight= prob)
-                
+
         else:
             #if(float(prob) > float(0.6)):
             G.add_edge(feature[1][1],feature[1][0])#, weight= prob)
@@ -128,12 +130,12 @@ def test(features):
 
 
 print datetime.datetime.now()
-p = Pool(50)
+p = Pool(20)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
 mapping = []
-for i in range(len(trainArticles)):
-    for j in range(i+1,len(trainArticles)):
+for i in range(50):#len(trainArticles)):
+    for j in range(i+1,50):#len(trainArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -147,9 +149,13 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 mapping = []
-for i in range(len(testArticles)):
+for i in range(25,len(testArticles)):
     for j in range(i+1,len(testArticles)):
         mapping.append([i,j])
+
+#for i in mapping:
+#    if (i[0] == 18 or i[1] ==18):
+#        mapping.remove(i)
 
 print datetime.datetime.now()
 doubleSets = p.map(generateTestDataPoints,mapping)

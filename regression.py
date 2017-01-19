@@ -117,12 +117,12 @@ def test(features):
         probs.append([predict, bools[feature]])
 
 print datetime.datetime.now()
-p = Pool(500)
+p = Pool(5)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
 mapping = []
-for i in range(len(trainArticles)):
-    for j in range(i+1, len(trainArticles)):
+for i in range(10):#len(trainArticles)):
+    for j in range(i+1, 10):#len(trainArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -136,8 +136,8 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 mapping = []
-for i in range(len(testArticles)):
-    for j in range(i+1, len(testArticles)):
+for i in range(5):#len(testArticles)):
+    for j in range(i+1, 5):#len(testArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()

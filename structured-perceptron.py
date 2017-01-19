@@ -1,7 +1,7 @@
 from pystruct.learners import StructuredPerceptron
 from pystruct.models import GridCRF
-from pystruct.datasets import generate_blocks
-from pystruct.inference import get_installed
+#from pystruct.datasets import generate_blocks
+#from pystruct.inference import get_installed
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -30,10 +30,10 @@ testArticles = open('data/singleShortTest.txt','r').readlines()#= importArticles
 print len(trainArticles)
 print len(testArticles)
 listOfYears = []
-X, Y = generate_blocks(n_samples=10)
-inference_method = get_installed(['qpbo', 'ad3', 'lp'])[0]
-crf = GridCRF(inference_method=inference_method)
-clf = StructuredPerceptron(model=crf, max_iter=120)
+#X, Y = generate_blocks(n_samples=10)
+#inference_method = get_installed(['qpbo', 'ad3', 'lp'])[0]
+#crf = GridCRF(inference_method=inference_method)
+clf = StructuredPerceptron(model=GridCRF, max_iter=120)
 probs = []
 titles = []
 #A
