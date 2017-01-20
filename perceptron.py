@@ -134,8 +134,8 @@ p = Pool(20)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
 mapping = []
-for i in range(50):#len(trainArticles)):
-    for j in range(i+1,50):#len(trainArticles)):
+for i in range(len(trainArticles)):
+    for j in range(i+1,len(trainArticles)):
         mapping.append([i,j])
 
 print datetime.datetime.now()
@@ -149,7 +149,7 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 mapping = []
-for i in range(25,len(testArticles)):
+for i in range(20,len(testArticles)):
     for j in range(i+1,len(testArticles)):
         mapping.append([i,j])
 
