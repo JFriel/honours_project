@@ -133,38 +133,46 @@ print datetime.datetime.now()
 p = Pool(20)
 #Used to get Article Content
 #articles = (p.map(getArticle,trainData))
-mapping = []
-for i in range(len(trainArticles)):
-    for j in range(i+1,len(trainArticles)):
-        mapping.append([i,j])
+for N in range(1,10):
+    print N
+    listOfYears = []
+    clf = linear_model.Perceptron(n_iter=N)#svm.SVC(probability=True)
+    probs = []
+    titles = []
 
-print datetime.datetime.now()
-doubleSets = p.map(generateTrainDataPoints,mapping)
-print datetime.datetime.now()
-trainFeatures = p.map(getFeature,doubleSets)
-print datetime.datetime.now()
-train(trainFeatures)
-print datetime.datetime.now()
-#train(generateDataPoints(trainArticles))
-print "Training Complere. Now For Testing"
 
-mapping = []
-for i in range(20,len(testArticles)):
-    for j in range(i+1,len(testArticles)):
-        mapping.append([i,j])
+    mapping = []
+    for i in range(len(trainArticles)):
+        for j in range(i+1,len(trainArticles)):
+            mapping.append([i,j])
 
-#for i in mapping:
-#    if (i[0] == 18 or i[1] ==18):
-#        mapping.remove(i)
+            #print datetime.datetime.now()
+            doubleSets = p.map(generateTrainDataPoints,mapping)
+            #print datetime.datetime.now()
+            trainFeatures = p.map(getFeature,doubleSets)
+            #print datetime.datetime.now()
+            train(trainFeatures)
+            #print datetime.datetime.now()
+            #train(generateDataPoints(trainArticles))
+            #print "Training Complere. Now For Testing"
 
-print datetime.datetime.now()
-doubleSets = p.map(generateTestDataPoints,mapping)
-print datetime.datetime.now()
-testFeatures = p.map(getFeature,doubleSets)
-print datetime.datetime.now()
-test(testFeatures)
-print datetime.datetime.now()
+    mapping = []
+    for i in range(20,len(testArticles)):
+        for j in range(i+1,len(testArticles)):
+            mapping.append([i,j])
 
+            #for i in mapping:
+            #    if (i[0] == 18 or i[1] ==18):
+            #        mapping.remove(i)
+
+    #        print datetime.datetime.now()
+    doubleSets = p.map(generateTestDataPoints,mapping)
+    #print datetime.datetime.now()
+    testFeatures = p.map(getFeature,doubleSets)
+    #print datetime.datetime.now()
+    #test(testFeatures)
+    #print datetime.datetime.now()
+    print "\n --- \n"
 #nx.draw(G, node_color='c',edge_color='k', with_labels=True)
 
 #path = nx.shortest_path(G)
