@@ -7,6 +7,7 @@
 
 \documentclass[12pt]{report}
 
+\usepackage{cite}
 \begin{document}
 \maketitle
 
@@ -17,27 +18,128 @@
 
 \chapter{Introduction}
         \section{The Problem}
-        \section{Aims \& Objectives}
-        \section{Testing \& Evaluation}
-        \section{Contributions}
-\chapter{Background}
+        Nominal data is descriptive in nature, making is difficult to assign an canonical ordering to.
+        
+        The problem tackled in this disertation is the ordering of news article headlines to generate
+        a most-probable traversal of a weighted directed graph of these events.
 
-\chapter{Related Work \& Motivation}
-        \section{Related Work}
-        \section{Motivation}
+        The problem originally propsed for this disertation was the ordering of news article headlines
+        to generate a most-probable traversal of a weighted directed graph of these events. The project
+        has been modified from this original proposal to use fetched article data to attempt to derive
+        context to improve ordering estimation.
+
+        This problem is inspired by the paper \cite{abend2015lexical} and some
+        techniques discussed and used henseforth are based off of this paper.
+
+
+        Our data comes from the Wikipedia ``Today in History'' dataset and the article data is retrived
+        from wikipedia articles.
+
+        \section{Aims \& Objectives}
+        The aim of this project is to construct a system that predics the most probable path
+        through an edge-weighted directional graph of events.
+        We aim to constuct this graph by extracting data from wikipedia for each event and
+        build a date estimate from wikipedia. From this data we will conduct several experiments
+        to find the most likely spanning path across the generated graphs.
+
+
+        \noindent The core aims of the project were: 
+            \begin{itemize}
+            \item Investivage the usefulness of wikipedia text in feature generation
+            \item Generate probable dates For each event
+            \item Order these events linearly
+            \end{itemize}
+
+        \noindent The further goals of the project were to:
+        \begin{itemize}
+          \item Generate edge-weighted directional graphs of the data
+          \item Construct probabilities of maximum spanning walks through the graph
+        \end{itemize}
+
+        \noindent Aspects of the project still to be looked at include:
+        \begin{itemize}
+          \item The use of word embeddings
+          \item Improved data extraction from article data
+        \end{itemize}
+
+        \section{Testing \& Evaluation}
+        With our dataset being so large, 6226 entries, it can
+        easily be split into training, devlopment and testing with no
+        need for overlap. For this the data is split 10\% training,
+        10\% development and 80\% for testing.
+
+
+        %Think this section might need some work
+        Evaulation of the system was done using the Kendall rank correlation coefficient (Kendall Tau)
+        as  is a statistic used to measure the ordinal association between two
+        measured quantities. This was easy be applied to our results
+        by compairing the systems estimated date for each event
+        with the label associated with the event from the data.
+
+        %\section{Contributions}
+        
+%\chapter{Background}
+
+%\chapter{Related Work \& Motivation}
+%        \section{Related Work}
+%        \section{Motivation}
 
 \chapter{Wikipedia As a Data Source}
-        \section{Text Retrieval}
+
+        \section{Subject Extraction}
+        Stanfords natural language processing (NLP) suite,
+        a natural language analysis toolkit,
+        was selected to aid in extraction of features from the dataset.
+
+        Using this toolkit, the Open Domain Information Extraction (OpenIE) system
+        based on research from Washington Univeristy \cite{angeli2015leveraging}.
+
+        Open IE refers to the extraction of relation tuples, with the advantage of not requiring a
+        specified schema in advance. Relation names are typically just the text linking two arguments.
+
+        %Make this look nicer
+        As an example of OpenIE's extraction, the sentence:\\
+        \begin{center}
+        ``The U.S. president Barack Obama gave his speech on Tuesday to thousands of people.''\\
+        \end{center}
+        Will produce these potential binary relations\\
+        \begin{center}
+        ``president(Barack Obama, the U.S.)''\\
+        ``gave(Barack Obama,his speech)''\\
+        ``gave-speech(Barack Obama, on Tuesday)''\\
+        ``gave-speech(Barack Obama, to thousands of people)''\\
+        \end{center}
+
+
+        OpenIE was choosen as it allows us to easiy model the relationship within the article headline
+        and ealisy identify subjects and objects for article retrieval about.
+
+        \section{Text Retrieval} %More??
+        Using Wikipedia's article retrieval API, gathering whole articles from
+        the site is trivial. Choosing what to extract is, however, not
+        so straightforward
+
         \section{Feature Extraction}
-        \section{Bag-Of-Words}
-        \section{Word Embeddings}
-        \section{Potential Other Usues}
+                Choosing which type of feature model to use for our data provided several challanges.
+                Given several large bodies of texts for each article headline, it was required to cutdown
+                on irrelivent information.
+                For this we look at each article and only retain information that is self referening, contains
+                a date or references the other article subject.
+                This method allowed us to cut down the text retained from each article from 600 words \cite{WikiStats}
+                to 300 words, on average. %These numbers are not quite right
+                We now have much smaller article data to allow us to generate features.
+
+                %NEED TO EXPLAIN HOW CWE PICKEd WHAT A FEATURE WAS
+                
+                \subsection{Bag-Of-Words}
+                \subsection{Word Embeddings}
+        %\section{Potential Other Usues}
         \section{Pothential Issues with Data Source}
         \section{Suggestions to improve data retrieval}
 
 \chapter{Learning}
 
-\section{Aproach}
+\section{Approach}
 
 \section{Local Learning}
 \subsection{Decision Trees}
@@ -59,8 +161,7 @@
 
 \chapter{Conclusion}
 
-
-\bibliographystyle{abbrv}
-\bibliography{simple}
+\bibliography{../references.bib}
+\bibliographystyle{plain}
 
 \end{document}
