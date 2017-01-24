@@ -1,3 +1,8 @@
+\documentclass[12pt]{report}
+
+\usepackage{cite}
+\begin{document}
+
 \title{Event Ordering Of News Articles \\ Interim Report}
 \author{
         James Friel \\
@@ -5,10 +10,7 @@
 }
 \date{\today}
 
-\documentclass[12pt]{report}
 
-\usepackage{cite}
-\begin{document}
 \maketitle
 
 \tableofcontents
@@ -119,17 +121,37 @@
         the site is trivial. Choosing what to extract is, however, not
         so straightforward
 
-        \section{Feature Extraction}
-                Choosing which type of feature model to use for our data provided several challanges.
-                Given several large bodies of texts for each article headline, it was required to cutdown
-                on irrelivent information.
-                For this we look at each article and only retain information that is self referening, contains
-                a date or references the other article subject.
-                This method allowed us to cut down the text retained from each article from 600 words \cite{WikiStats}
-                to 300 words, on average. %These numbers are not quite right
-                We now have much smaller article data to allow us to generate features.
+        While it was simple to retireve the data, there was simply too much noise to be of use.
+        So it was required to minimise the moise.
 
+        For this we look at each article and only retain information that is self referening, contains
+        a date or references the other article subject.
+        This method allowed us to cut down the text retained from each article from 600 words \cite{WikiStats}
+        to 300 words, on average. %These numbers are not quite right
+        We now have much smaller article data to allow us to generate features.
+
+
+        \section{Feature Extraction}
+                Choosing which type of feature extraction method to use for our data provided several challanges.
+                \begin{itemize}
+                \item How to model the data as feature vectors
+                \item Which type of feature would be most appropriate
+                \end{itemize}
+
+                %Given the data set contains a title and year for each entry and we are looking to graph
+                %which entry comes before the other, it was dicded to experiment with features
                 %NEED TO EXPLAIN HOW CWE PICKEd WHAT A FEATURE WAS
+                \noindent Given that each event in out dataset is of the form $(t_{i},d_{i}) $for $ i \epsilon [M]$,
+                where t is the title, d is the associated date and M is the original dataset,
+                we constructed a new dataset $\{(t_{i},s_{i},d_{j})\}$ for $i,j [M]$ containing
+                the sentences retrieved from wikipedia. This will form the basis of our data to generate
+                features.
+
+                From this we built a new dataset $\{(t_{i},s_{i},t_{j},s_{j},b_{ij})\}$ for $i,j \epsilon [M]$
+                where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
+
+                With this new dataset, we will explore feature extraction techniques to train a classifier
+                on the provided sentences.
                 
                 \subsection{Bag-Of-Words}
                 \subsection{Word Embeddings}
@@ -161,7 +183,7 @@
 
 \chapter{Conclusion}
 
-\bibliography{../references.bib}
 \bibliographystyle{plain}
+\bibliography{./simple}{}
 
 \end{document}
