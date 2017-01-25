@@ -156,25 +156,39 @@
                 \subsection{Bag-Of-Words}
                 \subsection{Word Embeddings}
         %\section{Potential Other Usues}
-        \section{Pothential Issues with Data Source}
-        \section{Suggestions to improve data retrieval}
+        %\section{Pothential Issues with Data Source}
+        %\section{Suggestions to improve data retrieval}
 
 \chapter{Machine Learning}
 
 \section{Approach}
-
+As our dataset allows for a binary class label for each entry,
+$y_{i} > y_{j}$, it is apparent we should be looking for a binary classifier that we can train
+that will give us classification probabilities. These classiffication probsbilities
+will be needed in order to weight a path through the graph that will be generated.
 \section{Local Learning}
+Initially we decided to look at local learning, as opposed to global learning,
+to try and classify our data. This was chosen so as to provide a
+simple baseline for us to compair against. This baseline is
+randomly assigned classes, but as our data conforms to a
+binary classification, random resolves to 50\% accuracy.
 \subsection{Decision Trees}
-\subsection{Random Forests}
+Decision trees were looked at as %see sklearn page
+%\subsection{Random Forests}
 \subsection{SVC}
 \subsection{Regression}
-\subsection{Classification Results}
+\subsection{Evaluation}
+For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
+This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
 
-\section{Global Learning}
-\subsection{Structured Perceptron}
-\subsection{Neural Networks}
+The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$
+\cite{}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
 
-\section{Results}
+%\section{Global Learning}
+%\subsection{Structured Perceptron}
+%\subsection{Neural Networks}
+
+%\section{Results}
 
 \chapter{Graphing}
 \section{Traveling Salesman Problem}
@@ -182,7 +196,7 @@
 \section{Results}
 
 \chapter{Conclusion}
-
+\section{Still To Be Done}
 \bibliographystyle{plain}
 \bibliography{./simple}{}
 
