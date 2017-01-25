@@ -104,7 +104,7 @@
         \begin{center}
         ``The U.S. president Barack Obama gave his speech on Tuesday to thousands of people.''\\
         \end{center}
-        Will produce these potential binary relations\\
+        Will produce these potential binary relations
         \begin{center}
         ``president(Barack Obama, the U.S.)''\\
         ``gave(Barack Obama,his speech)''\\
@@ -150,11 +150,50 @@
                 From this we built a new dataset $\{(t_{i},s_{i},t_{j},s_{j},b_{ij})\}$ for $i,j \epsilon [M]$
                 where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
 
-                With this new dataset, we will explore feature extraction techniques to train a classifier
+                With this new dataset, we explored feature extraction techniques to train a classifier
                 on the provided sentences.
                 
                 \subsection{Bag-Of-Words}
+                Bag-Of-Words features looked promising from the start of the project
+                as they allow easy representation of a large volume of words.
+
+                This type of feature modeling works by generating features based on word
+                frequnecy over a set of all possible words.\\
+
+                
+
+                \noindent A toy example of the bog-of-words model is as follows.\\
+                If we have two example documents
+                \begin{center}
+                  (1)``John likes to watch movies. Mary likes movies too.''\\
+                  (2)``John also likes to watch football games''
+                \end{center}
+
+                \noindent We can convert them into a set of words \newline 
+                ['John', `likes', `to', `watch', `movies', `also', `football', `games', `Mary', `too']\\
+
+                With this new set of all words, we can build our bag-of-words features
+                in terms of word frequency
+                \begin{center}
+                (1) [1, 2, 1, 1, 2, 0, 0, 0, 1, 1]\\
+                (2) [1, 1, 1, 1, 0, 1, 1, 1, 0, 0]
+                \end{center}
+
+
+
+                For our features, we built a set of all words found in all sentences in our
+                dataset. We also take each entry into out dataset, $\{t_{i},s_{i},t_{j},s_{j},b_{ij}\}$,
+                and build a feature vector from $s_{i}$ and $s_{j}$.
+
+
+                While using a bag-of-words model is simple to impliment and computationaly inexpernsive
+                it does have some flaws. These include very large, sparse feature vectors and the issue
+                that for testing, if an article has a word the model has not seen it will be ignored.
+                  
+                
+                
                 \subsection{Word Embeddings}
+                Will Impliment in due course
         %\section{Potential Other Usues}
         %\section{Pothential Issues with Data Source}
         %\section{Suggestions to improve data retrieval}
@@ -179,10 +218,18 @@ Decision trees were looked at as %see sklearn page
 \subsection{Regression}
 \subsection{Evaluation}
 For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
-This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
+This statistic was chosen as it can be used to measure the ordinal association between two measured quantities,
+this is easily applied to our problem of correct ordering classification of event tuples. 
 
-The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$
-\cite{}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
+The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
+
+
+Given that the project is yet to be completed, we have not ran our experiments using the test data, but have been using
+the development data to act as ``test'' data.
+
+From our experiments our results were:
+%NEED A TABLE OF RESULTS HERE
+
 
 %\section{Global Learning}
 %\subsection{Structured Perceptron}
