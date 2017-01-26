@@ -1,0 +1,250 @@
+\documentclass[12pt]{report}
+
+\usepackage{cite}
+\begin{document}
+
+\title{Event Ordering Of News Articles \\ Interim Report}
+\author{
+        James Friel \\
+                S1332298\\
+}
+\date{\today}
+
+
+\maketitle
+
+\tableofcontents
+%\begin{abstract}
+%This is the paper's abstract \ldots
+%\end{abstract}
+
+\chapter{Introduction}
+        \section{The Problem}
+        Nominal data is descriptive in nature, making is difficult to assign an canonical ordering to.
+        
+        The problem tackled in this disertation is the ordering of news article headlines to generate
+        a most-probable traversal of a weighted directed graph of these events.
+
+        The problem originally propsed for this disertation was the ordering of news article headlines
+        to generate a most-probable traversal of a weighted directed graph of these events. The project
+        has been modified from this original proposal to use fetched article data to attempt to derive
+        context to improve ordering estimation.
+
+        This problem is inspired by the paper \cite{abend2015lexical} and some
+        techniques discussed and used henseforth are based off of this paper.
+
+
+        Our data comes from the Wikipedia ``Today in History'' dataset and the article data is retrived
+        from wikipedia articles.
+
+        \section{Aims \& Objectives}
+        The aim of this project is to construct a system that predics the most probable path
+        through an edge-weighted directional graph of events.
+        We aim to constuct this graph by extracting data from wikipedia for each event and
+        build a date estimate from wikipedia. From this data we will conduct several experiments
+        to find the most likely spanning path across the generated graphs.
+
+
+        \noindent The core aims of the project were: 
+            \begin{itemize}
+            \item Investivage the usefulness of wikipedia text in feature generation
+            \item Generate probable dates For each event
+            \item Order these events linearly
+            \end{itemize}
+
+        \noindent The further goals of the project were to:
+        \begin{itemize}
+          \item Generate edge-weighted directional graphs of the data
+          \item Construct probabilities of maximum spanning walks through the graph
+        \end{itemize}
+
+        \noindent Aspects of the project still to be looked at include:
+        \begin{itemize}
+          \item The use of word embeddings
+          \item Improved data extraction from article data
+        \end{itemize}
+
+        \section{Testing \& Evaluation}
+        With our dataset being so large, 6226 entries, it can
+        easily be split into training, devlopment and testing with no
+        need for overlap. For this the data is split 10\% training,
+        10\% development and 80\% for testing.
+
+
+        %Think this section might need some work
+        Evaulation of the system was done using the Kendall rank correlation coefficient (Kendall Tau)
+        as  is a statistic used to measure the ordinal association between two
+        measured quantities. This was easy be applied to our results
+        by compairing the systems estimated date for each event
+        with the label associated with the event from the data.
+
+        %\section{Contributions}
+        
+%\chapter{Background}
+
+%\chapter{Related Work \& Motivation}
+%        \section{Related Work}
+%        \section{Motivation}
+
+\chapter{Wikipedia As a Data Source}
+
+        \section{Subject Extraction}
+        Stanfords natural language processing (NLP) suite,
+        a natural language analysis toolkit,
+        was selected to aid in extraction of features from the dataset.
+
+        Using this toolkit, the Open Domain Information Extraction (OpenIE) system
+        based on research from Washington Univeristy \cite{angeli2015leveraging}.
+
+        Open IE refers to the extraction of relation tuples, with the advantage of not requiring a
+        specified schema in advance. Relation names are typically just the text linking two arguments.
+
+        %Make this look nicer
+        As an example of OpenIE's extraction, the sentence:\\
+        \begin{center}
+        ``The U.S. president Barack Obama gave his speech on Tuesday to thousands of people.''\\
+        \end{center}
+        Will produce these potential binary relations
+        \begin{center}
+        ``president(Barack Obama, the U.S.)''\\
+        ``gave(Barack Obama,his speech)''\\
+        ``gave-speech(Barack Obama, on Tuesday)''\\
+        ``gave-speech(Barack Obama, to thousands of people)''\\
+        \end{center}
+
+
+        OpenIE was choosen as it allows us to easiy model the relationship within the article headline
+        and ealisy identify subjects and objects for article retrieval about.
+
+        \section{Text Retrieval} %More??
+        Using Wikipedia's article retrieval API, gathering whole articles from
+        the site is trivial. Choosing what to extract is, however, not
+        so straightforward
+
+        While it was simple to retireve the data, there was simply too much noise to be of use.
+        So it was required to minimise the moise.
+
+        For this we look at each article and only retain information that is self referening, contains
+        a date or references the other article subject.
+        This method allowed us to cut down the text retained from each article from 600 words \cite{WikiStats}
+        to 300 words, on average. %These numbers are not quite right
+        We now have much smaller article data to allow us to generate features.
+
+
+        \section{Feature Extraction}
+                Choosing which type of feature extraction method to use for our data provided several challanges.
+                \begin{itemize}
+                \item How to model the data as feature vectors
+                \item Which type of feature would be most appropriate
+                \end{itemize}
+
+                %Given the data set contains a title and year for each entry and we are looking to graph
+                %which entry comes before the other, it was dicded to experiment with features
+                %NEED TO EXPLAIN HOW CWE PICKEd WHAT A FEATURE WAS
+                \noindent Given that each event in out dataset is of the form $(t_{i},d_{i}) $for $ i \epsilon [M]$,
+                where t is the title, d is the associated date and M is the original dataset,
+                we constructed a new dataset $\{(t_{i},s_{i},d_{j})\}$ for $i,j [M]$ containing
+                the sentences retrieved from wikipedia. This will form the basis of our data to generate
+                features.
+
+                From this we built a new dataset $\{(t_{i},s_{i},t_{j},s_{j},b_{ij})\}$ for $i,j \epsilon [M]$
+                where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
+
+                With this new dataset, we explored feature extraction techniques to train a classifier
+                on the provided sentences.
+                
+                \subsection{Bag-Of-Words}
+                Bag-Of-Words features looked promising from the start of the project
+                as they allow easy representation of a large volume of words.
+
+                This type of feature modeling works by generating features based on word
+                frequnecy over a set of all possible words.\\
+
+                
+
+                \noindent A toy example of the bog-of-words model is as follows.\\
+                If we have two example documents
+                \begin{center}
+                  (1)``John likes to watch movies. Mary likes movies too.''\\
+                  (2)``John also likes to watch football games''
+                \end{center}
+
+                \noindent We can convert them into a set of words \newline 
+                ['John', `likes', `to', `watch', `movies', `also', `football', `games', `Mary', `too']\\
+
+                With this new set of all words, we can build our bag-of-words features
+                in terms of word frequency
+                \begin{center}
+                (1) [1, 2, 1, 1, 2, 0, 0, 0, 1, 1]\\
+                (2) [1, 1, 1, 1, 0, 1, 1, 1, 0, 0]
+                \end{center}
+
+
+
+                For our features, we built a set of all words found in all sentences in our
+                dataset. We also take each entry into out dataset, $\{t_{i},s_{i},t_{j},s_{j},b_{ij}\}$,
+                and build a feature vector from $s_{i}$ and $s_{j}$.
+
+
+                While using a bag-of-words model is simple to impliment and computationaly inexpernsive
+                it does have some flaws. These include very large, sparse feature vectors and the issue
+                that for testing, if an article has a word the model has not seen it will be ignored.
+                  
+                
+                
+                \subsection{Word Embeddings}
+                Will Impliment in due course
+        %\section{Potential Other Usues}
+        %\section{Pothential Issues with Data Source}
+        %\section{Suggestions to improve data retrieval}
+
+\chapter{Machine Learning}
+
+\section{Approach}
+As our dataset allows for a binary class label for each entry,
+$y_{i} > y_{j}$, it is apparent we should be looking for a binary classifier that we can train
+that will give us classification probabilities. These classiffication probsbilities
+will be needed in order to weight a path through the graph that will be generated.
+\section{Local Learning}
+Initially we decided to look at local learning, as opposed to global learning,
+to try and classify our data. This was chosen so as to provide a
+simple baseline for us to compair against. This baseline is
+randomly assigned classes, but as our data conforms to a
+binary classification, random resolves to 50\% accuracy.
+\subsection{Decision Trees}
+Decision trees were looked at as %see sklearn page
+%\subsection{Random Forests}
+\subsection{SVC}
+\subsection{Regression}
+\subsection{Evaluation}
+For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
+This statistic was chosen as it can be used to measure the ordinal association between two measured quantities,
+this is easily applied to our problem of correct ordering classification of event tuples. 
+
+The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
+
+
+Given that the project is yet to be completed, we have not ran our experiments using the test data, but have been using
+the development data to act as ``test'' data.
+
+From our experiments our results were:
+%NEED A TABLE OF RESULTS HERE
+
+
+%\section{Global Learning}
+%\subsection{Structured Perceptron}
+%\subsection{Neural Networks}
+
+%\section{Results}
+
+\chapter{Graphing}
+\section{Traveling Salesman Problem}
+
+\section{Results}
+
+\chapter{Conclusion}
+\section{Still To Be Done}
+\bibliographystyle{plain}
+\bibliography{./simple}{}
+
+\end{document}
