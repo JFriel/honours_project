@@ -1,6 +1,7 @@
 \documentclass[12pt]{report}
 
 \usepackage{cite}
+\usepackage{graphicx}
 \begin{document}
 
 \title{Event Ordering Of News Articles \\ Interim Report}
@@ -192,8 +193,8 @@
                   
                 
                 
-                \subsection{Word Embeddings}
-                Will Impliment in due course
+                %\subsection{Word Embeddings}
+                %Will Impliment in due course
         %\section{Potential Other Usues}
         %\section{Pothential Issues with Data Source}
         %\section{Suggestions to improve data retrieval}
@@ -212,24 +213,57 @@ simple baseline for us to compair against. This baseline is
 randomly assigned classes, but as our data conforms to a
 binary classification, random resolves to 50\% accuracy.
 \subsection{Decision Trees}
-Decision trees were looked at as %see sklearn page
+Decision trees were looked at as they are a non-parametric, supervised learining methood
+that are commonly used for classification and regression. They learn simple decision rules inferred from
+data features to create a model that predicts the value of a target variable.
+
+These atributes were promising for our experiments as they fit with our data and requirments, generating
+classifications of test data and probabilities of these estimations.
+
+It was also decided to run the experiment using three events, rather that two to see how these
+effected the results. 
+
+Some issues found with decision trees were that the probsbilities generated were too narrowly distributed
+to infer any coinfidence in the paths generated. Due to this, it was decided to explore other methods of
+classification.
+
 %\subsection{Random Forests}
-\subsection{SVC}
-\subsection{Regression}
+\subsection{Support Vector Machines}
+Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
+associated learning algorithms for classification and regression.
+
+SVMs were experimented with as given data with a binary classification build the points in space,
+making a non-probabilistic binary linear classifier.
+
+This proved benefitial as the results generated were better than the decision trees \ref{table:local-learning}.
+SVMs also provided much better classification probability, which is favourable for path generation.
+%\subsection{Linear Regression}
+% To Be Completed in due course
+
 \subsection{Evaluation}
 For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
 This statistic was chosen as it can be used to measure the ordinal association between two measured quantities,
-this is easily applied to our problem of correct ordering classification of event tuples. 
+this is easily applied to our problem of correct ordering classification of event tuples.\\ 
 
-The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
-
+The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{kendalltau}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
 
 Given that the project is yet to be completed, we have not ran our experiments using the test data, but have been using
-the development data to act as ``test'' data.
+the development data to act as ``test'' data. The results from these experiments can be seen in table \ref{table:local-learning}
 
-From our experiments our results were:
-%NEED A TABLE OF RESULTS HERE
-
+\begin{table}[h]
+\centering
+\label{table:local-learning}
+\begin{tabular}{|l|l|l|l|l}
+  \hline
+                          & Decision Trees (tuple) & Decision Tree (triple) & SVM  & Loistic Regression\\
+  \hline
+Accuracy with articles    & 53                      & 48                      & 56 &  TBC\\
+\hline
+Accuracy with only titles & 43                      & 36                      & TBC    & TBC\\
+\hline
+\end{tabular}
+\caption{Local Learning Results}
+\end{table}
 
 %\section{Global Learning}
 %\subsection{Structured Perceptron}
@@ -238,12 +272,49 @@ From our experiments our results were:
 %\section{Results}
 
 \chapter{Graphing}
+The next, and last, stage of the projct is to build a weighted, directed graph of the
+results of our classified testing data. From this we wish to constuct a solution for
+the traveling salesman problem for our graph.
+
 \section{Traveling Salesman Problem}
+The Traveling Salesman Problem (TSP) is a well known algorithm problem, often expressend as a grpah
+describing the locations of a set of nodes.
+
+The problem states a salesman who must travel between N  cities. The order does not matter,
+but they must visit each city only once.
+
+\section{Solution}
+Our problem is similar to TSP with the added stipulation that all endges between nodes are weighted
+and are unidirectional.
+
+In order to solve this problem, we built a path finding algorithm based on the minimum spanning tree
+algorithm.
+
 
 \section{Results}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.5]{figure4.png}
+  \label{figure:graph}
+  \caption{Most Probable path through all nodes}
+\end{figure}
+
+Using a small subset of our test data, we can show an optimum path through a graph of our data in
+figure \ref{figure:graph}. From our initial testing, we found that the path finding algorithm retains
+the accuracy of our classifiers.
 
 \chapter{Conclusion}
+As we can see, the project is progressing well.
+There are a few aspects still to be looked at before completion (see below), but the project is moving
+along to completion on shedule.
+
+
 \section{Still To Be Done}
+\begin{itemize}
+\item Word Embedding
+\item Structured Perceptron - Code Complete, but evaluation still to be carried out
+\item Logistic Regression
+  \end{itemize}
 \bibliographystyle{plain}
 \bibliography{./simple}{}
 
