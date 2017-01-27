@@ -23,32 +23,32 @@
         \section{The Problem}
         Nominal data is descriptive in nature, making is difficult to assign an canonical ordering to.
         
-        The problem tackled in this disertation is the ordering of news article headlines to generate
+        The problem tackled in this dissertation is the ordering of news article headlines to generate
         a most-probable traversal of a weighted directed graph of these events.
 
-        The problem originally propsed for this disertation was the ordering of news article headlines
+        The problem originally proposed for this dissertation was the ordering of news article headlines
         to generate a most-probable traversal of a weighted directed graph of these events. The project
         has been modified from this original proposal to use fetched article data to attempt to derive
         context to improve ordering estimation.
 
-        This problem is inspired by the paper \cite{abend2015lexical} and some
-        techniques discussed and used henseforth are based off of this paper.
+        This problem is inspired by the paper ``Lexical Event Ordering with an Edge-Factored Model" \cite{abend2015lexical} and some
+        techniques discussed and used henceforth are based off of this paper.
 
 
-        Our data comes from the Wikipedia ``Today in History'' dataset and the article data is retrived
-        from wikipedia articles.
+        Our data comes from the Wikipedia ``Today in History'' data set and the article data is retrieved
+        from Wikipedia articles.
 
         \section{Aims \& Objectives}
-        The aim of this project is to construct a system that predics the most probable path
+        The aim of this project is to construct a system that predicts the most probable path
         through an edge-weighted directional graph of events.
-        We aim to constuct this graph by extracting data from wikipedia for each event and
-        build a date estimate from wikipedia. From this data we will conduct several experiments
+        We aim to construct this graph by extracting data from Wikipedia for each event and
+        build a date estimate from Wikipedia. From this data we will conduct several experiments
         to find the most likely spanning path across the generated graphs.
 
 
         \noindent The core aims of the project were: 
             \begin{itemize}
-            \item Investivage the usefulness of wikipedia text in feature generation
+            \item Investigate the usefulness of Wikipedia text in feature generation
             \item Generate probable dates For each event
             \item Order these events linearly
             \end{itemize}
@@ -61,22 +61,22 @@
 
         \noindent Aspects of the project still to be looked at include:
         \begin{itemize}
-          \item The use of word embeddings
+          \item The use of word embedding
           \item Improved data extraction from article data
         \end{itemize}
 
         \section{Testing \& Evaluation}
-        With our dataset being so large, 6226 entries, it can
-        easily be split into training, devlopment and testing with no
+        With our data set being so large, 6226 entries, it can
+        easily be split into training, development and testing with no
         need for overlap. For this the data is split 10\% training,
         10\% development and 80\% for testing.
 
 
         %Think this section might need some work
-        Evaulation of the system was done using the Kendall rank correlation coefficient (Kendall Tau)
+        Evaluation of the system was done using the Kendall rank correlation coefficient (Kendall Tau)
         as  is a statistic used to measure the ordinal association between two
         measured quantities. This was easy be applied to our results
-        by compairing the systems estimated date for each event
+        by comparing the systems estimated date for each event
         with the label associated with the event from the data.
 
         %\section{Contributions}
@@ -92,10 +92,10 @@
         \section{Subject Extraction}
         Stanfords natural language processing (NLP) suite,
         a natural language analysis toolkit,
-        was selected to aid in extraction of features from the dataset.
+        was selected to aid in extraction of features from the data set.
 
         Using this toolkit, the Open Domain Information Extraction (OpenIE) system
-        based on research from Washington Univeristy \cite{angeli2015leveraging}.
+        based on research from Washington University \cite{angeli2015leveraging}.
 
         Open IE refers to the extraction of relation tuples, with the advantage of not requiring a
         specified schema in advance. Relation names are typically just the text linking two arguments.
@@ -114,7 +114,7 @@
         \end{center}
 
 
-        OpenIE was choosen as it allows us to easiy model the relationship within the article headline
+        OpenIE was chosen as it allows us to easily model the relationship within the article headline
         and ealisy identify subjects and objects for article retrieval about.
 
         \section{Text Retrieval} %More??
@@ -122,10 +122,10 @@
         the site is trivial. Choosing what to extract is, however, not
         so straightforward
 
-        While it was simple to retireve the data, there was simply too much noise to be of use.
-        So it was required to minimise the moise.
+        While it was simple to retrieve the data, there was simply too much noise to be of use.
+        So it was required to minimise the noise.
 
-        For this we look at each article and only retain information that is self referening, contains
+        For this we look at each article and only retain information that is self referencing, contains
         a date or references the other article subject.
         This method allowed us to cut down the text retained from each article from 600 words \cite{WikiStats}
         to 300 words, on average. %These numbers are not quite right
@@ -133,7 +133,7 @@
 
 
         \section{Feature Extraction}
-                Choosing which type of feature extraction method to use for our data provided several challanges.
+                Choosing which type of feature extraction method to use for our data provided several challenges.
                 \begin{itemize}
                 \item How to model the data as feature vectors
                 \item Which type of feature would be most appropriate
@@ -142,24 +142,24 @@
                 %Given the data set contains a title and year for each entry and we are looking to graph
                 %which entry comes before the other, it was dicded to experiment with features
                 %NEED TO EXPLAIN HOW CWE PICKEd WHAT A FEATURE WAS
-                \noindent Given that each event in out dataset is of the form $(t_{i},d_{i}) $for $ i \epsilon [M]$,
-                where t is the title, d is the associated date and M is the original dataset,
-                we constructed a new dataset $\{(t_{i},s_{i},d_{j})\}$ for $i,j [M]$ containing
-                the sentences retrieved from wikipedia. This will form the basis of our data to generate
+                \noindent Given that each event in out data set is of the form $(t_{i},d_{i}) $for $ i \epsilon [M]$,
+                where t is the title, d is the associated date and M is the original data set,
+                we constructed a new data set $\{(t_{i},s_{i},d_{j})\}$ for $i,j [M]$ containing
+                the sentences retrieved from Wikipedia. This will form the basis of our data to generate
                 features.
 
-                From this we built a new dataset $\{(t_{i},s_{i},t_{j},s_{j},b_{ij})\}$ for $i,j \epsilon [M]$
+                From this we built a new data set $\{(t_{i},s_{i},t_{j},s_{j},b_{ij})\}$ for $i,j \epsilon [M]$
                 where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
 
-                With this new dataset, we explored feature extraction techniques to train a classifier
+                With this new data set, we explored feature extraction techniques to train a classifier
                 on the provided sentences.
                 
                 \subsection{Bag-Of-Words}
                 Bag-Of-Words features looked promising from the start of the project
                 as they allow easy representation of a large volume of words.
 
-                This type of feature modeling works by generating features based on word
-                frequnecy over a set of all possible words.\\
+                This type of feature modelling works by generating features based on word
+                frequency over a set of all possible words.\\
 
                 
 
@@ -183,11 +183,11 @@
 
 
                 For our features, we built a set of all words found in all sentences in our
-                dataset. We also take each entry into out dataset, $\{t_{i},s_{i},t_{j},s_{j},b_{ij}\}$,
+                data set. We also take each entry into out data set, $\{t_{i},s_{i},t_{j},s_{j},b_{ij}\}$,
                 and build a feature vector from $s_{i}$ and $s_{j}$.
 
 
-                While using a bag-of-words model is simple to impliment and computationaly inexpernsive
+                While using a bag-of-words model is simple to implement and computationally inexpensive
                 it does have some flaws. These include very large, sparse feature vectors and the issue
                 that for testing, if an article has a word the model has not seen it will be ignored.
                   
@@ -202,29 +202,29 @@
 \chapter{Machine Learning}
 
 \section{Approach}
-As our dataset allows for a binary class label for each entry,
+As our data set allows for a binary class label for each entry,
 $y_{i} > y_{j}$, it is apparent we should be looking for a binary classifier that we can train
-that will give us classification probabilities. These classiffication probsbilities
+that will give us classification probabilities. These classification probabilities
 will be needed in order to weight a path through the graph that will be generated.
 \section{Local Learning}
 Initially we decided to look at local learning, as opposed to global learning,
 to try and classify our data. This was chosen so as to provide a
-simple baseline for us to compair against. This baseline is
+simple baseline for us to compare against. This baseline is
 randomly assigned classes, but as our data conforms to a
 binary classification, random resolves to 50\% accuracy.
 \subsection{Decision Trees}
-Decision trees were looked at as they are a non-parametric, supervised learining methood
+Decision trees were looked at as they are a non-parametric, supervised learning method
 that are commonly used for classification and regression. They learn simple decision rules inferred from
 data features to create a model that predicts the value of a target variable.
 
-These atributes were promising for our experiments as they fit with our data and requirments, generating
+These attributes were promising for our experiments as they fit with our data and requirements, generating
 classifications of test data and probabilities of these estimations.
 
 It was also decided to run the experiment using three events, rather that two to see how these
 effected the results. 
 
-Some issues found with decision trees were that the probsbilities generated were too narrowly distributed
-to infer any coinfidence in the paths generated. Due to this, it was decided to explore other methods of
+Some issues found with decision trees were that the probabilities generated were too narrowly distributed
+to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
 classification.
 
 %\subsection{Random Forests}
@@ -235,7 +235,7 @@ associated learning algorithms for classification and regression.
 SVMs were experimented with as given data with a binary classification build the points in space,
 making a non-probabilistic binary linear classifier.
 
-This proved benefitial as the results generated were better than the decision trees \ref{table:local-learning}.
+This proved beneficial as the results generated were better than the decision trees \ref{table:local-learning}.
 SVMs also provided much better classification probability, which is favourable for path generation.
 %\subsection{Linear Regression}
 % To Be Completed in due course
@@ -255,7 +255,7 @@ the development data to act as ``test'' data. The results from these experiments
 \label{table:local-learning}
 \begin{tabular}{|l|l|l|l|l}
   \hline
-                          & Decision Trees (tuple) & Decision Tree (triple) & SVM  & Loistic Regression\\
+                          & Decision Trees (tuple) & Decision Tree (triple) & SVM  & Logistic Regression\\
   \hline
 Accuracy with articles    & 53                      & 48                      & 56 &  TBC\\
 \hline
@@ -272,19 +272,19 @@ Accuracy with only titles & 43                      & 36                      & 
 %\section{Results}
 
 \chapter{Graphing}
-The next, and last, stage of the projct is to build a weighted, directed graph of the
-results of our classified testing data. From this we wish to constuct a solution for
-the traveling salesman problem for our graph.
+The next, and last, stage of the project is to build a weighted, directed graph of the
+results of our classified testing data. From this we wish to construct a solution for
+the travelling salesman problem for our graph.
 
-\section{Traveling Salesman Problem}
-The Traveling Salesman Problem (TSP) is a well known algorithm problem, often expressend as a grpah
+\section{Travelling Salesman Problem}
+The Travelling Salesman Problem (TSP) is a well known algorithm problem, often expressed as a graph
 describing the locations of a set of nodes.
 
 The problem states a salesman who must travel between N  cities. The order does not matter,
 but they must visit each city only once.
 
 \section{Solution}
-Our problem is similar to TSP with the added stipulation that all endges between nodes are weighted
+Our problem is similar to TSP with the added stipulation that all edges between nodes are weighted
 and are unidirectional.
 
 In order to solve this problem, we built a path finding algorithm based on the minimum spanning tree
@@ -306,7 +306,7 @@ the accuracy of our classifiers.
 \chapter{Conclusion}
 As we can see, the project is progressing well.
 There are a few aspects still to be looked at before completion (see below), but the project is moving
-along to completion on shedule.
+along to completion on schedule.
 
 
 \section{Still To Be Done}
