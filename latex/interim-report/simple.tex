@@ -1,5 +1,8 @@
 \documentclass[12pt]{report}
 
+\usepackage{parskip}
+\usepackage{float}
+\usepackage[none]{hyphenat}
 \usepackage{cite}
 \usepackage{graphicx}
 \begin{document}
@@ -226,7 +229,7 @@ effected the results.
 Some issues found with decision trees were that the probabilities generated were too narrowly distributed
 to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
 classification.
-
+\vspace{4em}
 %\subsection{Random Forests}
 \subsection{Support Vector Machines}
 Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
@@ -239,7 +242,7 @@ This proved beneficial as the results generated were better than the decision tr
 SVMs also provided much better classification probability, which is favourable for path generation.
 %\subsection{Linear Regression}
 % To Be Completed in due course
-
+\vspace{4em}
 \subsection{Evaluation}
 For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
 This statistic was chosen as it can be used to measure the ordinal association between two measured quantities,
@@ -249,17 +252,17 @@ The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (
 
 Given that the project is yet to be completed, we have not ran our experiments using the test data, but have been using
 the development data to act as ``test'' data. The results from these experiments can be seen in table \ref{table:local-learning}
-
-\begin{table}[h]
+\vspace{2em}
+\begin{table}[H]
 \centering
 \label{table:local-learning}
-\begin{tabular}{|l|l|l|l|l}
+\begin{tabular}{|p{5em}|l|l|l|p{4em}|}
   \hline
-                          & Decision Trees (tuple) & Decision Tree (triple) & SVM  & Logistic Regression\\
+                        {\small Accuracy}  & {\small Decision Trees (tuple)} & {\small Decision Tree (triple)} & {\small SVM}  & {\small Logistic Regression}\\
   \hline
-Accuracy with articles    & 53                      & 48                      & 56 &  TBC\\
+{\small With Articles}    & 53                      & 48                      & 56 &  TBC\\
 \hline
-Accuracy with only titles & 43                      & 36                      & TBC    & TBC\\
+{\small With Titles} & 43                      & 36                      & TBC    & TBC\\
 \hline
 \end{tabular}
 \caption{Local Learning Results}
@@ -292,9 +295,9 @@ algorithm.
 
 
 \section{Results}
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
-  \includegraphics[scale=0.5]{figure4.png}
+  \includegraphics[scale=0.4]{figure4.png}
   \label{figure:graph}
   \caption{Most Probable path through all nodes}
 \end{figure}
