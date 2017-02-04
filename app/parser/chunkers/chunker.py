@@ -5,6 +5,7 @@ def regexChunker(sentence):
                     {<NN>+}
                     {<NNP><NN>}
                  PERSON:{<PERSON>}
+                      {<PERSON><ORGANISATION>}
                  PLACE: {<ORGANIZATION><NP>}
                  ORG:{<GPE><ORGANIZATION>}
                      {<ORGANIZATION>}

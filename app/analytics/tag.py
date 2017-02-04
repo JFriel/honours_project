@@ -3,6 +3,7 @@ import tagging.stanford as sf
 import sys
 
 def getTags(data, tagger):
+        print data
         stanford = sf.stanfordOpenIE(data)
         if(len(stanford) == 0):
             #sys.exit("Couldn't run OpenIE on this.")
