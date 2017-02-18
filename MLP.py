@@ -4,15 +4,15 @@ sys.setdefaultencoding('utf-8')
 import app.parser.getData as importArticles
 import app.parser.articleRetrieval.getArticles as getContent
 import app.parser.sentences as sent
-import app.parser.getChunks as gc
-import app.analytics.tag as tag
-import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
-from sklearn import tree, feature_extraction, svm, linear_model
+from sklearn import tree, feature_extraction, svm, linear_model, neural_network
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import numpy as np
 import datetime
+
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
 
 import app.analytics.filterSentences as fl
 import networkx as nx
@@ -22,12 +22,12 @@ G=nx.DiGraph()
 np.seterr(divide='ignore',invalid='ignore')
 
 listOfYears = []
-clf = linear_model.Perceptron(n_iter=12)#svm.SVC(probability=True)
+clf = neural_network.MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5,2),random_state=1)
 probs = []
 titles = []
-trainData = open('trainDataTitle','r').readlines()
-testData = open('testDataTitle','r').readlines()
-#
+trainData = open('trainData','r').readlines()
+testData = open('testData','r').readlines()
+
 #C
 def train(features):
 
