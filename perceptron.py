@@ -22,15 +22,15 @@ G=nx.DiGraph()
 np.seterr(divide='ignore',invalid='ignore')
 
 listOfYears = []
-clf = linear_model.Perceptron(n_iter=12)#svm.SVC(probability=True)
+clf = linear_model.Perceptron(n_iter=90)#svm.SVC(probability=True)
 probs = []
 titles = []
-trainData = open('trainDataTitle','r').readlines()
-testData = open('testDataTitle','r').readlines()
+trainData = eval(open('trainDoubleSet','r').readlines()[0])
+testData = open('testDoubleSet','r').readlines()
 #
 #C
 def train(features):
-
+    features = [item for item in features if len(item[0]) != 0]
     feats = [item[0] for item in features]
     A = len(features)
     B = min(map(len,feats))
@@ -48,27 +48,15 @@ def train(features):
 def test(features,B):
     correct = 0
     probs = []
+
+    features = [item for item in features if len(item[0]) != 0]
     for feature in features:
-        try:
-            print feature[2]
-        except:
-            print feature
 
         temp = np.array(feature[0][0:B]).reshape((1, -1))
-        predict = clf.predict(temp)
+        predict = clf.predict(temp[0][0:B])
         #prob = max(clf.predict_proba(temp)[0])
         probs.append([predict, feature[2]])
-        #if(feature[1][1] not in G.keys()):
-        #    G.update({feature[1][1]:[]})
-        #if(feature[1][0] not in G.keys()):
-        #    G.update({feature[1][0]:[]})
-        #if(predict == 1):
-        #    #if(float(prob) > float(0.6)):
-        #    G[feature[1][0]].append(feature[1][1])
-        #else:
-        #    #if(float(prob) > float(0.6)):
-        #    G[feature[1][1]].append(feature[1][0])
-        if(feature[2] == predict):
+        if(feature[2] == predict[0]):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
 
@@ -78,9 +66,10 @@ def test(features,B):
 print datetime.datetime.now()
 p = Pool(20)
 trainFeatures = []
-for I in trainData:
+for I in range(len(trainData)):
     try:
-        trainFeatures.append(eval(I))
+        if trainData[I] is not None:
+            trainFeatures.append(trainData[I])
     except:
         print ""
 B = train(trainFeatures)
@@ -88,9 +77,11 @@ print datetime.datetime.now()
 #train(generateDataPoints(trainArticles))
 print "Training Complere. Now For Testing"
 testFeatures = []
-for I in testData:
+testData = eval(testData[0])
+for I in range(len(testData)):
     try:
-        testFeatures.append(eval(I))
+        if testData[I] is not None:
+            testFeatures.append(testData[I])
     except:
         print ""
 test(testFeatures,B)

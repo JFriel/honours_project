@@ -21,19 +21,19 @@ listOfYears = []
 clf = svm.SVC(probability=True)
 probs = []
 titles = []
-trainData = open('trainDataTitle','r').readlines()
-testData = open('testDataTitle','r').readlines()
+trainData = eval(open('/tmp/trainDoubleSet').readlines()[0])#open('trainDataTitle','r').readlines()
+testData = open('/tmp/testDoubleSet','r').readlines()
 B = None
 #C
 def train(features):
-
+    features = [item for item in features if len(item[0]) != 0]
     feats = [item[0] for item in features]
     A = len(features)
     B = min(map(len,feats))
     X = np.ones((A,B))
     Y = np.ones((A))
     for feature in range(len(features)):
-      print (feature, features[feature][2])
+      #print (features[feature][0], features[feature][2])
       Y[feature] =  features[feature][2]#label
       for item in range(0,B):
             X[feature][item] = features[feature][0][item]
@@ -44,27 +44,16 @@ def train(features):
 def test(features,B):
     correct = 0
     probs = []
+
+    features = [item for item in features if len(item[0]) != 0]
     for feature in features:
-        try:
-            print feature[2]
-        except:
-            print feature
 
         temp = np.array(feature[0][0:B]).reshape((1, -1))
-        predict = clf.predict(temp)
-        prob = max(clf.predict_proba(temp)[0])
+        #temp = temp[0]#[0][0:B]
+        predict = clf.predict(temp[0][0:B])
+        prob = max(clf.predict_proba(temp[0][0:B])[0])
         probs.append([predict,prob, feature[2]])
-        #if(feature[1][1] not in G.keys()):
-        #    G.update({feature[1][1]:[]})
-        #if(feature[1][0] not in G.keys()):
-        #    G.update({feature[1][0]:[]})
-        #if(predict == 1):
-        #    #if(float(prob) > float(0.6)):
-        #    G[feature[1][0]].append(feature[1][1])
-        #else:
-        #    #if(float(prob) > float(0.6)):
-        #    G[feature[1][1]].append(feature[1][0])
-        if(feature[2] == predict):
+        if(feature[2] == predict[0]):
             correct +=1
     print "Accuracy = " + str(correct) + '/' + str(len(features))
 
@@ -72,9 +61,11 @@ def test(features,B):
 print datetime.datetime.now()
 p = Pool(5)
 trainFeatures = []
+print len(trainData)
 for i in range(len(trainData)):
     try:
-        trainFeatures.append(eval(trainData[i]))
+        if trainData[i] is not None:
+            trainFeatures.append(trainData[i])
     except:
         print "broken"
 B = train(trainFeatures)
@@ -83,10 +74,14 @@ print datetime.datetime.now()
 print "Training Complere. Now For Testing"
 
 testFeatures = []
-for i in testData:
+testData = eval(testData[0])
+for i in range(len(testData)):
+    print testData[i]
     try:
-        testFeatures.append(eval(i))
+        if testData[i] is not None:
+            testFeatures.append(testData[i])
     except:
         print "broken"
+print len(testFeatures)
 test(testFeatures,B)
 print datetime.datetime.now()
