@@ -8,7 +8,6 @@
 \title{Event Ordering In News Articles}
 
 \author{James Robert Friel}
-
 % to choose your course
 % please un-comment just one of the following
 \course{Artificial Intelligence and Computer Science}
@@ -50,15 +49,30 @@ I'd Like to thank Greggs Bakery for being there for me through thick and thin.
 
 \chapter{Introduction}
 \section{The Problem}
-Nominal data is descriptive in nature, making is difficult to assign an cannonical ordering to.
-The problem tackled in this disertation is the ordering of news article headlines to generate
-a most-probable traversal of a weighted directed graph of these events.
-This problem is based off of the paper \cite{abend2015lexical} and some
-techniques discussed and used henseforth are based off of this paper.
+Nominal data is not descriptive in nature. This lack of information makes it difficult to assign
+a canonical ordering to.
+The problem tackled within this dissertation is to test if the use of external data sources can
+aid in the ordering of news article headlines.
+We will be looking at the usefulness of Wikipedia as an external source in order to timeline
+historical events.
+
+Our event data comes from the ``Today in History'' dataset. Each of these data points consists
+of an event and a date\\
+$[$ ``Alaska becomes 49th State'', ``1959-01-01'' $]$
 
 
-Our data comes from the Wikipedia ``Today in History'' dataset and the nominal data is retrived
-from wikipedia articles.
+The problem tackled in this paper is based on the paper \cite{abend2015lexical} and several
+techniques used are based from this paper. 
+
+%Nominal data is descriptive in nature, making is difficult to assign an cannonical ordering to.
+%The problem tackled in this disertation is the ordering of news article headlines to generate
+%a most-probable traversal of a weighted directed graph of these events.
+%This problem is based off of the paper \cite{abend2015lexical} and some
+%techniques discussed and used henseforth are based off of this paper.
+
+
+%Our data comes from the Wikipedia ``Today in History'' dataset and the nominal data is retrived
+%from wikipedia articles.
 %The problem explored within this thesis is that of graphing nature.
 %Building a most probable path through each node in an edge-weighted directed graph
 %, each node beinga single sentence describing an event from history.
@@ -67,40 +81,42 @@ from wikipedia articles.
 %and \say{AT\&T broken up into 8 countries}
 
 \section{Aims \& Objectives}
-The aim of this thesis is to construct a system that predics the most probable path
-through an edge-weighted directional graph of events.
-we aim to constuct this graph by extracting data from wikipedia for each event and
-buld a date estimate from wikipedia. From this data we will conduct several experiments
-to maximise the likelyhood of a graph traversal.
+
+The aim of this thesis is to construct a system that predicts the most probable path
+through an complete digraph of events.
+We aim to construct this graph by extracting data from wikipedia for each event and
+build features with the information. From these features we will conduct several experiments
+to maximise amount of correct orderings. With these orderings we will look at finding
+the most likely path through our orderings, to generate a probable timeline of the events.
 
 
-The core aims of the project were: 
-\begin{itemize}
-  \item Investivage the usefulness of wikipedia text in feature generation
-  \item Generate probable dates For each event
-  \item Order these events linearly
-\end{itemize}
+%The core aims of the project were: 
+%\begin{itemize}
+%  \item Investivage the usefulness of wikipedia text in feature generation
+%  \item Generate probable dates For each event
+%  \item Order these events linearly
+%\end{itemize}
 
-The further goals of the project were to:
-\begin{itemize}
-  \item Generate edge-weighted directional graphs of the data
-  \item Construct probabilities of maximum spanning walks through the graph
-\end{itemize}
+%The further goals of the project were to:
+%\begin{itemize}
+%  \item Generate edge-weighted directional graphs of the data
+%  \item Construct probabilities of maximum spanning walks through the graph
+%\end{itemize}
 
-Some initial stretch goals of the project were to construct an interactive
-interface to the resulting graphs to act as a visual aid for the results.
+%Some initial stretch goals of the project were to construct an interactive
+%interface to the resulting graphs to act as a visual aid for the results.
 
 \section{Testing \& Evaluation}
-With our dataset being so large (around 6250 entries) it can
-easily be split into training, devlopment and testing with no
+With our dataset being so large, 6250 entries, it can
+easily be split into training, development and testing with no
 need for overlap. For this the data is split 10\% training,
 10\% development and 80\% for testing.
 
-Evaulation of the system was dne using the
+Evaulation of the system was completed using the
 Kendall rank correlation coefficient as is a statistic
 used to measure the ordinal association between two
 measured quantities. This was easy be applied to our results
-by compairing the systems estimated date for each event
+by compairing the systems estimated orderings of events
 with the label associated with the event from the data.
 
 \chapter{Background}
@@ -179,11 +195,17 @@ we has to choose the correct Machine Learning Techniques
 
 \chapter{Graphing}
 \section{Traveling Salesman Problem}
-
+\section{Encoding}
+\subsection{Greedy}
+\subsection{ILP}
 \section{Results}
 
+\chapter{Results}
+\section{Results}
+\section{Discussion}
 \chapter{Conclusion}
-
+\section{Further Work}
+\section{Conclusion}
 % use the following and \cite{} as above if you use BibTeX
 % otherwise generate bibtem entries
 \bibliographystyle{plain}
