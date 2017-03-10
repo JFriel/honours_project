@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}
+
+\bibitem{abend2015lexical}
+Omri Abend, Shay~B Cohen, and Mark Steedman.
+\newblock Lexical event ordering with an edge-factored model.
+\newblock In {\em Proceedings of NAACL}, 2015.
+
+\bibitem{WikiStats}
+Wikipedia: Size comparison.
+\newblock \url{https://en.wikipedia.org/wiki/Wikipedia:Size_comparisons}.
+\newblock Accessed: 23-01-2017.
+
+\bibitem{wikibias}
+Based on~the research~of Shane~Greenstein and Feng Zhu.
+\newblock Is wikipedia biased?, Dec 2012.
+
+\bibitem{openie}
+Openie extraction example.
+\newblock \url{http://nlp.stanford.edu/software/openie.html}.
+\newblock Accessed: 27-07-2017.
+
+\bibitem{kendalltau}
+Kendal tau metric.
+\newblock https://www.encyclopediaofmath.org/index.php/Kendall\_tau\_metric.
+\newblock Accessed: 25-01-2017.
+
+\end{thebibliography}

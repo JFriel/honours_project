@@ -58,10 +58,6 @@
 \usepackage{graphicx}  % Required for including images
 
 \usepackage{booktabs} % Top and bottom rules for tables
-\usepackage{tikz}
-\usepackage{dirtytalk}
-\usepackage{mdframed}
-
 
 %----------------------------------------------------------------------------------------
 %	TITLE SECTION 
@@ -71,16 +67,12 @@
 
 \author{James Friel} % Author(s)
 
-\institute{Supervisor: Shay Cohen} % Institution(s)
+\institute{S1332298} % Institution(s)
 
 %----------------------------------------------------------------------------------------
 
 \begin{document}
-\addtobeamertemplate{headline}{} 
-{\begin{tikzpicture}[remember picture, overlay]
-     \node [anchor=north east, inner sep=3cm]  at (current page.north east)
-     {\includegraphics[height=5cm]{logo.jpg}};
-  \end{tikzpicture}}
+\includegraphics{logo.jpg}
 \addtobeamertemplate{block end}{}{\vspace*{2ex}} % White space under blocks
 \addtobeamertemplate{block alerted end}{}{\vspace*{2ex}} % White space under highlighted (alert) blocks
 
@@ -100,11 +92,11 @@
 %----------------------------------------------------------------------------------------
 
   \begin{alertblock}{Objectives}
-    The aim of this thesis is to construct a system that predicts the most probable path
-    through an edge-weighted complete digraph of events.
-    we aim to construct this graph by extracting data from Wikipedia for each event and
-    build a date estimate from this. Using this data we will conduct several experiments
-    to optimise accuracy of a graph traversal.
+    The aim of this thesis is to construct a system that predics the most probable path
+    through an edge-weighted directional graph of events.
+    we aim to constuct this graph by extracting data from wikipedia for each event and
+    buld a date estimate from wikipedia. From this data we will conduct several experiments
+    to maximise the likelyhood of a graph traversal.
   
 \end{alertblock}
 
@@ -113,21 +105,16 @@
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Introduction}
-Nominal data is descriptive in nature, making it difficult to assign a Canonical ordering to.
-The problem tackled in this dissertation is the ordering of news article headlines to generate
+Nominal data is descriptive in nature, making is difficult to assign an cannonical ordering to.
+The problem tackled in this disertation is the ordering of news article headlines to generate
 a most-probable traversal of a weighted directed graph of these events.
 This problem is based off of the paper \cite{abend2015lexical} and some
-techniques discussed and used henceforth are based off of this paper.
+techniques discussed and used henseforth are based off of this paper.
 
 
-Our data comes from the Wikipedia ``Today in History'' data set and the nominal data is retrieved
-from Wikipedia articles.
-\vspace{6cm}
-\begin{figure}
-\includegraphics[]{node-graph.png}
-\caption{A Graph of the predicted ordering}
-\label{node_graph}
-\end{figure}
+Our data comes from the Wikipedia ``Today in History'' dataset and the nominal data is retrived
+from wikipedia articles.
+
 
 \end{block}
 
@@ -150,26 +137,26 @@ from Wikipedia articles.
 %	MATERIALS
 %----------------------------------------------------------------------------------------
 
-  \begin{block}{Wikipedia As a Data Source}
+\begin{block}{Wikipedia As a Data Source}
 
-    Wikipedia was chosen as the data source for the project as it has over 40 million
-    articles \cite{WikiStats} and maintains an unbiased presence through community moderating \cite{wikibias}.
-    
-%Using Wikipedia's article retrieval API, gathering the data from
-%the site is trivial. Choosing what to extract is, however, not
-%so straightforward.
+The following materials were required to complete the research:
 
-Using a modified version of Stanford's natural language processing suite,
-we are able to build features from our retieved data.
+\begin{itemize}
+\item Curabitur pellentesque dignissim
+\item Eu facilisis est tempus quis
+\item Duis porta consequat lorem
+\item Eu facilisis est tempus quis
+\end{itemize}
 
-Using this toolkit, the Open Information Extraction from
-The University of Washington is used to extract subjects, objects
-and their relations from our event titles.
+The materials were prepared according to the steps outlined below:
 
-\begin{figure}
-  \includegraphics[scale=0.8]{openie.png}
-  \caption{Example OpenIE Extraction \cite{openie}}
-\end{figure}
+\begin{enumerate}
+\item Curabitur pellentesque dignissim
+\item Eu facilisis est tempus quis
+\item Duis porta consequat lorem
+\item Curabitur pellentesque dignissim
+\end{enumerate}
+
 \end{block}
 
 %----------------------------------------------------------------------------------------
@@ -183,26 +170,9 @@ and their relations from our event titles.
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Classification}
-  Given that each event in our data set is of the form
-  \begin{equation}
-  (t_{i},d_{i}) \hspace{0.5em}for\hspace{0.5em} i \epsilon [M],
-    \end{equation}
-    where t is the title, d is the associated date and M is the original data set,
-    we constructed a new data set
-    \begin{equation}
-      \{(t_{i},s_{i},d_{j})\} \hspace{0.5em} for \hspace{0.5em}i,j [M]
-    \end{equation}
-    This will form the basis of our data to generate features.
 
-    From this we built a new data set
-    \begin{equation}
-      \{(t_{i},s_{i},t_{j},s_{j},b_{ij})\} \hspace{0.5em} for \hspace{0.5em} i,j \epsilon [M]
-      \end{equation}
-where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
-A similar data set was constructed using only the article headlines.
+Lorem ipsum dolor \textbf{sit amet}, consectetur adipiscing elit. Sed laoreet accumsan mattis. Integer sapien tellus, auctor ac blandit eget, sollicitudin vitae lorem. Praesent dictum tempor pulvinar. Suspendisse potenti. Sed tincidunt varius ipsum, et porta nulla suscipit et. Etiam congue bibendum felis, ac dictum augue cursus a. \textbf{Donec} magna eros, iaculis sit amet placerat quis, laoreet id est. In ut orci purus, interdum ornare nibh. Pellentesque pulvinar, nibh ac malesuada accumsan, urna nunc convallis tortor, ac vehicula nulla tellus eget nulla. Nullam lectus tortor, \textit{consequat tempor hendrerit} quis, vestibulum in diam. Maecenas sed diam augue.
 
-With this new data set we began to experiment with techniques to classify a test set of the data. 
-%SVMs, Perceptrons, Logistics Regression and Multi-Layered Perceptrons were experimented with, amongst other techniques.
 \end{block}
 
 %----------------------------------------------------------------------------------------
@@ -217,7 +187,7 @@ With this new data set we began to experiment with techniques to classify a test
 
 \begin{alertblock}{Important Result}
   \begin{center}
-  The use of external data sources, such as Wikipedia, greatly improves the ability to order\\ saline events in chronological order.
+  The use of external data sources, such as Wikipedia, greatly improves the ability to order\\ saline events in cronological order.
   \end{center}
 \end{alertblock} 
 
@@ -232,21 +202,27 @@ With this new data set we began to experiment with techniques to classify a test
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Graphing}
-  From our classifier we produce a complete digraph.
-  In order to construct the most likely path through this graph we must solve a variation of
-  the travelling salesman problem.
-  \vspace{1em}
+
+Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.
   
-  \begin{mdframed}
-    Starting from any node, find the node that will
-    generate the most probable path through  every
-    other node without visiting any node twice.
-\end{mdframed}
+\begin{equation}
+E = mc^{2}
+\label{eqn:Einstein}
+\end{equation}
 
-  \vspace{1em}
+Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.
 
-  We solve this problem by using the minimum spanning path algorithm whilst inverting the edge weights
-  of the graph. The results of which can be seen in Figure \ref{node_graph}.
+\begin{equation}
+\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
+\label{eq:refname}
+\end{equation}
+
+Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.
+
+\begin{equation}
+\kappa =\frac{\xi}{E_{\mathrm{max}}} %\mathbb{ZNR}
+\end{equation}
+
 \end{block}
 
 %----------------------------------------------------------------------------------------
@@ -261,42 +237,26 @@ With this new data set we began to experiment with techniques to classify a test
 
 \begin{block}{Results}
 
-  We measure our results using Kendall's Tau Correlation Coefficient.\\
-  \vspace{1em}
-    $\tau = \frac{(\text{number of concordant pairs}) - (\text{number of discordant pairs})}{n(n-1)/2}$\cite{kendalltau}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
-  \vspace{1em}
-  
-\begin{table}[H]
-\centering
-\label{table:local-learning}
-\begin{tabular}{|p{5em}|l|l|l|p{4em}|}
-  \hline
-  {\small Accuracy}  & {\small DT* (tuple)} & {\small DT* (triple)} & {\small SVM}  & {\small Logistic Regression}\\
-  \hline
-{\small With Articles}    & 53\%  & 48\%    & 66\% &  76\% \\
-\hline
-{\small With Titles} & 43\%  & 36& 51\%    & 52\% \\
-\hline
+\begin{figure}
+\includegraphics[width=0.8\linewidth]{placeholder.jpg}
+\caption{Figure caption}
+\end{figure}
+
+Nunc tempus venenatis facilisis. Curabitur suscipit consequat eros non porttitor. Sed a massa dolor, id ornare enim:
+
+\begin{table}
+\vspace{2ex}
+\begin{tabular}{l l l}
+\toprule
+\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+\midrule
+Treatment 1 & 0.0003262 & 0.562 \\
+Treatment 2 & 0.0015681 & 0.910 \\
+Treatment 3 & 0.0009271 & 0.296 \\
+\bottomrule
 \end{tabular}
-\caption{\tabular[t]{@{}l@{}}Local Learning Results  \\*DT = Decision Tree \endtabular}
+\caption{Table caption}
 \end{table}
-
-\begin{table}[H]
-\centering
-\label{table:global-learning}
-\begin{tabular}{|p{5em}|l|l|p{4em}|}
-  \hline
-  {\small Accuracy}  & {\small Perceptron} & {\small MLP}\\
-  \hline
-{\small With Articles}    & 66\%  & 83\%\\
-\hline
-{\small With Titles} & 46\%  & 54\%\\
-\hline
-\end{tabular}
-\caption{Global Learning Results}
-\end{table}
-
-
 
 \end{block}
 
@@ -317,8 +277,8 @@ With this new data set we began to experiment with techniques to classify a test
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Conclusion}
-  As we can see from the results, the addition of external data sources greatly aids in
-  automatic ordering of saline events.
+
+Nunc tempus venenatis facilisis. \textbf{Curabitur suscipit} consequat eros non porttitor. Sed a massa dolor, id ornare enim. Fusce quis massa dictum tortor \textbf{tincidunt mattis}. Donec quam est, lobortis quis pretium at, laoreet scelerisque lacus. Nam quis odio enim, in molestie libero. Vivamus cursus mi at \textit{nulla elementum sollicitudin}.
 
 \end{block}
 
@@ -327,11 +287,12 @@ With this new data set we began to experiment with techniques to classify a test
 %----------------------------------------------------------------------------------------
 
 \begin{block}{Future Work}
-If I was to take this project forward, there would be a several things I would look into
+
+Maecenas ultricies feugiat velit non mattis. Fusce tempus arcu id ligula varius dictum. 
 \begin{itemize}
-\item The use of news websites as data sources
-\item The use of DNNs in classification
-\item Improved Graphing Techniques
+\item Curabitur pellentesque dignissim
+\item Eu facilisis est tempus quis
+\item Duis porta consequat lorem
 \end{itemize}
 
 \end{block}
@@ -342,9 +303,9 @@ If I was to take this project forward, there would be a several things I would l
 
 \begin{block}{References}
 
-%\nocite{*} % Insert publications even if they are not cited in the poster
+\nocite{*} % Insert publications even if they are not cited in the poster
 \small{\bibliographystyle{unsrt}
-\bibliography{references}\vspace{0.75in}}
+\bibliography{sample}\vspace{0.75in}}
 
 \end{block}
 
@@ -355,8 +316,8 @@ If I was to take this project forward, there would be a several things I would l
 \setbeamercolor{block title}{fg=red,bg=white} % Change the block title color
 
 \begin{block}{Acknowledgements}
-  I would like to thank Shay Cohen for all of the advice and guidance given during the project.\\
-  I would also like to thank Greggs Bakery for  helping me survive through coffee and morning rolls.
+
+\small{\rmfamily{Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. Aenean id neque dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.}} \\
 
 \end{block}
 
@@ -369,15 +330,17 @@ If I was to take this project forward, there would be a several things I would l
 
 \begin{alertblock}{Contact Information}
 
-  \begin{itemize}
-    \item Web: \href{http://jamesfriel.uk}{jamesfriel.uk}
-    \item Email: \href{mailto:s1332298@ed.ac.uk}{s1332298@ed.ac.uk}
+\begin{itemize}
+\item Web: \href{http://www.university.edu/smithlab}{http://www.university.edu/smithlab}
+\item Email: \href{mailto:john@smith.com}{john@smith.com}
+\item Phone: +1 (000) 111 1111
 \end{itemize}
 
 \end{alertblock}
 
 \begin{center}
 \begin{tabular}{ccc}
+\includegraphics[width=0.4\linewidth]{logo.png} & \hfill & \includegraphics[width=0.4\linewidth]{logo.png}
 \end{tabular}
 \end{center}
 
