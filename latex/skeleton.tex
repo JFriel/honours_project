@@ -7,7 +7,7 @@
 \usepackage{float}
 \begin{document}
 
-\title{Event Ordering In News Articles}
+\title{Event Ordering in News Articles}
 
 \author{James Robert Friel}
 % to choose your course
@@ -84,12 +84,21 @@ techniques used are based from this paper.
 
 \section{Aims \& Objectives}
 
-The aim of this thesis is to construct a system that predicts the most probable path
-through an complete digraph of events.
-We aim to construct this graph by extracting data from wikipedia for each event and
-build features with the information. From these features we will conduct several experiments
-to maximise amount of correct orderings. With these orderings we will look at finding
-the most likely path through our orderings, to generate a probable timeline of the events.
+The aim of this project is to experiment with machine reading on external data sources to
+discover if it is feasable to extract context from these sources to aid in the linear ordering
+of historical events.
+
+We aim to do this be experimenting with machine reading techniques to try and extract the most
+relevent contextual information from our data sources.
+
+With this information we intend to experiment with classification methods to optimise estimations
+of local orderings before generating a graph from the returned data.
+
+Using the graph generated from our classifier, we will attempt to find the optimim maximum spanning path
+through every node. This path will be our estimated ordering of history.
+
+We can use some evaluation technique to see how accurate our results are, compair those to not using
+external data sources and to a human rate.
 
 
 %The core aims of the project were: 
@@ -122,8 +131,9 @@ by compairing the systems estimated orderings of events
 with the label associated with the event from the data.
 
 \chapter{Background}
-
+%NLU as a subjext area
 \chapter{Related Work \& Motivation}
+%Papers I have read and why we are doing this
 \section{Motivation}
 \section{Related Work}
 
@@ -222,10 +232,13 @@ From these results, method 6 was chosen as our context extraction method. While 
 results from this method are not perfectly relevent and other improvments could be made,
 time restirctions were a deciding factor in not persuing this experimentation further.
 
-\section{Feature Extraction}
+\section{Feature Representation}
+Having extracted a series of sentences for each event in our data, we required a consise method
+of representing these sentences.
 \subsection{Bag-Of-Words}
+The Bag-of-Words 
 \subsection{Word Embedding}
-\section{Potential Other Uses}
+\section{Potential Extntion of Data Retrieval}
 \section{Potential Issues With Data Retrieved}
 %While the ``Today in History'' dataset provides an excellent
 %base for out experiments, the sentences alone
