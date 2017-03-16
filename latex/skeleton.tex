@@ -5,6 +5,7 @@
 \usepackage{cite}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{xcolor}
 
 \begin{document}
 
@@ -131,6 +132,8 @@ measured quantities. This was easy be applied to our results
 by compairing the systems estimated orderings of events
 with the label associated with the event from the data.
 
+\section{Contributions}
+
 \chapter{Background}
 %NLU as a subjext area
 The work undertaken in this project settles nicely within the research space of Natural Language Understanding (NLU).
@@ -171,18 +174,25 @@ content-analysis. These systems vary vastly in terms of difficulty and use of co
 \section{Related Work}
 
 
-\chapter{Wikipedia As a Data Source}
+\chapter{Wikipedia As a Data Source}%%Potential Chapter name change
 %Intro to the data set
 Wikipedia was chosen as the external data source for this project as
 due to the nature of the events in our dataset, historical points of note,
 a source with a wide and deep range of articles was required.
-Ad wikipedia as over 5million articles \cite{} it is reasonable to assume
+Ad wikipedia as over 5 million articles \cite{} it is reasonable to assume
 that most events will exist within its pages.
+
+Wikipedia is also written in a manner that makes comprehension of events reletivly simple.
+It is the key sentences within articles that we will use to estimate a timeline.
 
 \section{Text Retrieval}
 Using Wikipedia's article retrieval API, gathering the data from
-the site is trivial. Choosing what to extract is, however, not
-so straightforward.
+the site is trivial.
+Choosing what information is contextually relevent to the subject is, however, not so straightforward.
+Along with looking at how to extract the key entities and actions from our 
+headlines, we must also experiment with methods of extracting contextually relevent information from
+retrieved articles.
+
 \subsubsection{OpenIE}
 Stanfords natural language processing (NLP) suite,
 a natural language analysis toolkit,
@@ -191,30 +201,38 @@ Using this toolkit, the Open Information Extraction (OpenIE) from
 The University of Washington is used to extract Subjects, Objects
 and their relations from our event titles.
 
-OpenIE was chosen as it uses various extraction techniqes, such as ``noun-mediated extraction'',
-to find the relations within a sentence. OpenIE can also deal with much more than simple relations,
+OpenIE was chosen due to it having several benifitial porperties.
+
+OpenIE impliments a number of extraction techniques, such as ``noun-mediated extraction'' and ``BLAH BALH''.
+We have seen through experimentation with the various
+extraction methods that there is no one method that gives reasonable results for all of our inputs.
+For example using SOME TECHNIQUE of SENTENCE IT DID A BAD THING BUT DID A GOOD THING FOR ANOTHER EXAMPLE.
+The ability to use any and all of the avialble techniques seamlessly is benefitial as it allows us to
+extract the best possible relationships from each event. 
+
+OpenIE does not require a schema to be specified in advance, this is useful for our purposes
+as we do not know the content that will be looked at. This will allow the system to extract
+more complex relationships, such as those seen in Figure \ref{fig:compount-relations}, if such
+a relationship can be found.
+
+OpenIE can also deal with much more than simple relations,
 it can look at positive or negative assertion within these relations which may be benefitial to our
-solution. It was these details coupled with OpenIe's ability to build compound relationships that
-made it the obvious choice for extracting the key information from out data points.
+solution.
 
-%\begin{figure}
-%  \ref{fig:extraction}
-%  \label{Example of Noun-mediated extraction}
-%  \end{figure}
+It was these properties that make OpenIE the optimal system to extract the key relations from our events.
+%From our events, we typically saw only simple, linear relations. This made finding the relevent articles
+%simple as often only one article was found for each Object and subject in the relationship. More complex
+%relations, often with sub relations, can retrieve more article but, depending on the content, still retrieve
+%only two articles.
 
-\begin{figure}
+
+\begin{figure}[H]
   \centering
   \ref{fig:compound-relations}
-  \includegraphics[scale=0.5]{openie-train.png}[H]
-  \caption{Example of a compund relationship}%\cite{OpenIE}
+  \includegraphics[scale=0.4]{openie-train.png}
+  \caption{Example of a compound relationship \cite{OpenIE}}%\cite{OpenIE}
   \end{figure}
-%As an example of OpenIE's extraction, the sentence:\\
-%``The U.S. president Barack Obama gave his speech on Tuesday to thousands of people.''
-%Will produce these potential binary relations\\
-%``(Barack Obama, is the president of, the U.S.)''\\
-%``(Barack Obama, gave, his speech)''\\
-%``(Barack Obama, gave his speech, on Tuesday)''\\
-%``(Barack Obama, gave his speech, to thousands of people)''\\
+
 \subsubsection{Article Retrieval}
 Using the Objects and Subjects generated by OpenIE we needed to get the relevent Wikipedia Articles.
 To do this we used fuzzy searching of Wikipedia, through the use of their API, to get the articles relivent
@@ -266,30 +284,56 @@ results from this method are not perfectly relevent and other improvments could 
 time restirctions were a deciding factor in not persuing this experimentation further.
 
 \section{Feature Representation}
-Having extracted a series of sentences for each event in our data, we required a consise method
-of representing these sentences.
+Having extracted a series of sentences for each event in our data, we required a concise method
+of representing these sentences. It is standard in NLP and ML domains to represent features as vectors.
+Several different techniques were discussed, but ultimately due to time constraints only two methods were
+experimented with: Bag-Of-Words and Word Embedding.
 \subsection{Bag-Of-Words}
-The Bag-of-Words 
+The Bag-of-Words model is a simplifying representation of text.
+In this model, we take a sentence, or multiple sentences, and represent them as a bag(multiset) of its words.
+A multiset is similar to set, but can allow multiple of the same item within.
+For example, \{$\alpha,\beta$\} and \{$\alpha,\beta,\alpha$\} are the same set, but individual multisets.
+This technique disregards grammar and order, but keeps multiplicity. It is a common technique in Computer vision
+and other learning situations \cite{}.
+
+For our project, we implemented Bag-of-Words by using the relevant sentences for both of our events as a feature.
+We chose to represent our multisets are counts over the vocabulary so as to build numerical features to easily
+use the data with classifiers.
+
+%example of turning sentence sinto vectors
+S1: ``John likes to watch movies. Mary likes movies too.''
+S2: ``John also likes to watch football games.''
+
+[``John'',``likes'',``to'',``watch'',``movies'',``also'',``football'',``games'',``Mary'',``too'']
+
+Result: [2,3,2,2,2,1,1,1,1,1]
+%%%
+
+As Bag-Of-Words looks at single words at time and the contextual data we aim to see may not be, we experimented with
+N-grams.
+%Some stuff about N-Grams and what we found
+
+\subsubsection{N-Grams}
+When experimenting with N-Grams, we aimed to try and capture some of the meaning of phrases that appeared in the gathered
+sentences.
+This was achieved by looking for phrases and sequences of words that recurred throughout the sentences - under the assumption
+that what reoccurs must be important. Due to the wide variety of data we were seeing, simple 2 or 3 N N-Grams provided
+little to no use, returning junk phrases if anything at all.
+
+With the failure of N-Grams at this problem, we attempted to implement Skip-Grams from the paper \cite{guthrie2006closer}.
+By missing out 1 or 2 words in the middle of key words we hoped that we could extract more important word relations to
+incorporate into our features.
+%Something about why this wasn't better.
+
+This representation worked well as it it provides a numerical representation of the cross-section of our two articles
+but does remove some of the contextual data we might receive.
+
 \subsection{Word Embedding}
-\section{Potential Extntion of Data Retrieval}
+Word Embedding was also considered ...
+
+\section{Potential Extention of Data Retrieval}
+
 \section{Potential Issues With Data Retrieved}
-%While the ``Today in History'' dataset provides an excellent
-%base for out experiments, the sentences alone
-%(often between 5 and 15 words) do not contain enough
-%information to extract relational information from.
-
-%In order to build upon this data and procure data that
-%would aid in our training it was decided to use wikipedia
-%articles for aditional details.
-
-%Wikipedia does contain articles on most any subject and so
-%finding paragraphs about each event was simple enough. There
-%were concerns however abgout the legitimacy of the content
-%available, as any user has the ability to edit an article.
-%This concern arose from the known conflict-of-interest editing
-%that occurs on wikipedia.
-%Read the wiki paper again anf pad this out
-%\chapter{Date Extraction}
 
 \chapter{Learning}
 In order to produce results from the generated dates,
