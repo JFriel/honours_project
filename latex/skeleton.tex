@@ -5,7 +5,13 @@
 \usepackage{cite}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{color}
 \usepackage{xcolor}
+
+\usepackage{ntheorem}   % for theorem-like environments
+\usepackage{mdframed}   % for framing
+
+\usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
 
 \begin{document}
 
@@ -299,19 +305,33 @@ and other learning situations \cite{}.
 For our project, we implemented Bag-of-Words by using the relevant sentences for both of our events as a feature.
 We chose to represent our multisets are counts over the vocabulary so as to build numerical features to easily
 use the data with classifiers.
+\newpage
+\begin{tcolorbox}[width=\textwidth,
+                  %%enhanced,
+                  %%frame hidden,
+                  interior hidden,
+                  boxsep=10pt,
+                  left=0pt,
+                  right=0pt,
+                  top=2pt,
+                  ]%%
+  Given the sentences \vspace{0.5em}\\
+  \begin{center}``John likes to watch movies. Mary likes movies too.''\\
+  ``John also likes to watch football games.''\vspace{1em}\\
+   \end{center}
+    Based on these two text documents, a vocabulary list is constructed as follows:\vspace{1em}\\
+    \begin{center}
+  [``John'',``likes'',``to'',``watch'',``movies'',``also'',``football'',``games'',``Mary'',``too'']\vspace{1em}\\
+\end{center}
+    From this list a vector is constructed of the occurances
+    of each word across the sentences\vspace{1em}\\
+ \begin{center} 
+  Result: [2,3,2,2,2,1,1,1,1,1]
+\end{center}
+\end{tcolorbox}
 
-%example of turning sentence sinto vectors
-S1: ``John likes to watch movies. Mary likes movies too.''
-S2: ``John also likes to watch football games.''
-
-[``John'',``likes'',``to'',``watch'',``movies'',``also'',``football'',``games'',``Mary'',``too'']
-
-Result: [2,3,2,2,2,1,1,1,1,1]
-%%%
-
-As Bag-Of-Words looks at single words at time and the contextual data we aim to see may not be, we experimented with
-N-grams.
-%Some stuff about N-Grams and what we found
+As Bag-Of-Words only looks at single words at time and the contextual data may be lost through this method, we looked at
+alternative methods to improve on this.
 
 \subsubsection{N-Grams}
 When experimenting with N-Grams, we aimed to try and capture some of the meaning of phrases that appeared in the gathered
@@ -332,21 +352,25 @@ but does remove some of the contextual data we might receive.
 Word Embedding was also considered ...
 
 
-\section{Potential Issues With Data Retrieved}
+\section{Potential Issues With Data Retrieved}\label{sec:dataIssues}
 Wikipedia was a good choice for our external data source due its large catalogue of events.
 This provided us with more than sufficient data to gather from.
 While we have seen all of these positive atributes of wikipedia, there are certain issues that may have to be addressed
 that, if the content domain was to be altered, may cause issue.
 
 As Wikipedia is community managed, anybody can edit any page. This has been know to cause 'edit wars' over users
-uploading biast information about subjects \cite{].
+uploading biast information about subjects \cite{}.
 While in our current domain of long-term history, the facts and timelines are fairly solid, if we were to apply this project
 to a much more current or hotly contested subject - such as the OJ simpson trial, or recent presidential election - Wikipedia
 may not be the most appropriate source of information due to these bias edit wars.
 %Example
 
+
 \section{Potential Extention of Data Retrieval}
-stuff and things
+If this project was to be taken further, we would aim to improve the pool of information we can draw from and mitigate the issues outlined in section \ref{sec:dataIssues}.
+To do this we would consider multiple other sources for our data and cross-reference then with one another in order to suppress any misinformation within
+a particular article.
+
 
 \chapter{Learning}
 In order to produce results from the generated dates,
