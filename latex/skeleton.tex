@@ -7,7 +7,7 @@
 \usepackage{float}
 \usepackage{color}
 \usepackage{xcolor}
-
+\usepackage{lstlisting}
 \usepackage{ntheorem}   % for theorem-like environments
 \usepackage{mdframed}   % for framing
 
@@ -34,7 +34,7 @@
 %\course{Computer Science and Mathematics}
 %\course{Computer Science and Physics}  
 %\course{Computer Science and Statistics}    
-
+ 
 % to choose your report type
 % please un-comment just one of the following
 \project{Undergraduate Dissertation} % CS&E, E&SE, AI&L
@@ -289,7 +289,7 @@ From these results, method 6 was chosen as our context extraction method. While 
 results from this method are not perfectly relevent and other improvments could be made,
 time restirctions were a deciding factor in not persuing this experimentation further.
 
-\section{Feature Representation}
+\section{Feature Representation}\label{sec:representation}
 Having extracted a series of sentences for each event in our data, we required a concise method
 of representing these sentences. It is standard in NLP and ML domains to represent features as vectors.
 Several different techniques were discussed, but ultimately due to time constraints only two methods were
@@ -302,6 +302,8 @@ For example, \{$\alpha,\beta$\} and \{$\alpha,\beta,\alpha$\} are the same set, 
 This technique disregards grammar and order, but keeps multiplicity. It is a common technique in Computer vision
 and other learning situations \cite{}.
 
+
+%Need to talk a bit more abput how we are making tuples of every event set
 For our project, we implemented Bag-of-Words by using the relevant sentences for both of our events as a feature.
 We chose to represent our multisets are counts over the vocabulary so as to build numerical features to easily
 use the data with classifiers.
@@ -373,16 +375,106 @@ a particular article.
 
 
 \chapter{Learning}
-In order to produce results from the generated dates,
-we has to choose the correct Machine Learning Techniques
-\section{Aproach}
+Waffel waffel intro
+\section{Approach}
+In order to be able to train a classifier on our data, a method of giving each feature a label must be established.
+
+ Given that each event in our data set is of the form
+  \begin{eqnarray}
+  (t_{i},d_{i}) \hspace{0.5em}for\hspace{0.5em} i \hspace{0.2em}\epsilon \hspace{0.2em} [M]\nonumber
+    \end{eqnarray}
+    where t is the title, d is the associated date and M is the original data set,
+
+    Using the Wikipedia extraction techniques discussed in section \ref{sec:retrieval} we constructed a new data set
+    \begin{eqnarray}
+      \{(t_{i},s_{i},d_{j})\} \hspace{0.5em} for \hspace{0.5em}i,j  \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+    \end{eqnarray}
+    
+    This formed the basis of our data to generate features.
+
+    From this we built a new data set
+    \begin{eqnarray}
+      \{(t_{i},s_{i},t_{j},s_{j},b_{ij})\} \hspace{0.5em} for \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+      \end{eqnarray}
+    where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
+    We used this value as the label for our training data and to evaluate our results against.
+    A similar data set was constructed using only the article headlines.
+    
+    From each on the entries in this new data set, we use the feature representation techniques discussed in section \ref{sec:representation} to build numerical
+    features to train our classifier with.
+
+Along with building a tuple event dataset, we experimented with triple event entries.
+\begin{eqnarray}
+      \{(t_{i},s_{i},t_{j},s_{j},t_{k},s_{k}b_{ijk})\} \hspace{0.5em} for \hspace{0.5em} i,j,k \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+\end{eqnarray}
+
+Where $b_{ijk} = [y_i > y_j > y_k]$ indicating if the ordering is correct for these events.
+
+
+As we expected, increasing the number of events associated with each training point greatly decreased the accuracy of results.
+%Some stuff (paper?) about why adding more events makes things worse?
+Due to this, we will not focus on discussing these results, but instead focus on the results gathered from the tuple dataset.
+
+We split our dataset into 80\% Training, 10\% Dev, 10\% Test. This beaks our 6226 entry dataset into 4982,622,622 for the respective split.
+The alotment of the entries into each category was done randomly.
 
 \section{Local Learning}
+We initially looked at local learning, as opposed to global learning, to try and classify our data.
+Local learning is ...
+We chose to look at local learning techniques as .... 
 \subsection{Decision Trees}
-\subsection{Random Forests}
-\subsection{SVC}
+Decision trees were looked at as they are a non-parametric, supervised learning method
+that are commonly used for classification and regression. They learn simple decision rules inferred from
+data features to create a model that predicts the value of a target variable.
+
+These attributes were promising for our experiments as they fit with our data and requirements, generating
+classifications of test data and probabilities of these estimations.
+
+%Move this section Elsewhere
+It was also decided to run the experiment using three events, rather that two to see how these
+effected the results. 
+
+Some issues found with decision trees were that the probabilities generated were too narrowly distributed
+to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
+classification.
+%\subsection{Random Forests}
+
+\subsection{Support Vector Machines}
+Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
+associated learning algorithms for classification and regression.
+
+SVMs were experimented with as given data with a binary classification build the points in space,
+making a non-probabilistic binary linear classifier.
+
+This proved beneficial as the results generated were better than the decision trees \ref{table:local-learning}.
+SVMs also provided much better classification probability, which is favourable for path generation.
+%\subsection{Linear Regression}
+% To Be Completed in due course
+\vspace{4em}
 \subsection{Regression}
+stuff and things
 \subsection{Classification Results}
+For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
+This statistic was chosen as it can be used to measure the ordinal association between two measured quantities,
+this is easily applied to our problem of correct ordering classification of event tuples.\\ 
+
+The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{kendalltau}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
+  
+\begin{table}[H]
+\centering
+\label{table:local-learning}
+\begin{tabular}{|p{5em}|l|l|l|p{4em}|}
+  \hline
+  Accuracy  & DT* (tuple) & DT* (triple) & SVM & Logistic Regression\\
+  \hline
+  With Articles    & 53\%  & 48\%    & 66\% &  76\% \\
+\hline
+With Titles & 43\%  & 36& 51\%    & 52\% \\
+\hline
+\end{tabular}
+\caption{Local Learning Results  \\*DT = Decision Tree }
+\end{table}
+
 
 \section{Global Learning}
 \subsection{Structured Perceptron}
