@@ -452,24 +452,56 @@ SVMs also provided much better classification probability, which is favourable f
 % To Be Completed in due course
 \vspace{4em}
 \subsection{Regression}
-stuff and things
-\subsection{Classification Results}
-For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
-This statistic was chosen as it can be used to measure the ordinal association between two measured quantities,
-this is easily applied to our problem of correct ordering classification of event tuples.\\ 
+Logistic regression was also experimented with as it utilises a binary dependent variable - that being where it
+can only take one two values, ``1'' or ``0'' in our case to represent correct ordering.
+The logistic regression model estimates the probability of a binary responce based on one or more independent features.
+This is benefitial as along with providing clasification estimates, the model can produce probabilities for its
+decision. These probabilities can allow us to use weighting techniques to improve our path building.
 
-The Tau coefficient is defined as $\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{kendalltau}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
-  
+\subsection{Results}\label{sec:local-results}
+
+Having experimented with the various classification methods outlined above, we can see from table \ref{table:local-learning}
+That the use of the retrieved sentences is significantly better at predicting the ordering of tuples of events than that of
+just titles alone.
+
+When using the event titles alone, our results drop below our baseline on 50\% accuracy.
+Our baseline is the result if every event tuples was randomly assigned an ordering (1 or 0).
+These poor results for titles alone indicate that using such small amounts of data
+(mean=8.242531320269837,standard deviation= 3.2204518727095195) makes it difficult to make any reasonable inferences to specify the ordering.
+
+
+As we discussed earler, the difference between using features of two and three events is notable (5\%).
+
+The use of the retrieved article data has a noticable positive effect on the accuuracy of our classifiers.
+
+
+
+As we can see from our results, classification of tuple event orderings improves from the baseline by a significant margin.
+These results are promising as, the better the individual pauir orderings are, the better the agreement of a traveral across all events will be.
+With such a large spread of accuracies for our experiemnts with the retrieved articles, it was decided to explore global learning techniques
+
+%\subsubsection{Kendall Rank Correlation Coefficient}
+%For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
+%This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
+
+
+%The Tau coefficient is defined as
+%\begin{eqnarray}\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{kendalltau}\end{eqnarray}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
+
+%The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
+%This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
+%total independence.
+
 \begin{table}[H]
 \centering
 \label{table:local-learning}
-\begin{tabular}{|p{5em}|l|l|l|p{4em}|}
+\begin{tabular}{|p{5em}|l|l|l|p{4em}|l|}
   \hline
-  Accuracy  & DT* (tuple) & DT* (triple) & SVM & Logistic Regression\\
+  Accuracy  & DT* (tuple) & DT* (triple) & SVM & Logistic Regression & Baseline\\
   \hline
-  With Articles    & 53\%  & 48\%    & 66\% &  76\% \\
+  With Articles    & 53\%  & 48\%    & 66\% &  76\% & 50\%\\
 \hline
-With Titles & 43\%  & 36& 51\%    & 52\% \\
+With Titles & 43\%  & 36& 51\%    & 52\% & 50\%\\
 \hline
 \end{tabular}
 \caption{Local Learning Results  \\*DT = Decision Tree }
@@ -477,10 +509,59 @@ With Titles & 43\%  & 36& 51\%    & 52\% \\
 
 
 \section{Global Learning}
-\subsection{Structured Perceptron}
-\subsection{Neural Networks}
+Global learning is a machine learning method that fits a distribution over the data.
+some waffel \cite{huang2008machine}
 
-\section{Results}
+\subsection{Structured Perceptron}
+The Perceptron is a common algorithm used for large-scale learning.
+It is a type of linear classifier that bases predictions on a linear predictor function that combines a set of optimised weights
+and the input feature vector.
+It is primarily used for supervised learning of binary classification.
+This is something that will fit well with our data as the perceptron decides whether an input vector
+corresponds to a specific class \cite{freund1999large}.
+
+The percepron model has several attributes that will aid in improving the accuracy of our results.
+These include:
+\begin{itemize}
+\item It does not require a learning rate.
+\item It is not regularized (penalized).
+\item It updates its model only on mistakes
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{PerceptronExample.png}
+  \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \cite{goodspeed_2015}}
+\end{figure}
+
+
+It is these attributes that made the Perceptron a suitable model to experiment with.
+For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
+\subsection{Neural Networks}
+Having discussed the use of Perceptrons, the next logical method to experiment with was\\ 
+TODO - talk about the parameters used
+\subsection{Results}
+As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
+of classification to the results seen in section \ref{sec:local-results} and the baseline.
+
+\begin{table}[H]
+\centering
+\label{table:global-learning}
+\begin{tabular}{|p{5em}|l|l|p{4em}|l|}
+  \hline
+  {\small Accuracy}  & {\small Perceptron} & {\small MLP} & Baseline\\
+  \hline
+{\small With Articles}    & 66\%  & 83\% & 50\%\\
+\hline
+{\small With Titles} & 46\%  & 54\% & 50\%\\
+\hline
+\end{tabular}
+\caption{Global Learning Results}
+\end{table}
+
+From the results of our experiments with various different classification techniques, we have seen that the use of the sentences retrieved
+from Wikipedia aid in the classification of pairs of events. It is with this information in mind that we decided to take the results from
+the MLP classifications and use those from now to complete the pathing of our timeline.
 
 \chapter{Graphing}
 \section{Traveling Salesman Problem}
