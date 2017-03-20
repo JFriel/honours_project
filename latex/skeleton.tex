@@ -7,9 +7,9 @@
 \usepackage{float}
 \usepackage{color}
 \usepackage{xcolor}
-\usepackage{lstlisting}
 \usepackage{ntheorem}   % for theorem-like environments
 \usepackage{mdframed}   % for framing
+\usepackage{csquotes}
 
 \usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
 
@@ -236,7 +236,7 @@ It was these properties that make OpenIE the optimal system to extract the key r
   \centering
   \ref{fig:compound-relations}
   \includegraphics[scale=0.4]{openie-train.png}
-  \caption{Example of a compound relationship \cite{OpenIE}}%\cite{OpenIE}
+  \caption{Example of a compound relationship \protect{\cite{OpenIE}}}%\cite{OpenIE}
   \end{figure}
 
 \subsubsection{Article Retrieval}
@@ -531,7 +531,7 @@ These include:
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.5]{PerceptronExample.png}
-  \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \cite{goodspeed_2015}}
+  \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
 \end{figure}
 
 
@@ -540,6 +540,8 @@ For our experimentation, we trained the Perceptron model using  10 iterations wi
 \subsection{Neural Networks}
 Having discussed the use of Perceptrons, the next logical method to experiment with was\\ 
 TODO - talk about the parameters used
+
+
 \subsection{Results}
 As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
 of classification to the results seen in section \ref{sec:local-results} and the baseline.
@@ -564,7 +566,63 @@ from Wikipedia aid in the classification of pairs of events. It is with this inf
 the MLP classifications and use those from now to complete the pathing of our timeline.
 
 \chapter{Graphing}
+From our classifier, we have constructed a directional ordering between every two events.
+By placing each of our events in a node and placing each individual ordering on an edge, we constructed
+a digraph of the data.
+A digraph is an ordered pair G = (A,V) where\cite{bang2008digraphs}
+\begin{itemize}
+  \item V is the set of nodes
+  \item A is a set of ordered pairs of vertices
+\end{itemize}
+An example of such a graph can be seen in figure \ref{fig:digraph}.
+
+It is with this new graph that we began to experiment with methods to construct the most probably path through every
+node in the graph.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[]{}
+  \caption{A small example of our results places in a digraph}
+  \label{fig:digraph}
+  \end{figure}
+
 \section{Traveling Salesman Problem}
+The Travelling Salesman Problem (TSP) is a classic NP-hard algorithm problem\cite{junger1995traveling}.%something about NP hard problems
+It is defined as\\
+\begin{center}
+\enquote{A traveling salesman wants to visit each of a set of towns exactly once, starting
+from and returning to his home town. One of his problems is to find the shortest
+such trip. - \cite{junger1995traveling}}
+\end{center}
+
+While the TSP algorithm is still unsolved, we fortunetly only had to solve a a modidified version of the problem.\\
+
+\begin{center}
+  \enquote{Given a graph with directed edges, find the optimal path from some starting node through all other nodes in
+  the graph.}
+\end{center}
+
+These restriction on the graph make finding an optimal path through the graph much simpler.
+
+As we have no fixed start or end point to our path, several common pathing algorithms had to eliminated.
+From this it was decided that we would reconstruct the graph inverted edge-weight ($\frac{1}{W}$ where W is the edge weight
+between two nodes) and discuss solving the problem using shortest path algorithms.
+
+
+Given that we now have a directed, weighted and cyclic graph and are trying to find the minimum spanning path, it was
+obvious to use Dijkstra's algorithm to find the optimal path.
+
+Dijkstras algorithms is a well-known algorithm for finding the shortest path between two nodes in a graph.
+The algorithm requires a graph and a start node and will find the shortest path to all other nodes in the graph.
+The runtime for this algorithm is $\mathcal{O}(|E| + |V|log(|V|))$ where E is the number of edges in the graph and V
+is the number of veritces.
+In our graph these values are $\frac{n(n-1)}{2}$ for E and n for V.
+
+Given that Dijkstra's algorithm requires a fixed start node we ran the algorithm between each node to find
+the optimal path. While this in not the most efficient method of finding the optimal path through the graph, adding $n$ to
+the runtime.
+
 \section{Encoding}
 \subsection{Greedy}
 \subsection{ILP}
