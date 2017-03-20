@@ -10,6 +10,7 @@
 \usepackage{ntheorem}   % for theorem-like environments
 \usepackage{mdframed}   % for framing
 \usepackage{csquotes}
+\usepackage{amsmath}
 
 \usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
 
@@ -537,10 +538,46 @@ These include:
 
 It is these attributes that made the Perceptron a suitable model to experiment with.
 For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
-\subsection{Neural Networks}
-Having discussed the use of Perceptrons, the next logical method to experiment with was\\ 
-TODO - talk about the parameters used
+\subsection{Multilayer Perceptron}
+Having discussed the use of Perceptrons, the next logical method to experiment with multilayer perceptrons (MLP).
+A Multilayer Perceptron is an feedforward artifitial neural network that maps the set of inputs
+onto a set of appropriate outputs.
+An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
+Each node, except the input node, is a neuron(processing element) with an activation fucntion.
+An activation fucntion is a function that maps the weighted inputs of each processing element to an output.
+MLPs are traine dusing backpropigation.
 
+In order to effectivly use an MLP for our data we experimented with the various parameters.
+\begin{itemize}
+  \item Number of hidden layers - the number of neurons per layer
+  \item Type of activation function
+  \item Type of solver
+  \item L2 penalty
+  \item Maximum number of itterations per layer
+\end{itemize}
+
+After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be XXX. 
+This aids the model in transforming the inputs into something usable for the output layer.
+
+Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
+The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
+\begin{eqnarray}
+  f(x) = max(0,x)\nonumber\\
+  \text{where x is a neuron}\nonumber
+\end{eqnarray}
+The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
+
+In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
+This algorithm was chosen as it is an itterative model for non-linear optimisation.
+%Some more stuff about it
+
+An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
+We chose the value of 0.00005 so as to ...
+
+The last parameter we has to exeriment with was the number of itterations per layer.
+We wanted each layer to reach a convergence, so the paramater was set to 100.
+This is mich higher than most layers required (around 12 typically) but in order to encapsulate the outlyers
+a higher threshold was set. This value does have soem headroom to acocunt for any possible outlyers in testing.
 
 \subsection{Results}
 As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
@@ -610,12 +647,12 @@ From this it was decided that we would reconstruct the graph inverted edge-weigh
 between two nodes) and discuss solving the problem using shortest path algorithms.
 
 
-Given that we now have a directed, weighted and cyclic graph and are trying to find the minimum spanning path, it was
-obvious to use Dijkstra's algorithm to find the optimal path.
+Given that we now have a directed, weighted and cyclic graph and are trying to find the minimum spanning path,
+we chose to use Dijkstra's algorithm to find the optimal path as it fits our needs well.
 
 Dijkstras algorithms is a well-known algorithm for finding the shortest path between two nodes in a graph.
 The algorithm requires a graph and a start node and will find the shortest path to all other nodes in the graph.
-The runtime for this algorithm is $\mathcal{O}(|E| + |V|log(|V|))$ where E is the number of edges in the graph and V
+The worsecase runtime for this algorithm is $\mathcal{O}(|E| + |V|log(|V|))$ where E is the number of edges in the graph and V
 is the number of veritces.
 In our graph these values are $\frac{n(n-1)}{2}$ for E and n for V.
 
