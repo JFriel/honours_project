@@ -233,7 +233,7 @@ It was these properties that make OpenIE the optimal system to extract the key r
 %only two articles.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \ref{fig:compound-relations}
   \includegraphics[scale=0.4]{openie-train.png}
@@ -481,18 +481,6 @@ As we can see from our results, classification of tuple event orderings improves
 These results are promising as, the better the individual pauir orderings are, the better the agreement of a traveral across all events will be.
 With such a large spread of accuracies for our experiemnts with the retrieved articles, it was decided to explore global learning techniques
 
-%\subsubsection{Kendall Rank Correlation Coefficient}
-%For evaluation of our classifier, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
-%This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
-
-
-%The Tau coefficient is defined as
-%\begin{eqnarray}\tau = \frac{(number of concordant pairs) - (number of discordant pairs)}{n(n-1)/2}$\cite{kendalltau}\end{eqnarray}%https://www.encyclopediaofmath.org/index.php/Kendall_tau_metric
-
-%The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
-%This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
-%total independence.
-
 \begin{table}[H]
 \centering
 \label{table:local-learning}
@@ -529,7 +517,7 @@ These include:
 \item It updates its model only on mistakes
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[scale=0.5]{PerceptronExample.png}
   \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
@@ -562,7 +550,7 @@ This aids the model in transforming the inputs into something usable for the out
 Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
 The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
 \begin{eqnarray}
-  f(x) = max(0,x)\nonumber\\
+  f(x) = \text{max}(0,x)\nonumber\\
   \text{where x is a neuron}\nonumber
 \end{eqnarray}
 The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
@@ -619,14 +607,14 @@ node in the graph.
 
 \begin{figure}
   \centering
-  \includegraphics[]{}
+  \includegraphics[scale=0.5]{ExampleDigraph.png}
   \caption{A small example of our results places in a digraph}
   \label{fig:digraph}
-  \end{figure}
+ \end{figure}
 
 \section{Traveling Salesman Problem}
 The Travelling Salesman Problem (TSP) is a classic NP-hard algorithm problem\cite{junger1995traveling}.%something about NP hard problems
-It is defined as\\
+It is defined as
 \begin{center}
 \enquote{A traveling salesman wants to visit each of a set of towns exactly once, starting
 from and returning to his home town. One of his problems is to find the shortest
@@ -642,28 +630,111 @@ While the TSP algorithm is still unsolved, we fortunetly only had to solve a a m
 
 These restriction on the graph make finding an optimal path through the graph much simpler.
 
-As we have no fixed start or end point to our path, several common pathing algorithms had to eliminated.
-From this it was decided that we would reconstruct the graph inverted edge-weight ($\frac{1}{W}$ where W is the edge weight
-between two nodes) and discuss solving the problem using shortest path algorithms.
+
+\section{Pathing Algorithms}
+There have been numerous algorithms developed for the task of finding the shortest and longest paths through various types of graphs.
+As we require a total traversal of our graph, several of these algorithms were eliminated.
+
+In order to accommodate many shortest-path algorithms, a new graph was constructed with edge weights between nodes being inverted,
+$\frac{1}{W}$ where W is the edge weight. This allowed paths that look for the cheapest path to be usable as they will traverse the
+true most expensive path, which will encompass all nodes.
+
+There are two main types of solutions to optimal pathing: Greedy and Integer Linear Programming.
+We dissed the option available in each type of solution and the benefits there in.
+
+\subsection{Greedy Solution}
+A greedy algorithm is an algorithm that follows the problem solving heuristic of making locally optimal choices at each stage with the aim
+of finding a global optimum \cite{black2004dictionary}.
+While a greedy strategy does not in general produce a global optimum, it may produce locally optimum solutions that approximate a globally optimum solution.
 
 
-Given that we now have a directed, weighted and cyclic graph and are trying to find the minimum spanning path,
-we chose to use Dijkstra's algorithm to find the optimal path as it fits our needs well.
+The greedy strategy for our variation of the traveling salesman problem is the following heuristic:
+``At each stage, visit an unvisited city nearest to the current city.''
+Where nearest is defined as the lowest edge-weight.
 
-Dijkstras algorithms is a well-known algorithm for finding the shortest path between two nodes in a graph.
-The algorithm requires a graph and a start node and will find the shortest path to all other nodes in the graph.
-The worsecase runtime for this algorithm is $\mathcal{O}(|E| + |V|log(|V|))$ where E is the number of edges in the graph and V
-is the number of veritces.
-In our graph these values are $\frac{n(n-1)}{2}$ for E and n for V.
 
-Given that Dijkstra's algorithm requires a fixed start node we ran the algorithm between each node to find
-the optimal path. While this in not the most efficient method of finding the optimal path through the graph, adding $n$ to
-the runtime.
+%Need some beam search refs
+The greedy algorithm selected for our problem was the been search algorithm.
+It was chosen as it follows the greedy heruistic and also stores partial orderings, allowing us to prune solutions that do not cover all nodes.
+An example of this pruning ability can be seen in figure \ref{fig:beam-prune}.
 
-\section{Encoding}
-\subsection{Greedy}
-\subsection{ILP}
-\section{Results}
+\begin{figure}
+  \includegraphics[scale=0.5]{BeamSearchPruning.png}
+  \caption{An Example of beam search pruning\\ Iteration 1: Blue Iteration 2: Green, Iteration 3: Yellow}
+  \label{fig:beam-prune}
+\end{figure}
+
+As we do not know the optimal starting node, we must execute our greedy solution from each of the event nodes.
+With this we generated the optimal greedy path through our graph. The results of which can be seen in section \ref{sec:graph-results}.
+
+\subsection{Integer Linear Programming Solution}
+Integer Linear Programming (ILP) is a mathematical optimisation where the objective function and the contraints are linear.
+SOMEMORE FLUFF about what ILP is.
+
+The A\* search alggorithm is is special case of the generalisation of branch and bound\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP\cite{ye2012note}.
+We chose this algorithm as it it follows the ILP methodology. The algorithm works in a similar way to best-first search, but takes into account the path cost already travelled.
+This is benefitial as it will give us the globally optimum path by finsing the most probable total path, rather than the most probable next step that we saw when using a
+greedy algorithm.
+
+Similarly to the greedy solution, as we do not know the optimal start and end node, we had to run the algorithm with every possible start and end node combination.
+
+\section{Results}\label{sec:graph-results}
+For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
+This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
+
+
+The Tau coefficient is defined as
+\begin{eqnarray}
+  \tau=\frac{(\text{number of concordant pairs})-(\text{number of discordant pairs})}{n(n-1)/2}\cite{kendalltau}\nonumber
+\end{eqnarray}
+
+The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
+This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
+total independence.
+
+
+\begin{table}[H]
+\centering
+\label{table:greedy-results}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
+  \hline
+With Articles & nan & nan &nan& nan   & 66\%  & 83\%\\
+\hline
+With Titles & nan & Nan & nan &46\%  & 54\% & 50\%\\
+\hline
+\end{tabular}
+\caption{Greedy Pathing Results}
+\end{table}
+
+
+
+\begin{table}[H]
+\centering
+\label{table:ILP-results}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+  \hline
+  A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
+  \hline
+With Articles & nan & nan &nan& nan   & 66\%  & 83\%\\
+\hline
+With Titles & nan & Nan & nan &46\%  & 54\% & 50\%\\
+\hline
+\end{tabular}
+\caption{ILP Pathing Results}
+\end{table}
+
+
+\begin{figure}
+  %\includegraphic[]{}
+  \caption{An Example of the Tau Coefficient in Use}
+  \label{fig:tau}
+\end{figure}
+
+
+
+%need a table of results
 
 \chapter{Results}
 \section{Results}
