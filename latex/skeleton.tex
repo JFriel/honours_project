@@ -16,7 +16,7 @@
 
 \begin{document}
 
-\title{Event Ordering in News Articles}
+\title{Aiding Total Ordering of Historical Events using Contextual Data}
 
 \author{James Robert Friel}
 % to choose your course
@@ -110,22 +110,6 @@ We can use some evaluation technique to see how accurate our results are, compai
 external data sources and to a human rate.
 
 
-%The core aims of the project were: 
-%\begin{itemize}
-%  \item Investivage the usefulness of wikipedia text in feature generation
-%  \item Generate probable dates For each event
-%  \item Order these events linearly
-%\end{itemize}
-
-%The further goals of the project were to:
-%\begin{itemize}
-%  \item Generate edge-weighted directional graphs of the data
-%  \item Construct probabilities of maximum spanning walks through the graph
-%\end{itemize}
-
-%Some initial stretch goals of the project were to construct an interactive
-%interface to the resulting graphs to act as a visual aid for the results.
-
 \section{Testing \& Evaluation}
 With our dataset being so large, 6250 entries, it can
 easily be split into training, development and testing with no
@@ -139,6 +123,7 @@ measured quantities. This was easy be applied to our results
 by compairing the systems estimated orderings of events
 with the label associated with the event from the data.
 
+\section{Implimentation}
 \section{Contributions}
 
 \chapter{Background}
@@ -152,7 +137,7 @@ There are two levels of reading comprehension, shallow (low-level) and deep (hig
 Shallow comprehension involves structural and phonemic recognition along with the processing of sentence and  word
 structure.
 Deep comprehension involves semantic processing, which happens when we encode the meaning of a word and relate it
-to similar words ( See word embedding).
+to similar words, see section \ref{sec:word-embedding}.
 This levels system of comprehension was first proposed by  Fergus I. M. Craik and Robert S. Lockhart \cite{wagner2009beyond}.
 
 One of the earliest known attempts at NLU by a computer \cite{russell1995modern}. Since then, NLU has become an
@@ -210,10 +195,10 @@ and their relations from our event titles.
 
 OpenIE was chosen due to it having several benifitial porperties.
 
-OpenIE impliments a number of extraction techniques, such as ``noun-mediated extraction'' and ``BLAH BALH''.
+OpenIE impliments a number of extraction techniques, such as ``noun-mediated extraction'' and ``n-ary extraction''.
 We have seen through experimentation with the various
 extraction methods that there is no one method that gives reasonable results for all of our inputs.
-For example using SOME TECHNIQUE of SENTENCE IT DID A BAD THING BUT DID A GOOD THING FOR ANOTHER EXAMPLE.
+For example using the OLLIE system proved better then the ReVerb system, however neither system provided ideal results in all instances.%Need more here
 The ability to use any and all of the avialble techniques seamlessly is benefitial as it allows us to
 extract the best possible relationships from each event. 
 
@@ -261,7 +246,7 @@ These included:
 
 As we can see from Table \ref{table:retrieval}, experimentation yeilded mixed results.
 With such a large range of average number of sentences retrieved and the relevency there in.
-Relevency was measured manually using Cohen's Kappa \cite{}.
+Relevency was measured manually using Cohen's Kappa \cite{wood2007understanding}.
 
 Cohen's kappa measures the agreement between two raters who each classify N items into C mutually exclusive categories
 \begin{equation}
@@ -308,7 +293,7 @@ and other learning situations \cite{}.
 For our project, we implemented Bag-of-Words by using the relevant sentences for both of our events as a feature.
 We chose to represent our multisets are counts over the vocabulary so as to build numerical features to easily
 use the data with classifiers.
-\newpage
+%\newpage
 \begin{tcolorbox}[width=\textwidth,
                   %%enhanced,
                   %%frame hidden,
@@ -351,8 +336,27 @@ incorporate into our features.
 This representation worked well as it it provides a numerical representation of the cross-section of our two articles
 but does remove some of the contextual data we might receive.
 
-\subsection{Word Embedding}
-Word Embedding was also considered as this feature learning technique maps words or phrases to vecors of real numbers.
+\subsection{Word Embedding} \label{sec:word-embedding}
+Word Embedding was also considered as this feature learning technique maps words or phrases to vectors of real numbers.
+With advances in this method from Google in the past few years, with the use of nural network architectures, they have become
+popular as methods to perform netural language processing (NLP) such as syntax parsing \cite{socher2013parsing}.
+
+Using Gensim's Doc2Vec models \cite{}, we used this system to build thought vectors of our sentences. Thought vectors are vectors
+made of whole sentnece or documents, typically used in mahine translation \cite{deeplearning4j}.
+It was decided to use thought vectors as they corrolate words with labels rather than word with words (which is done by bag-of-words).
+This would, in theory, provide better better representation of the words relating to ordering label, provising better results.
+
+%Example of word embedding and such
+
+
+From our experimentation, we discovered that when using the thought vectors to train our classifier the accuracy produced was 54\%less than that when
+using bag-of-words. While this went agains our hypothesis of using this technique we beleieve there were a few reasons that word embedding did
+not perform as well as anticipated:
+\begin{itemize}
+  \item Imperfect sentence retrieval causing noise in the features
+  \item 
+\end{itemize}
+
 
 
 \section{Potential Issues With Data Retrieved}\label{sec:dataIssues}
@@ -402,7 +406,7 @@ In order to be able to train a classifier on our data, a method of giving each f
     From this we built a new data set
     \begin{eqnarray}
       \{(t_{i},s_{i},t_{j},s_{j},b_{ij})\} \hspace{0.5em} for \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
-      \end{eqnarray}
+    \end{eqnarray}
     where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
     We used this value as the label for our training data and to evaluate our results against.
     A similar data set was constructed using only the article headlines.
@@ -424,6 +428,24 @@ Due to this, we will not focus on discussing these results, but instead focus on
 
 We split our dataset into 80\% Training, 10\% Dev, 10\% Test. This beaks our 6226 entry dataset into 4982,622,622 for the respective split.
 The alotment of the entries into each category was done randomly.
+
+For each of the techniques outlines below, we followed a similar procedure.
+Experimented using the development set to optimise the parameters to give us the most optimal results.
+For each classifier, we feed in the training features and theor associated label. These features will
+be either the features generated from titles alone or with the sentences retrieved from wikipedia.
+
+Once training of the model has completed, we feed in a new data point for the system to return a clasification for.
+
+Each of these data points is similar to that of the training data
+ \begin{eqnarray}
+   \{(t_{i},t_{j})\} \hspace{0.5em} for \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+ \end{eqnarray}
+
+ Thje classification returned for each data point is of the same style as that of the training data.
+ With these new data point classification we can begin to look at finding the optimal path through all of the nodes.
+ We will discuss the methods used in Chapter \ref{chapter:graphing}.
+ 
+
 
 \section{Local Learning}
 We initially looked at local learning, as opposed to global learning, to try and classify our data.
@@ -523,7 +545,7 @@ These include:
 \item It updates its model only on mistakes
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[scale=0.5]{PerceptronExample.png}
   \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
@@ -537,9 +559,18 @@ Having discussed the use of Perceptrons, the next logical method to experiment w
 A Multilayer Perceptron is an feedforward artifitial neural network that maps the set of inputs
 onto a set of appropriate outputs.
 An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
-Each node, except the input node, is a neuron(processing element) with an activation fucntion.
+Each node, except the input node, is a neuron (processing element) with an activation fucntion.
+
+\begin{figure}
+  \centering
+  \includegraphics[]{mlp-example.png}
+  \caption{An Example one hidden layer MLP \cite{}}%http://scikit-learn.org/stable/modules/neural_networks_supervised.html
+  \label{fig:mlp}
+\end{figure}
+
 An activation fucntion is a function that maps the weighted inputs of each processing element to an output.
-MLPs are traine dusing backpropigation.
+MLPs are trained using backpropigation.
+
 
 In order to effectivly use an MLP for our data we experimented with the various parameters.
 \begin{itemize}
@@ -547,10 +578,10 @@ In order to effectivly use an MLP for our data we experimented with the various 
   \item Type of activation function
   \item Type of solver
   \item L2 penalty
-  \item Maximum number of itterations per layer
+  \item Maximum number of itterations
 \end{itemize}
 
-After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be XXX. 
+After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
 This aids the model in transforming the inputs into something usable for the output layer.
 
 Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
@@ -568,10 +599,10 @@ This algorithm was chosen as it is an itterative model for non-linear optimisati
 An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
 We chose the value of 0.00005 so as to ...
 
-The last parameter we has to exeriment with was the number of itterations per layer.
+The last parameter we has to exeriment with was the number of itterations.
 We wanted each layer to reach a convergence, so the paramater was set to 100.
-This is mich higher than most layers required (around 12 typically) but in order to encapsulate the outlyers
-a higher threshold was set. This value does have soem headroom to acocunt for any possible outlyers in testing.
+100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
+
 
 \subsection{Results}
 As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
@@ -596,7 +627,7 @@ From the results of our experiments with various different classification techni
 from Wikipedia aid in the classification of pairs of events. It is with this information in mind that we decided to take the results from
 the MLP classifications and use those from now to complete the pathing of our timeline.
 
-\chapter{Graphing}
+\chapter{Graphing} \label{chapter:graphing}
 From our classifier, we have constructed a directional ordering between every two events.
 By placing each of our events in a node and placing each individual ordering on an edge, we constructed
 a digraph of the data.
@@ -660,7 +691,7 @@ Where nearest is defined as the lowest edge-weight.
 
 
 %Need some beam search refs
-The greedy algorithm selected for our problem was the been search algorithm.
+The greedy algorithm selected for our problem was the beam search algorithm.
 It was chosen as it follows the greedy heruistic and also stores partial orderings, allowing us to prune solutions that do not cover all nodes.
 An example of this pruning ability can be seen in figure \ref{fig:beam-prune}.
 
@@ -675,9 +706,11 @@ With this we generated the optimal greedy path through our graph. The results of
 
 \subsection{Integer Linear Programming Solution}
 Integer Linear Programming (ILP) is a mathematical optimisation where the objective function and the contraints are linear.
-SOMEMORE FLUFF about what ILP is.
+ILP is common in the field of optimisation and is ideal for our needs. As ILP aims to find the globally most optimal solution, when applied to pathfinding it
+should generate the best global path through all nodes, rather than finding the next most optimal node like in a greedy solution.
 
-The A\* search alggorithm is is special case of the generalisation of branch and bound\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP\cite{ye2012note}.
+
+The A\* search algorithm is is special case of the generalisation of branch and bound\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP\cite{ye2012note}.
 We chose this algorithm as it it follows the ILP methodology. The algorithm works in a similar way to best-first search, but takes into account the path cost already travelled.
 This is benefitial as it will give us the globally optimum path by finsing the most probable total path, rather than the most probable next step that we saw when using a
 greedy algorithm.
@@ -691,8 +724,8 @@ This statistic was chosen as it can be used to measure the ordinal association b
 
 The Tau coefficient is defined as
 \begin{eqnarray}
-  \tau=\frac{(\text{number of concordant pairs})-(\text{number of discordant pairs})}{n(n-1)/2}\cite{kendalltau}\nonumber
-\end{eqnarray}
+  \tau=\frac{(\text{number of concordant pairs})-(\text{number of discordant pairs})}{n(n-1)/2}\nonumber
+\end{eqnarray}\cite{abdi2007kendall}
 
 The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
 This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
@@ -706,9 +739,9 @@ total independence.
   \hline
   Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
   \hline
-With Articles & nan & nan &nan& nan   & 66\%  & 83\%\\
+With Articles & nan & nan &nan& nan   & nan  & nan\\
 \hline
-With Titles & nan & Nan & nan &46\%  & 54\% & 50\%\\
+With Titles & nan & Nan & nan & nan  & nan & nan\\
 \hline
 \end{tabular}
 \caption{Greedy Pathing Results}
@@ -723,9 +756,9 @@ With Titles & nan & Nan & nan &46\%  & 54\% & 50\%\\
   \hline
   A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
   \hline
-With Articles & nan & nan &nan& nan   & 66\%  & 83\%\\
+With Articles & nan & nan &nan& nan   & nan  & nan\\
 \hline
-With Titles & nan & Nan & nan &46\%  & 54\% & 50\%\\
+With Titles & nan & Nan & nan & nan  & nan & nan\\
 \hline
 \end{tabular}
 \caption{ILP Pathing Results}
@@ -745,7 +778,7 @@ With Titles & nan & Nan & nan &46\%  & 54\% & 50\%\\
 \chapter{Results}
 \section{Results}
 \section{Discussion}
-\chapter{Conclusion}
+%\chapter{Conclusion}
 \section{Further Work}
 \section{Conclusion}
 % use the following and \cite{} as above if you use BibTeX
