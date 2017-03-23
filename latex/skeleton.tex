@@ -16,7 +16,7 @@
 
 \begin{document}
 
-\title{Aiding Total Ordering of Historical Events using Contextual Data}
+\title{Aiding Temporal Ordering of Historical Events using Contextual Data}
 
 \author{James Robert Friel}
 % to choose your course
@@ -126,9 +126,44 @@ with the label associated with the event from the data.
 \section{Implimentation}
 \section{Contributions}
 
-\chapter{Background}
-%NLU as a subjext area
-The work undertaken in this project settles nicely within the research space of Natural Language Understanding (NLU).
+\chapter{Background \& Related Work}
+
+
+\section{Relation Extraction}
+Dependency parsing is the core of relation extraction. Focusing on the dependancies between words allows for the relation of these words to become apparent.
+While there are numberous types of dependency representations, relation extraction is mostly focused around semantic dependancies \cite{mcclosky2011event}.
+Semantic dependancies are understood in terms of predicates and arguments.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{semantic-dependancy.png}
+  \caption{Example Semantic Dependancy}
+  \label{fig:semantic-dependancy}
+\end{figure}
+
+In the example semantic dependancy in figure \ref{fig:semantic-dependancy} the two arguments \textit{John} and \textit{Football} are dependent
+on the predicate \textit{likes}. This semantic dependancy is the basis for relation extraction.
+
+
+Historically, dependancy parsing has consisted of only highly local models that extract each event and argument independently.
+Modern techniques are building upon this to build systems that can handle more complex arguments. These systems use a tree of
+event-argument relations represented in a reranking dependency [parser \cite{mcclosky2011event}.
+This type of system captures both flat relations, such as in figure \ref{fig:semantic-dependancy}, but also nested relations.
+We see an example of these nested relations in figure \ref{fig:nested-relation}. These nested relation allow for more context to be drawn from
+the source text.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{nested-relation.png}
+  \caption{Example Nested Relation}
+  \label{fig:nested-relation}
+\end{figure}
+
+
+\section{Machine Reading}
+The core aim of this project is to investigate the usefulness of Wikipedia article content is benefitial to total ordering ov events.
+In order to do this we must perform machine reading on said articles.
+Machine reading is the core problem of Natural Laguage Understanding (NLU).
 NLU deals with machine reading comprehension, the problem of dissecting natural language inputs into usable features,
 and is considered an AI-hard problem.
 
@@ -160,13 +195,35 @@ the data is beneficial as structured data typically has little to no subtler mea
 In recent years there has been a commercial interest in NLU, mostly focusing on news-gathering, text categorising and
 content-analysis. These systems vary vastly in terms of difficulty and use of comprehension. 
 
-\chapter{Related Work \& Motivation}
-%Papers I have read and why we are doing this
-\section{Motivation}
+
 \section{Related Work}
+In recent years there has been a growing research into temporal ordering.
+A number of different papers have been published on machine-learning approaches to temporal ordering events.
+Although there have been various different aproaches to this problem, the most common and successful approaches typically
+use unsupervised learning techniques. These works often use pattern-based approaches and manually crafted rules \cite{chklovski2004mining}.  
+
+\cite{chambers2009unsupervised}addresses unsupervised learning of event relations. Their evaluation
+senarios deals with binary classification related to event ordering and aims to distin-
+guish ordered set of events from random permutations. Their research into argument representation is benefitial base
+knowledge for our research into event extraction.
+
+The paper by \cite{abend2015lexical} addresses the use of
+edge-factor models in temporal ordering. The classification task we aim to undertake is similar to that of \cite{abend2015lexical}
+but with significantly larger set of events to order.
+
+\cite{mani2006machine} discuss the use of hand written rules and lexical rules for event tagging. While the methods discussed in this paper
+do not take into account dependencies between pairs of events, we see an alternative that does encompass
+these dependancies in \cite{schapire1998learning}.  
+
+%Should probably expand on each paper, advantages disadvantages etc
+
+\chapter{Methodology}
+%Papers I have read and why we are doing this
+%\section{Motivation}
+%\section{Related Work}
 
 
-\chapter{Wikipedia As a Data Source}%%Potential Chapter name change
+\section{Wikipedia As a Data Source}%%Potential Chapter name change
 %Intro to the data set
 Wikipedia was chosen as the external data source for this project as
 due to the nature of the events in our dataset, historical points of note,
@@ -177,7 +234,7 @@ that most events will exist within its pages.
 Wikipedia is also written in a manner that makes comprehension of events reletivly simple.
 It is the key sentences within articles that we will use to estimate a timeline.
 
-\section{Text Retrieval}
+\subsection{Text Retrieval}
 Using Wikipedia's article retrieval API, gathering the data from
 the site is trivial.
 Choosing what information is contextually relevent to the subject is, however, not so straightforward.
@@ -185,7 +242,7 @@ Along with looking at how to extract the key entities and actions from our
 headlines, we must also experiment with methods of extracting contextually relevent information from
 retrieved articles.
 
-\subsubsection{OpenIE}
+\subsubsubsection{OpenIE}
 Stanfords natural language processing (NLP) suite,
 a natural language analysis toolkit,
 was selected to aid in extraction of features from the dataset.
@@ -378,8 +435,8 @@ If this project was to be taken further, we would aim to improve the pool of inf
 To do this we would consider multiple other sources for our data and cross-reference then with one another in order to suppress any misinformation within
 a particular article.
 
-
-\chapter{Learning}
+\chapter{Experiments}
+\section{Learning}
 In order to see if the retrieved sentences aided in the  ordering of linear event we must investigate machine learning
 techniques. We hope to see that the features generated from these 'important' sentences provide a suitable training model
 to improve orderings against a random assignment baseline. We also hope to see that the use of these features vastly
@@ -387,7 +444,7 @@ improves over the use of titles alone.
 
 
 
-\section{Approach}
+\subsection{Approach}
 In order to be able to train a classifier on our data, a method of giving each feature a label must be established.
 
  Given that each event in our data set is of the form
@@ -447,11 +504,11 @@ Each of these data points is similar to that of the training data
  
 
 
-\section{Local Learning}
+\subsection{Local Learning}
 We initially looked at local learning, as opposed to global learning, to try and classify our data.
 Local learning is ...
 We chose to look at local learning techniques as .... 
-\subsection{Decision Trees}
+\subsubsection{Decision Trees}
 Decision trees were looked at as they are a non-parametric, supervised learning method
 that are commonly used for classification and regression. They learn simple decision rules inferred from
 data features to create a model that predicts the value of a target variable.
@@ -468,7 +525,7 @@ to infer any confidence in the paths generated. Due to this, it was decided to e
 classification.
 %\subsection{Random Forests}
 
-\subsection{Support Vector Machines}
+\subsubsection{Support Vector Machines}
 Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
 associated learning algorithms for classification and regression.
 
@@ -480,14 +537,14 @@ SVMs also provided much better classification probability, which is favourable f
 %\subsection{Linear Regression}
 % To Be Completed in due course
 \vspace{4em}
-\subsection{Regression}
+\subsubsection{Regression}
 Logistic regression was also experimented with as it utilises a binary dependent variable - that being where it
 can only take one two values, ``1'' or ``0'' in our case to represent correct ordering.
 The logistic regression model estimates the probability of a binary responce based on one or more independent features.
 This is benefitial as along with providing clasification estimates, the model can produce probabilities for its
 decision. These probabilities can allow us to use weighting techniques to improve our path building.
 
-\subsection{Results}\label{sec:local-results}
+\subsubsection{Results}\label{sec:local-results}
 
 Having experimented with the various classification methods outlined above, we can see from table \ref{table:local-learning}
 That the use of the retrieved sentences is significantly better at predicting the ordering of tuples of events than that of
@@ -525,11 +582,11 @@ With Titles & 43\%  & 36& 51\%    & 52\% & 50\%\\
 \end{table}
 
 
-\section{Global Learning}
+\subsection{Global Learning}
 Global learning is a machine learning method that fits a distribution over the data.
 some waffel \cite{huang2008machine}
 
-\subsection{Structured Perceptron}
+\subsubsection{Structured Perceptron}
 The Perceptron is a common algorithm used for large-scale learning.
 It is a type of linear classifier that bases predictions on a linear predictor function that combines a set of optimised weights
 and the input feature vector.
@@ -554,7 +611,7 @@ These include:
 
 It is these attributes that made the Perceptron a suitable model to experiment with.
 For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
-\subsection{Multilayer Perceptron}
+\subsubsection{Multilayer Perceptron}
 Having discussed the use of Perceptrons, the next logical method to experiment with multilayer perceptrons (MLP).
 A Multilayer Perceptron is an feedforward artifitial neural network that maps the set of inputs
 onto a set of appropriate outputs.
@@ -604,7 +661,7 @@ We wanted each layer to reach a convergence, so the paramater was set to 100.
 100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
 
 
-\subsection{Results}
+\subsubsection{Results}
 As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
 of classification to the results seen in section \ref{sec:local-results} and the baseline.
 
@@ -627,7 +684,7 @@ From the results of our experiments with various different classification techni
 from Wikipedia aid in the classification of pairs of events. It is with this information in mind that we decided to take the results from
 the MLP classifications and use those from now to complete the pathing of our timeline.
 
-\chapter{Graphing} \label{chapter:graphing}
+\section{Graphing} \label{chapter:graphing}
 From our classifier, we have constructed a directional ordering between every two events.
 By placing each of our events in a node and placing each individual ordering on an edge, we constructed
 a digraph of the data.
@@ -649,7 +706,7 @@ node in the graph.
   \label{fig:digraph}
  \end{figure}
 
-\section{Traveling Salesman Problem}
+\subsection{Traveling Salesman Problem}
 The Travelling Salesman Problem (TSP) is a classic NP-hard algorithm problem\cite{junger1995traveling}.%something about NP hard problems
 It is defined as
 \begin{center}
@@ -668,7 +725,7 @@ While the TSP algorithm is still unsolved, we fortunetly only had to solve a a m
 These restriction on the graph make finding an optimal path through the graph much simpler.
 
 
-\section{Pathing Algorithms}
+\subsection{Pathing Algorithms}
 There have been numerous algorithms developed for the task of finding the shortest and longest paths through various types of graphs.
 As we require a total traversal of our graph, several of these algorithms were eliminated.
 
@@ -679,7 +736,7 @@ true most expensive path, which will encompass all nodes.
 There are two main types of solutions to optimal pathing: Greedy and Integer Linear Programming.
 We dissed the option available in each type of solution and the benefits there in.
 
-\subsection{Greedy Solution}
+\subsubsection{Greedy Solution}
 A greedy algorithm is an algorithm that follows the problem solving heuristic of making locally optimal choices at each stage with the aim
 of finding a global optimum \cite{black2004dictionary}.
 While a greedy strategy does not in general produce a global optimum, it may produce locally optimum solutions that approximate a globally optimum solution.
@@ -704,7 +761,7 @@ An example of this pruning ability can be seen in figure \ref{fig:beam-prune}.
 As we do not know the optimal starting node, we must execute our greedy solution from each of the event nodes.
 With this we generated the optimal greedy path through our graph. The results of which can be seen in section \ref{sec:graph-results}.
 
-\subsection{Integer Linear Programming Solution}
+\subsubsection{Integer Linear Programming Solution}
 Integer Linear Programming (ILP) is a mathematical optimisation where the objective function and the contraints are linear.
 ILP is common in the field of optimisation and is ideal for our needs. As ILP aims to find the globally most optimal solution, when applied to pathfinding it
 should generate the best global path through all nodes, rather than finding the next most optimal node like in a greedy solution.
@@ -717,7 +774,7 @@ greedy algorithm.
 
 Similarly to the greedy solution, as we do not know the optimal start and end node, we had to run the algorithm with every possible start and end node combination.
 
-\section{Results}\label{sec:graph-results}
+\subsection{Results}\label{sec:graph-results}
 For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
 This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
 
