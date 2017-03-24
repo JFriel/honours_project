@@ -209,7 +209,8 @@ knowledge for our research into event extraction.
 
 The paper by \cite{abend2015lexical} addresses the use of
 edge-factor models in temporal ordering. The classification task we aim to undertake is similar to that of \cite{abend2015lexical}
-but with significantly larger set of events to order.
+but with significantly larger set of events to order. \cite{abend2015lexical} also use a variation of the hamiltonian path
+to complete an ILP ordering of their events.
 
 \cite{mani2006machine} discuss the use of hand written rules and lexical rules for event tagging. While the methods discussed in this paper
 do not take into account dependencies between pairs of events, we see an alternative that does encompass
@@ -791,34 +792,34 @@ total independence.
 
 \begin{table}[H]
 \centering
-\label{table:greedy-results}
+\label{table:ILP-results}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
   Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
   \hline
-With Articles & nan & nan &nan& nan   & nan  & nan\\
+With Articles & 0.695 & 0.419 & -0.3 & 0.376   & 0.7333  & 0\\
 \hline
 With Titles & nan & Nan & nan & nan  & nan & nan\\
 \hline
 \end{tabular}
-\caption{Greedy Pathing Results}
+\caption{ILP Pathing Results}
 \end{table}
 
 
 
 \begin{table}[H]
 \centering
-\label{table:ILP-results}
+\label{table:greedy-results}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
   A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
   \hline
-With Articles & nan & nan &nan& nan   & nan  & nan\\
+With Articles & 0.42 & 0.5151 & 0.3 &    & 0.5454  & 0\\
 \hline
 With Titles & nan & Nan & nan & nan  & nan & nan\\
 \hline
 \end{tabular}
-\caption{ILP Pathing Results}
+\caption{Greedy Pathing Results}
 \end{table}
 
 
