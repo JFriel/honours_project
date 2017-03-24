@@ -1,6 +1,6 @@
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 import app.parser.getData as importArticles
 import app.parser.articleRetrieval.getArticles as getContent
 import app.parser.sentences as sent
@@ -17,8 +17,8 @@ scaler = StandardScaler()
 import app.analytics.filterSentences as fl
 import networkx as nx
 import matplotlib.pyplot as plt
-G=nx.DiGraph()
-
+G={}#nx.DiGraph()
+H = {}
 np.seterr(divide='ignore',invalid='ignore')
 
 listOfYears = []
@@ -53,27 +53,41 @@ def test(features,B):
         temp = np.array(feature[0][0:B]).reshape((1, -1))
         predict = clf.predict(temp[0][0:B].reshape((1,-1)))
         #prob = max(clf.predict_proba(temp)[0])
+        #add all articles to G
+        if(feature[1][1] not in G.keys()):
+            G.update({feature[1][1]:[]})
+            H.update({feature[1][1]:feature[2]})
+        if(feature[1][0] not in G.keys()):
+            G.update({feature[1][0]:[]})
+            H.update({feature[1][0]:feature[2]})
+        #Add list of which came before what
+        if(predict == 1):
+            G[feature[1][0]].append(feature[1][1])
+        else:
+            G[feature[1][1]].append(feature[1][0])
+
         probs.append([predict, feature[2]])
         if(feature[2] == predict[0]):
             correct +=1
-    print "Accuracy = " + str(correct) + '/' + str(len(features))
+    print ("Accuracy = " + str(correct) + '/' + str(len(features)))
 
 
 
-
-print datetime.datetime.now()
+print (datetime.datetime.now())
 p = Pool(20)
 trainFeatures = []
-for I in range(len(trainData)):
+for I in range(10):#len(trainData)):
     if trainData[I] is not None:
         trainFeatures.append(trainData[I])
 B = train(trainFeatures)
-print datetime.datetime.now()
+print (datetime.datetime.now())
 #train(generateDataPoints(trainArticles))
-print "Training Complere. Now For Testing"
+print ("Training Complere. Now For Testing")
 testFeatures = []
 testData = eval(testData[0])
-for I in range(len(testData)):
+for I in range(5):#len(testData)):
     if testData[I] != None:
         testFeatures.append(testData[I])
 test(testFeatures,B)
+print (G)
+print (H)
