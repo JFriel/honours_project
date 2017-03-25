@@ -13,6 +13,9 @@
 \usepackage{amsmath}
 
 \usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
+\tcbuselibrary{skins}
+\usetikzlibrary{shadings}
+
 
 \begin{document}
 
@@ -75,22 +78,6 @@ $[$ ``Alaska becomes 49th State'', ``1959-01-01'' $]$
 The problem tackled in this paper is based on the paper \cite{abend2015lexical} and several
 techniques used are based from this paper. 
 
-%Nominal data is descriptive in nature, making is difficult to assign an cannonical ordering to.
-%The problem tackled in this disertation is the ordering of news article headlines to generate
-%a most-probable traversal of a weighted directed graph of these events.
-%This problem is based off of the paper \cite{abend2015lexical} and some
-%techniques discussed and used henseforth are based off of this paper.
-
-
-%Our data comes from the Wikipedia ``Today in History'' dataset and the nominal data is retrived
-%from wikipedia articles.
-%The problem explored within this thesis is that of graphing nature.
-%Building a most probable path through each node in an edge-weighted directed graph
-%, each node beinga single sentence describing an event from history.
-%Examples of these events include:
-%\say{Julian claendar begins at Greenwich mean noon}
-%and \say{AT\&T broken up into 8 countries}
-
 \section{Aims \& Objectives}
 
 The aim of this project is to experiment with machine reading on external data sources to
@@ -133,7 +120,6 @@ with the label associated with the event from the data.
 Dependency parsing is the core of relation extraction. Focusing on the dependancies between words allows for the relation of these words to become apparent.
 While there are numberous types of dependency representations, relation extraction is mostly focused around semantic dependancies \cite{mcclosky2011event}.
 Semantic dependancies are understood in terms of predicates and arguments.
-
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.6]{semantic-dependancy.png}
@@ -224,116 +210,172 @@ these dependancies in \cite{schapire1998learning}.
 %\section{Related Work}
 
 
-\section{Wikipedia As a Data Source}%%Potential Chapter name change
+%\section{The Data}%%Potential Chapter name change
 %Intro to the data set
+\section{Today In History Dataset}
+The Today In History data set we are working with consists of 6225 entries, with each entry conisting
+of a  brief event title and the date said event occured.
+An example entry is ``1934-01-01, Alcatraz officially becomes a Federal Prison''.
+This data comes from Wikipedia's today in history features. This is a feature that provides events from
+throughout history that occured upon the date of visit. Or data is a collection of these events and has
+an even distribution of events across the year(mean 17.05, average XXX events per day).
+
+
+This dataset was chosen as the events within are all objective historical events. This is benefitial as it minimised
+any ambiguity when selecting Wikipedia articles to process. This, coupled with date labels already associated with
+each event made the dataset very favourable.
+
+
+\section{Choice of External Data Source}
 Wikipedia was chosen as the external data source for this project as
 due to the nature of the events in our dataset, historical points of note,
 a source with a wide and deep range of articles was required.
-Ad wikipedia as over 5 million articles \cite{} it is reasonable to assume
+As wikipedia as over 5 million English language articles \cite{wikipedaisize} and our original data
+is taken from a Wikipedia outlet, it is reasonable to assume
 that most events will exist within its pages.
 
-Wikipedia is also written in a manner that makes comprehension of events reletivly simple.
+
+Wikipdia is also written in an unbias, procedural manner which makes comprehension of events much
+easier than that of raw, unstructured data.
 It is the key sentences within articles that we will use to estimate a timeline.
 
-\subsection{Text Retrieval}
-Using Wikipedia's article retrieval API, gathering the data from
-the site is trivial.
+\section{Text Retrieval}
+Using Wikipedia's article retrieval API \cite{wikipediaAPI}, the task of gathering an articles content
+from its title or the most matching keywords is trivial.
+
 Choosing what information is contextually relevent to the subject is, however, not so straightforward.
 Along with looking at how to extract the key entities and actions from our 
 headlines, we must also experiment with methods of extracting contextually relevent information from
-retrieved articles.
+retrieved articles related to the event headline.
 
-\subsubsubsection{OpenIE}
+\subsubsection{OpenIE}
 Stanfords natural language processing (NLP) suite,
 a natural language analysis toolkit,
 was selected to aid in extraction of features from the dataset.
 Using this toolkit, the Open Information Extraction (OpenIE) from
 The University of Washington is used to extract Subjects, Objects
-and their relations from our event titles.
+and their relations from our event titles \cite{schmitz2012open}.
 
-OpenIE was chosen due to it having several benifitial porperties.
 
 OpenIE impliments a number of extraction techniques, such as ``noun-mediated extraction'' and ``n-ary extraction''.
-We have seen through experimentation with the various
-extraction methods that there is no one method that gives reasonable results for all of our inputs.
-For example using the OLLIE system proved better then the ReVerb system, however neither system provided ideal results in all instances.%Need more here
-The ability to use any and all of the avialble techniques seamlessly is benefitial as it allows us to
-extract the best possible relationships from each event. 
+We have seen through experimentation with the various extraction techniques that no one method provides
+usable relations for all inputs. Using OpenIE provides us with the ability to use multiple techniques and
+use the best fitting resuls.
 
-OpenIE does not require a schema to be specified in advance, this is useful for our purposes
+This system provides much better relationship extraction that other systems avaialble. Systems such as
+ReVerb or WOE suffer from a few key weaknesses. These systems only provide verb mediated relation extraction \cite{schmitz2012open}. This is problematic as sentences such as
+
+``EXAMPLE''
+
+would not have the relation XXX extracted due to the structure of the relation lacking a verb.
+These systems are also not built to use context for relation extraction and thus extract non-factual relations \cite{schmitz2012open}.
+It is for these reasons that ReVerb and WOE were not chosen as our information extraction technique.
+
+
+Along with OpenIE's ability to seamlessly use multiple extraction techniques to fond the best available
+relations for each event, it has numerous other properties that are benefitial to our project.
+As OpenIE does not require a schema to be specified in advance, this is useful for our purposes
 as we do not know the content that will be looked at. This will allow the system to extract
-more complex relationships, such as those seen in Figure \ref{fig:compount-relations}, if such
+more complex relationships, such as those seen in Figure \ref{fig:compound-relations}, if such
 a relationship can be found.
-
-OpenIE can also deal with much more than simple relations,
-it can look at positive or negative assertion within these relations which may be benefitial to our
-solution.
-
-It was these properties that make OpenIE the optimal system to extract the key relations from our events.
-%From our events, we typically saw only simple, linear relations. This made finding the relevent articles
-%simple as often only one article was found for each Object and subject in the relationship. More complex
-%relations, often with sub relations, can retrieve more article but, depending on the content, still retrieve
-%only two articles.
 
 
 \begin{figure}[h]
   \centering
-  \ref{fig:compound-relations}
   \includegraphics[scale=0.4]{openie-train.png}
-  \caption{Example of a compound relationship \protect{\cite{OpenIE}}}%\cite{OpenIE}
+  \caption{Example of a compound relationship \cite{OpenIE}}
+  \ref{fig:compound-relations}
   \end{figure}
 
-\subsubsection{Article Retrieval}
-Using the Objects and Subjects generated by OpenIE we needed to get the relevent Wikipedia Articles.
+OpenIE can also deal with much more than simple relations,
+it can look at positive or negative assertion within these relations.
+This extra information may be benefitial to our solution as particular lenses are often applied to historical events.
+It was these properties that make OpenIE the optimal system to extract the key relations from our events.
+
+
+\subsection{Article Retrieval}
+Using the objects and subjects generated by OpenIE we needed to get the relevent Wikipedia Articles.
 To do this we used fuzzy searching of Wikipedia, through the use of their API, to get the articles relivent
-for these Objects and Subjects.
+for these objects and subjects.
 
 Several different methods of extracting key sentences were experimented with.
 These included:
 \begin{enumerate}
-\item Extracting only sentences that had a date within them
-\item Extracting only sentences that had the other party in the relation within them
-\item Extracting only sentences that had a date and the other party within them
-\item Extracting paragaphs that referenced the other party
-  \item extracting sentences that contained the object or the subject 
-  \item extracting sentences that contained the object or the subject or referenced the action between the two 
-  \end{enumerate}
+  \item Extracting only sentences that had a date within them
+  \item Extracting only sentences that had the other party in the relation within them
+  \item Extracting only sentences that had a date and the other party within them
+  \item Extracting paragaphs that referenced the other party
+  \item Extracting sentences that contained the object or the subject 
+  \item Extracting sentences that contained the object or the subject or referenced the action between the two 
+\end{enumerate}
 
-%Through the experimentation, we found mixed results in terms of number of sentences retrieved and the relevency
-%there in.
 
 As we can see from Table \ref{table:retrieval}, experimentation yeilded mixed results.
 With such a large range of average number of sentences retrieved and the relevency there in.
 Relevency was measured manually using Cohen's Kappa \cite{wood2007understanding}.
 
-Cohen's kappa measures the agreement between two raters who each classify N items into C mutually exclusive categories
+Cohen's kappa measures the inter-rater agreement between two raters
+who each classify N items into C mutually exclusive categories.
+
+Cohen's Kappa is defined as:\\
 \begin{equation}
-  \kappa = \frac{p_{0} - p_{e}}{1 - p_{e}}
-  \end{equation}
+  \kappa = \frac{p_{0} - p_{e}}{1 - p_{e}}\nonumber
+\end{equation}
+Where $p_0$ is the reletive observed agreement between raters and $p_e$ is the hypothetical probability
+of a chance agreementusing the observed data to calculate the probabilities of each observer randomly saying each category.
+If the raters are in complete agreement then $\kappa$ = 1.
+If there is no agreement among the raters, other than that expected by $p_e$, $\kappa \leq 0$.
+
+Cohen's Kappa is thought to be a more robust measure than a simple percentage agreement.
+This is due to it taking into account the possibility of agreement occuring by chance.
+
+
+Given that we wish to categorise our retrieved sentences into either related to the event, or not related,
+we only have two possible categories to assign each of our N sentences to.
 
 \begin{table}[h]
 \centering
-\caption{Retrieval Methods and their results}
 \label{table:retrieval}
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|c|c|c|}
   \hline
 Method & Average \# Sentences Retrieved & Relevency \\
 \hline
-1      &                                &           \\
-2      &                                &           \\
-3      &                                &           \\
-4      &                                &           \\
-5      &                                &           \\
-6      &                                &           \\        
+1      & 16                             &   -0.875  \\
+2      & 2                              &   -1      \\
+3      & 0.04                           &   0.5     \\
+4      & 20                             &   -0.4    \\
+5      & 27                             & -0.1\.{1}\\
+6      & 32                             & 0.44\.{4}\\        
 \hline
 \end{tabular}
+\caption{Retrieval Methods and their results}
 \end{table}
 
-From these results, method 6 was chosen as our context extraction method. While the
-results from this method are not perfectly relevent and other improvments could be made,
-time restirctions were a deciding factor in not persuing this experimentation further.
+From these results, method six was chosen as our context extraction method.
+While it does not have the higest relevency, extraction method 3 did not provide
+a high enough number of sentences on average to build features from.
 
-\section{Feature Representation}\label{sec:representation}
+
+Despite extraction method six not generating a perfect relevency, under the time contraints
+of the project, it  was decided to move forward with the project rather than to incorporate more
+complex solutions to improve relevency.
+
+
+\subsection{Potential Issues With Data Retrieved}\label{sec:dataIssues}
+Wikipedia was a good choice for our external data source due its large catalogue of events.
+This provided us with more than sufficient data to gather from.
+While we have seen all of these positive atributes of wikipedia, there are certain issues that may have to be addressed
+that, if the content domain was to be altered, may cause issue.
+
+As Wikipedia is community managed, anybody can edit any page. This has been know to cause 'edit wars' over users
+uploading biast information about subjects \cite{}.
+While in our current domain of long-term history, the facts and timelines are suitably coherent, if we were to apply this project
+to a much more current or hotly contested subject - such as the OJ simpson trial, or recent presidential election - Wikipedia
+may not be the most appropriate source of information due to these bias edit wars.
+%Example
+
+
+\section{Feature Extraction}\label{sec:representation}
 Having extracted a series of sentences for each event in our data, we required a concise method
 of representing these sentences. It is standard in NLP and ML domains to represent features as vectors.
 Several different techniques were discussed, but ultimately due to time constraints only two methods were
@@ -379,7 +421,7 @@ use the data with classifiers.
 As Bag-Of-Words only looks at single words at time and the contextual data may be lost through this method, we looked at
 alternative methods to improve on this.
 
-\subsubsection{N-Grams}
+\subsection{N-Grams}
 When experimenting with N-Grams, we aimed to try and capture some of the meaning of phrases that appeared in the gathered
 sentences.
 This was achieved by looking for phrases and sequences of words that recurred throughout the sentences - under the assumption
@@ -415,26 +457,118 @@ not perform as well as anticipated:
   \item 
 \end{itemize}
 
+\section{Classifiers}
+\subsection{Decision Trees}
+Decision trees were looked at as they are a non-parametric, supervised learning method
+that are commonly used for classification and regression. They learn simple decision rules inferred from
+data features to create a model that predicts the value of a target variable.
+
+These attributes were promising for our experiments as they fit with our data and requirements, generating
+classifications of test data and probabilities of these estimations.
+
+%Move this section Elsewhere
+It was also decided to run the experiment using three events, rather that two to see how these
+effected the results. 
+
+Some issues found with decision trees were that the probabilities generated were too narrowly distributed
+to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
+classification.
+%\subsection{Random Forests}
+
+\subsection{Support Vector Machines}
+Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
+associated learning algorithms for classification and regression.
+
+SVMs were experimented with as given data with a binary classification build the points in space,
+making a non-probabilistic binary linear classifier.
+
+This proved beneficial as the results generated were better than the decision trees \ref{table:local-learning}.
+SVMs also provided much better classification probability, which is favourable for path generation.
+%\subsection{Linear Regression}
+% To Be Completed in due course
+\vspace{4em}
+\subsection{Regression}
+Logistic regression was also experimented with as it utilises a binary dependent variable - that being where it
+can only take one two values, ``1'' or ``0'' in our case to represent correct ordering.
+The logistic regression model estimates the probability of a binary responce based on one or more independent features.
+This is benefitial as along with providing clasification estimates, the model can produce probabilities for its
+decision. These probabilities can allow us to use weighting techniques to improve our path building.
+
+\subsection{Structured Perceptron}
+The Perceptron is a common algorithm used for large-scale learning.
+It is a type of linear classifier that bases predictions on a linear predictor function that combines a set of optimised weights
+and the input feature vector.
+It is primarily used for supervised learning of binary classification.
+This is something that will fit well with our data as the perceptron decides whether an input vector
+corresponds to a specific class \cite{freund1999large}.
+
+The percepron model has several attributes that will aid in improving the accuracy of our results.
+These include:
+\begin{itemize}
+\item It does not require a learning rate.
+\item It is not regularized (penalized).
+\item It updates its model only on mistakes
+\end{itemize}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{PerceptronExample.png}
+  \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
+\end{figure}
 
 
-\section{Potential Issues With Data Retrieved}\label{sec:dataIssues}
-Wikipedia was a good choice for our external data source due its large catalogue of events.
-This provided us with more than sufficient data to gather from.
-While we have seen all of these positive atributes of wikipedia, there are certain issues that may have to be addressed
-that, if the content domain was to be altered, may cause issue.
+It is these attributes that made the Perceptron a suitable model to experiment with.
+For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
+\subsection{Multilayer Perceptron}
+Having discussed the use of Perceptrons, the next logical method to experiment with multilayer perceptrons (MLP).
+A Multilayer Perceptron is an feedforward artifitial neural network that maps the set of inputs
+onto a set of appropriate outputs.
+An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
+Each node, except the input node, is a neuron (processing element) with an activation fucntion.
 
-As Wikipedia is community managed, anybody can edit any page. This has been know to cause 'edit wars' over users
-uploading biast information about subjects \cite{}.
-While in our current domain of long-term history, the facts and timelines are fairly solid, if we were to apply this project
-to a much more current or hotly contested subject - such as the OJ simpson trial, or recent presidential election - Wikipedia
-may not be the most appropriate source of information due to these bias edit wars.
-%Example
+\begin{figure}
+  \centering
+  \includegraphics[]{mlp-example.png}
+  \caption{An Example one hidden layer MLP \cite{}}%http://scikit-learn.org/stable/modules/neural_networks_supervised.html
+  \label{fig:mlp}
+\end{figure}
+
+An activation fucntion is a function that maps the weighted inputs of each processing element to an output.
+MLPs are trained using backpropigation.
 
 
-\section{Potential Extention of Data Retrieval}
-If this project was to be taken further, we would aim to improve the pool of information we can draw from and mitigate the issues outlined in section \ref{sec:dataIssues}.
-To do this we would consider multiple other sources for our data and cross-reference then with one another in order to suppress any misinformation within
-a particular article.
+In order to effectivly use an MLP for our data we experimented with the various parameters.
+\begin{itemize}
+  \item Number of hidden layers - the number of neurons per layer
+  \item Type of activation function
+  \item Type of solver
+  \item L2 penalty
+  \item Maximum number of itterations
+\end{itemize}
+
+After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
+This aids the model in transforming the inputs into something usable for the output layer.
+
+Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
+The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
+\begin{eqnarray}
+  f(x) = \text{max}(0,x)\nonumber\\
+  \text{where x is a neuron}\nonumber
+\end{eqnarray}
+The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
+
+In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
+This algorithm was chosen as it is an itterative model for non-linear optimisation.
+%Some more stuff about it
+
+An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
+We chose the value of 0.00005 so as to ...
+
+The last parameter we has to exeriment with was the number of itterations.
+We wanted each layer to reach a convergence, so the paramater was set to 100.
+100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
+
+
 
 \chapter{Experiments}
 \section{Learning}
@@ -509,43 +643,7 @@ Each of these data points is similar to that of the training data
 We initially looked at local learning, as opposed to global learning, to try and classify our data.
 Local learning is ...
 We chose to look at local learning techniques as .... 
-\subsubsection{Decision Trees}
-Decision trees were looked at as they are a non-parametric, supervised learning method
-that are commonly used for classification and regression. They learn simple decision rules inferred from
-data features to create a model that predicts the value of a target variable.
-
-These attributes were promising for our experiments as they fit with our data and requirements, generating
-classifications of test data and probabilities of these estimations.
-
-%Move this section Elsewhere
-It was also decided to run the experiment using three events, rather that two to see how these
-effected the results. 
-
-Some issues found with decision trees were that the probabilities generated were too narrowly distributed
-to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
-classification.
-%\subsection{Random Forests}
-
-\subsubsection{Support Vector Machines}
-Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
-associated learning algorithms for classification and regression.
-
-SVMs were experimented with as given data with a binary classification build the points in space,
-making a non-probabilistic binary linear classifier.
-
-This proved beneficial as the results generated were better than the decision trees \ref{table:local-learning}.
-SVMs also provided much better classification probability, which is favourable for path generation.
-%\subsection{Linear Regression}
-% To Be Completed in due course
-\vspace{4em}
-\subsubsection{Regression}
-Logistic regression was also experimented with as it utilises a binary dependent variable - that being where it
-can only take one two values, ``1'' or ``0'' in our case to represent correct ordering.
-The logistic regression model estimates the probability of a binary responce based on one or more independent features.
-This is benefitial as along with providing clasification estimates, the model can produce probabilities for its
-decision. These probabilities can allow us to use weighting techniques to improve our path building.
-
-\subsubsection{Results}\label{sec:local-results}
+\subsection{Results}\label{sec:local-results}
 
 Having experimented with the various classification methods outlined above, we can see from table \ref{table:local-learning}
 That the use of the retrieved sentences is significantly better at predicting the ordering of tuples of events than that of
@@ -587,82 +685,7 @@ With Titles & 43\%  & 36& 51\%    & 52\% & 50\%\\
 Global learning is a machine learning method that fits a distribution over the data.
 some waffel \cite{huang2008machine}
 
-\subsubsection{Structured Perceptron}
-The Perceptron is a common algorithm used for large-scale learning.
-It is a type of linear classifier that bases predictions on a linear predictor function that combines a set of optimised weights
-and the input feature vector.
-It is primarily used for supervised learning of binary classification.
-This is something that will fit well with our data as the perceptron decides whether an input vector
-corresponds to a specific class \cite{freund1999large}.
-
-The percepron model has several attributes that will aid in improving the accuracy of our results.
-These include:
-\begin{itemize}
-\item It does not require a learning rate.
-\item It is not regularized (penalized).
-\item It updates its model only on mistakes
-\end{itemize}
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[scale=0.5]{PerceptronExample.png}
-  \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
-\end{figure}
-
-
-It is these attributes that made the Perceptron a suitable model to experiment with.
-For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
-\subsubsection{Multilayer Perceptron}
-Having discussed the use of Perceptrons, the next logical method to experiment with multilayer perceptrons (MLP).
-A Multilayer Perceptron is an feedforward artifitial neural network that maps the set of inputs
-onto a set of appropriate outputs.
-An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
-Each node, except the input node, is a neuron (processing element) with an activation fucntion.
-
-\begin{figure}
-  \centering
-  \includegraphics[]{mlp-example.png}
-  \caption{An Example one hidden layer MLP \cite{}}%http://scikit-learn.org/stable/modules/neural_networks_supervised.html
-  \label{fig:mlp}
-\end{figure}
-
-An activation fucntion is a function that maps the weighted inputs of each processing element to an output.
-MLPs are trained using backpropigation.
-
-
-In order to effectivly use an MLP for our data we experimented with the various parameters.
-\begin{itemize}
-  \item Number of hidden layers - the number of neurons per layer
-  \item Type of activation function
-  \item Type of solver
-  \item L2 penalty
-  \item Maximum number of itterations
-\end{itemize}
-
-After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
-This aids the model in transforming the inputs into something usable for the output layer.
-
-Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
-The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
-\begin{eqnarray}
-  f(x) = \text{max}(0,x)\nonumber\\
-  \text{where x is a neuron}\nonumber
-\end{eqnarray}
-The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
-
-In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
-This algorithm was chosen as it is an itterative model for non-linear optimisation.
-%Some more stuff about it
-
-An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
-We chose the value of 0.00005 so as to ...
-
-The last parameter we has to exeriment with was the number of itterations.
-We wanted each layer to reach a convergence, so the paramater was set to 100.
-100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
-
-
-\subsubsection{Results}
+\subsection{Results}
 As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
 of classification to the results seen in section \ref{sec:local-results} and the baseline.
 
@@ -737,7 +760,7 @@ true most expensive path, which will encompass all nodes.
 There are two main types of solutions to optimal pathing: Greedy and Integer Linear Programming.
 We dissed the option available in each type of solution and the benefits there in.
 
-\subsubsection{Greedy Solution}
+\subsection{Greedy Solution}
 A greedy algorithm is an algorithm that follows the problem solving heuristic of making locally optimal choices at each stage with the aim
 of finding a global optimum \cite{black2004dictionary}.
 While a greedy strategy does not in general produce a global optimum, it may produce locally optimum solutions that approximate a globally optimum solution.
@@ -762,7 +785,7 @@ An example of this pruning ability can be seen in figure \ref{fig:beam-prune}.
 As we do not know the optimal starting node, we must execute our greedy solution from each of the event nodes.
 With this we generated the optimal greedy path through our graph. The results of which can be seen in section \ref{sec:graph-results}.
 
-\subsubsection{Integer Linear Programming Solution}
+\subsection{Integer Linear Programming Solution}
 Integer Linear Programming (ILP) is a mathematical optimisation where the objective function and the contraints are linear.
 ILP is common in the field of optimisation and is ideal for our needs. As ILP aims to find the globally most optimal solution, when applied to pathfinding it
 should generate the best global path through all nodes, rather than finding the next most optimal node like in a greedy solution.
@@ -833,11 +856,17 @@ With Titles & nan & Nan & nan & nan  & nan & nan\\
 
 %need a table of results
 
-\chapter{Results}
+\chapter{Conclusion}
 \section{Results}
 \section{Discussion}
 %\chapter{Conclusion}
 \section{Further Work}
+\subsection{Potential Extention of Data Retrieval}
+If this project was to be taken further, we would aim to improve the pool of information we can draw from and mitigate the issues outlined in section \ref{sec:dataIssues}.
+To do this we would consider multiple other sources for our data and cross-reference then with one another in order to suppress any misinformation within
+a particular article.
+
+
 \section{Conclusion}
 % use the following and \cite{} as above if you use BibTeX
 % otherwise generate bibtem entries
