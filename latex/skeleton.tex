@@ -446,29 +446,29 @@ With advances in this method from Google in the past few years, with the use of 
 popular as methods to perform netural language processing (NLP) such as syntax parsing \cite{socher2013parsing}.
 
 Using Gensim's Doc2Vec models \cite{rehurek_lrec}, we used this system to build thought vectors of our sentences.
-Thought vectors are vectors made of whole sentnece or documents, typically used in machine translation \cite{deeplearning4j}.
-It was decided to use thought vectors as they corrolate words with labels rather than word with words (which is done by bag-of-words).
+Thought vectors are vectors made of whole sentence or documents, typically used in machine translation \cite{deeplearning4j}.
+It was decided to use thought vectors as they correlate words with labels rather than word with words (which is done by bag-of-words).
 This would, in theory, provide better better representation of the words relating to ordering label, provising better results.
 
 %Example of word embedding and such
 
 
-From our experimentation, we discovered that when using the thought vectors to train our classifier the accuracy produced was 54\% less than that when
+From our experimentation, we discovered that thought vectors produced an accuracy 54\% less than that when
 using bag-of-words. While this went against our hypothesis of using this technique we beleieve
 the main rason that word embedding did not perform as we expected was due to imperfect sentence retrieval causing noise in
 the features.
 
 \section{Classifiers}
 \subsection{Decision Trees}
-Decision trees were looked at as they are a non-parametric, supervised learning method that care commonly used for
+Decision trees were considered as they are a non-parametric, supervised learning method that care commonly used for
 classification and regression.
 They are based on the idea of asking simple yes/no questions. The algorithm is set up so as to be a binary tree with
 each node being a question and each leaf a decision.
 
-By inferring decision rules from data features, it creates a model that predicts the value of a target variable,
+By inferring decision rules from data features, the system creates a model that predicts the value of a target variable,
 
-These attributes were promising for our experiments as they fit with our data and requirements, generating
-classifications of test data and probabilities of these estimations.
+These attributes were promising for our experiments as they fit with our data and generate
+classifications of test data along with probabilities of these estimations.
 
 %Some issues found with decision trees were that the probabilities generated were too narrowly distributed
 %to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
@@ -531,7 +531,7 @@ A Multilayer Perceptron is an feedforward artifitial neural network that maps th
 onto a set of appropriate outputs.
 In figure \ref{feg:mlp} and example layer of an MLP.
 An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
-Each node, except the input node, is a neuron (processing element) with an activation fucntion.
+Each node, except the input node, is a neuron (processing element) with an activation fucntion \cite{}.%need a ref here
 
 \begin{figure}
   \centering
