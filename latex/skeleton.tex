@@ -370,7 +370,7 @@ that, if the content domain was to be altered, may cause issue.
 As Wikipedia is community managed, anybody can edit any page. This has been know to cause 'edit wars' over users
 uploading biast information about subjects \cite{}.
 While in our current domain of long-term history, the facts and timelines are suitably coherent, if we were to apply this project
-to a much more current or hotly contested subject - such as the OJ simpson trial, or recent presidential election - Wikipedia
+to a much more current or hotly contested subject - such as the OJ Simpson trial, or recent presidential election - Wikipedia
 may not be the most appropriate source of information due to these bias edit wars.
 %Example
 
@@ -386,8 +386,7 @@ In this model, we take a sentence, or multiple sentences, and represent them as 
 A multiset is similar to set, but can allow multiple of the same item within.
 For example, \{$\alpha,\beta$\} and \{$\alpha,\beta,\alpha$\} are the same set, but individual multisets.
 This technique disregards grammar and order, but keeps multiplicity. It is a common technique in Computer vision
-and other learning situations \cite{}.
-
+and other learning situations \cite{sivic2009efficient}.
 
 %Need to talk a bit more abput how we are making tuples of every event set
 For our project, we implemented Bag-of-Words by using the relevant sentences for both of our events as a feature.
@@ -425,71 +424,74 @@ alternative methods to improve on this.
 When experimenting with N-Grams, we aimed to try and capture some of the meaning of phrases that appeared in the gathered
 sentences.
 This was achieved by looking for phrases and sequences of words that recurred throughout the sentences - under the assumption
-that what reoccurs must be important. Due to the wide variety of data we were seeing, simple 2 or 3 N N-Grams provided
-little to no use, returning junk phrases if anything at all.
+that what reoccurs must be important. Due to the wide variety in the structure of the data we were seeing,
+simple 2- or 3-Grams provided little to no use, returning junk phrases if anything at all.
 
-With the failure of N-Grams at this problem, we attempted to implement Skip-Grams from the paper \cite{guthrie2006closer}.
-By missing out 1 or 2 words in the middle of key words we hoped that we could extract more important word relations to
-incorporate into our features.
+
+%Potentially add stuff about skip-grams
+%With the failure of N-Grams at this problem, we attempted to implement Skip-Grams from the paper \cite{guthrie2006closer}.
+%By missing out 1 or 2 words in the middle of key words, skip-grams aim to extract improved phrases from the data by
+%'skipping' filler words, leaving only the important words for extraction.
+
+%We found that the use of skip-grams
 %Something about why this wasn't better.
 
-This representation worked well as it it provides a numerical representation of the cross-section of our two articles
-but does remove some of the contextual data we might receive.
+%This representation worked well as it it provides a numerical representation of the cross-section of our two articles
+%but does remove some of the contextual data we might receive.
 
 \subsection{Word Embedding} \label{sec:word-embedding}
 Word Embedding was also considered as this feature learning technique maps words or phrases to vectors of real numbers.
 With advances in this method from Google in the past few years, with the use of nural network architectures, they have become
 popular as methods to perform netural language processing (NLP) such as syntax parsing \cite{socher2013parsing}.
 
-Using Gensim's Doc2Vec models \cite{}, we used this system to build thought vectors of our sentences. Thought vectors are vectors
-made of whole sentnece or documents, typically used in mahine translation \cite{deeplearning4j}.
+Using Gensim's Doc2Vec models \cite{rehurek_lrec}, we used this system to build thought vectors of our sentences.
+Thought vectors are vectors made of whole sentnece or documents, typically used in machine translation \cite{deeplearning4j}.
 It was decided to use thought vectors as they corrolate words with labels rather than word with words (which is done by bag-of-words).
 This would, in theory, provide better better representation of the words relating to ordering label, provising better results.
 
 %Example of word embedding and such
 
 
-From our experimentation, we discovered that when using the thought vectors to train our classifier the accuracy produced was 54\%less than that when
-using bag-of-words. While this went agains our hypothesis of using this technique we beleieve there were a few reasons that word embedding did
-not perform as well as anticipated:
-\begin{itemize}
-  \item Imperfect sentence retrieval causing noise in the features
-  \item 
-\end{itemize}
+From our experimentation, we discovered that when using the thought vectors to train our classifier the accuracy produced was 54\% less than that when
+using bag-of-words. While this went against our hypothesis of using this technique we beleieve
+the main rason that word embedding did not perform as we expected was due to imperfect sentence retrieval causing noise in
+the features.
 
 \section{Classifiers}
 \subsection{Decision Trees}
-Decision trees were looked at as they are a non-parametric, supervised learning method
-that are commonly used for classification and regression. They learn simple decision rules inferred from
-data features to create a model that predicts the value of a target variable.
+Decision trees were looked at as they are a non-parametric, supervised learning method that care commonly used for
+classification and regression.
+They are based on the idea of asking simple yes/no questions. The algorithm is set up so as to be a binary tree with
+each node being a question and each leaf a decision.
+
+By inferring decision rules from data features, it creates a model that predicts the value of a target variable,
 
 These attributes were promising for our experiments as they fit with our data and requirements, generating
 classifications of test data and probabilities of these estimations.
 
-%Move this section Elsewhere
-It was also decided to run the experiment using three events, rather that two to see how these
-effected the results. 
-
-Some issues found with decision trees were that the probabilities generated were too narrowly distributed
-to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
-classification.
+%Some issues found with decision trees were that the probabilities generated were too narrowly distributed
+%to infer any confidence in the paths generated. Due to this, it was decided to explore other methods of
+%classification.
 %\subsection{Random Forests}
 
 \subsection{Support Vector Machines}
 Similarly to Decision trees, Support Vector Machines (SVMs) provide supervised learning models based on
 associated learning algorithms for classification and regression.
 
-SVMs were experimented with as given data with a binary classification build the points in space,
-making a non-probabilistic binary linear classifier.
+Given a set of labeled training data, an SVM will map this into a 3-D vector space.
+When an unlabled data point is fed into the system, the SVM fits the new data into the vector space and
+assigns  it to the closest vectors class.
 
-This proved beneficial as the results generated were better than the decision trees \ref{table:local-learning}.
-SVMs also provided much better classification probability, which is favourable for path generation.
+%This proved beneficial as the results generated were better than the decision trees \ref{table:local-learning}.
+%SVMs also provided much better classification probability, which is favourable for path generation.
 %\subsection{Linear Regression}
 % To Be Completed in due course
-\vspace{4em}
-\subsection{Regression}
+%\vspace{4em}
+\subsection{Logistic Regression}
 Logistic regression was also experimented with as it utilises a binary dependent variable - that being where it
 can only take one two values, ``1'' or ``0'' in our case to represent correct ordering.
+
+
 The logistic regression model estimates the probability of a binary responce based on one or more independent features.
 This is benefitial as along with providing clasification estimates, the model can produce probabilities for its
 decision. These probabilities can allow us to use weighting techniques to improve our path building.
@@ -506,30 +508,34 @@ The percepron model has several attributes that will aid in improving the accura
 These include:
 \begin{itemize}
 \item It does not require a learning rate.
-\item It is not regularized (penalized).
+\item It is not regularised (penalized).
 \item It updates its model only on mistakes
 \end{itemize}
 
+Structured Perceptrons also allow for retraining of the model when newer data is added, this allows the perceptron to
+itterativly improve iself. An example of this improvment can be seen in figure \ref{perceptronExample}.
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.5]{PerceptronExample.png}
+  \ref{fig:perceptronExample}
   \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
 \end{figure}
 
 
 It is these attributes that made the Perceptron a suitable model to experiment with.
-For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
+%For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
 \subsection{Multilayer Perceptron}
-Having discussed the use of Perceptrons, the next logical method to experiment with multilayer perceptrons (MLP).
+Having discussed the use of Perceptrons, the next logical method to experiment with is multilayer perceptrons (MLP).
 A Multilayer Perceptron is an feedforward artifitial neural network that maps the set of inputs
 onto a set of appropriate outputs.
+In figure \ref{feg:mlp} and example layer of an MLP.
 An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
 Each node, except the input node, is a neuron (processing element) with an activation fucntion.
 
 \begin{figure}
   \centering
   \includegraphics[]{mlp-example.png}
-  \caption{An Example one hidden layer MLP \cite{}}%http://scikit-learn.org/stable/modules/neural_networks_supervised.html
+  \caption{An Example one hidden layer MLP \cite{scikit-learn}}
   \label{fig:mlp}
 \end{figure}
 
@@ -537,36 +543,36 @@ An activation fucntion is a function that maps the weighted inputs of each proce
 MLPs are trained using backpropigation.
 
 
-In order to effectivly use an MLP for our data we experimented with the various parameters.
-\begin{itemize}
-  \item Number of hidden layers - the number of neurons per layer
-  \item Type of activation function
-  \item Type of solver
-  \item L2 penalty
-  \item Maximum number of itterations
-\end{itemize}
-
-After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
-This aids the model in transforming the inputs into something usable for the output layer.
-
-Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
-The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
-\begin{eqnarray}
-  f(x) = \text{max}(0,x)\nonumber\\
-  \text{where x is a neuron}\nonumber
-\end{eqnarray}
-The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
-
-In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
-This algorithm was chosen as it is an itterative model for non-linear optimisation.
-%Some more stuff about it
-
-An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
-We chose the value of 0.00005 so as to ...
-
-The last parameter we has to exeriment with was the number of itterations.
-We wanted each layer to reach a convergence, so the paramater was set to 100.
-100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
+%In order to effectivly use an MLP for our data we experimented with the various parameters.
+%\begin{itemize}
+%  \item Number of hidden layers - the number of neurons per layer
+%  \item Type of activation function
+%  \item Type of solver
+%  \item L2 penalty
+%  \item Maximum number of itterations
+%\end{itemize}
+%
+%After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
+%This aids the model in transforming the inputs into something usable for the output layer.
+%
+%Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
+%The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
+%\begin{eqnarray}
+%  f(x) = \text{max}(0,x)\nonumber\\
+%  \text{where x is a neuron}\nonumber
+%\end{eqnarray}
+%The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
+%
+%In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
+%This algorithm was chosen as it is an itterative model for non-linear optimisation.
+%%Some more stuff about it
+%
+%An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
+%We chose the value of 0.00005 so as to ...
+%
+%The last parameter we has to exeriment with was the number of itterations.
+%We wanted each layer to reach a convergence, so the paramater was set to 100.
+%100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
 
 
 
@@ -684,6 +690,38 @@ With Titles & 43\%  & 36& 51\%    & 52\% & 50\%\\
 \subsection{Global Learning}
 Global learning is a machine learning method that fits a distribution over the data.
 some waffel \cite{huang2008machine}
+
+
+
+In order to effectivly use an MLP for our data we experimented with the various parameters.
+\begin{itemize}
+  \item Number of hidden layers - the number of neurons per layer
+  \item Type of activation function
+  \item Type of solver
+  \item L2 penalty
+  \item Maximum number of itterations
+\end{itemize}
+
+After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
+This aids the model in transforming the inputs into something usable for the output layer.
+
+Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
+The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
+\begin{eqnarray}
+  f(x) = \text{max}(0,x)\nonumber\\
+  \text{where x is a neuron}\nonumber
+\end{eqnarray}
+The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
+
+In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
+This algorithm was chosen as it is an itterative model for non-linear optimisation.
+%Some more stuff about it
+An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
+We chose the value of 0.00005 so as to ...
+The last parameter we has to exeriment with was the number of itterations.
+We wanted each layer to reach a convergence, so the paramater was set to 100.
+100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
+
 
 \subsection{Results}
 As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
