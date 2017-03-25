@@ -213,43 +213,43 @@ these dependancies in \cite{schapire1998learning}.
 %\section{The Data}%%Potential Chapter name change
 %Intro to the data set
 \section{Today In History Dataset}
-The Today In History data set we are working with consists of 6225 entries, with each entry conisting
-of a  brief event title and the date said event occured.
+The Today In History data set we are working with consists of 6225 entries. Each entry conisting
+of a  brief event title and the date in the form ``YYY-MM-DD''.
 An example entry is ``1934-01-01, Alcatraz officially becomes a Federal Prison''.
-This data comes from Wikipedia's today in history features. This is a feature that provides events from
-throughout history that occured upon the date of visit. Or data is a collection of these events and has
+This data comes from Wikipedia's Today In History features. This is a feature that provides events from
+throughout history that occured upon the date of visit. The data is a collection of these events and has
 an even distribution of events across the year(mean 17.05, average XXX events per day).
 
 
 This dataset was chosen as the events within are all objective historical events. This is benefitial as it minimised
-any ambiguity when selecting Wikipedia articles to process. This, coupled with date labels already associated with
-each event made the dataset very favourable.
+any ambiguity when selecting Wikipedia articles to process. This, coupled with date labels ,already associated with
+each event, made the dataset very favourable.
 
 
 \section{Choice of External Data Source}
-Wikipedia was chosen as the external data source for this project as
-due to the nature of the events in our dataset, historical points of note,
-a source with a wide and deep range of articles was required.
-As wikipedia as over 5 million English language articles \cite{wikipedaisize} and our original data
+Wikipedia was chosen as the external data source for this project.
+This is due to the nature of the events in our dataset, historical points of note,
+needing a source with a wide and deep range of articles.
+As wikipedia has over 5 million English language articles \cite{wikipedaisize} and our original data
 is taken from a Wikipedia outlet, it is reasonable to assume
 that most events will exist within its pages.
 
 
-Wikipdia is also written in an unbias, procedural manner which makes comprehension of events much
+Wikipdia is also written in an reasonably unbias, procedural manner which makes comprehension of events much
 easier than that of raw, unstructured data.
 It is the key sentences within articles that we will use to estimate a timeline.
 
 \section{Text Retrieval}
-Using Wikipedia's article retrieval API \cite{wikipediaAPI}, the task of gathering an articles content
-from its title or the most matching keywords is trivial.
+Using Wikipedia's article retrieval API \cite{wikipediaAPI}, the task of gathering article content
+from keywords in its title is trivial.
 
 Choosing what information is contextually relevent to the subject is, however, not so straightforward.
 Along with looking at how to extract the key entities and actions from our 
 headlines, we must also experiment with methods of extracting contextually relevent information from
 retrieved articles related to the event headline.
 
-\subsubsection{OpenIE}
-Stanfords natural language processing (NLP) suite,
+\subsubsection{Information Extraction}
+Stanford's natural language processing (NLP) suite,
 a natural language analysis toolkit,
 was selected to aid in extraction of features from the dataset.
 Using this toolkit, the Open Information Extraction (OpenIE) from
@@ -262,7 +262,7 @@ We have seen through experimentation with the various extraction techniques that
 usable relations for all inputs. Using OpenIE provides us with the ability to use multiple techniques and
 use the best fitting resuls.
 
-This system provides much better relationship extraction that other systems avaialble. Systems such as
+This system provides better relationship extraction than other systems avaialble. Systems such as
 ReVerb or WOE suffer from a few key weaknesses. These systems only provide verb mediated relation extraction \cite{schmitz2012open}. This is problematic as sentences such as
 
 ``EXAMPLE''
@@ -272,10 +272,11 @@ These systems are also not built to use context for relation extraction and thus
 It is for these reasons that ReVerb and WOE were not chosen as our information extraction technique.
 
 
-Along with OpenIE's ability to seamlessly use multiple extraction techniques to fond the best available
+Along with OpenIE's ability to seamlessly use multiple extraction techniques to find the best available
 relations for each event, it has numerous other properties that are benefitial to our project.
-As OpenIE does not require a schema to be specified in advance, this is useful for our purposes
-as we do not know the content that will be looked at. This will allow the system to extract
+OpenIE is also useful for our purposes as it does not reuqire a schema specified in advance.
+This is useful as we do not know the structure of the content that will be looked at.
+This will allow the system to extract
 more complex relationships, such as those seen in Figure \ref{fig:compound-relations}, if such
 a relationship can be found.
 
@@ -287,8 +288,8 @@ a relationship can be found.
   \ref{fig:compound-relations}
   \end{figure}
 
-OpenIE can also deal with much more than simple relations,
-it can look at positive or negative assertion within these relations.
+OpenIE can also deal more complex relations  than the simple relations we have see.
+It can look at positive or negative assertion within these relations.
 This extra information may be benefitial to our solution as particular lenses are often applied to historical events.
 It was these properties that make OpenIE the optimal system to extract the key relations from our events.
 
@@ -301,17 +302,17 @@ for these objects and subjects.
 Several different methods of extracting key sentences were experimented with.
 These included:
 \begin{enumerate}
-  \item Extracting only sentences that had a date within them
-  \item Extracting only sentences that had the other party in the relation within them
-  \item Extracting only sentences that had a date and the other party within them
-  \item Extracting paragaphs that referenced the other party
-  \item Extracting sentences that contained the object or the subject 
-  \item Extracting sentences that contained the object or the subject or referenced the action between the two 
+  \item Extraction of only sentences that had a date within them
+  \item Extraction of only sentences that had the other party in the relation within them
+  \item Extraction of only sentences that had a date and the other party within them
+  \item Extraction of paragaphs that referenced the other party
+  \item Extraction of sentences that contained the object or the subject 
+  \item Extraction of sentences that contained the object or the subject or referenced the action between the two 
 \end{enumerate}
 
 
-As we can see from Table \ref{table:retrieval}, experimentation yeilded mixed results.
-With such a large range of average number of sentences retrieved and the relevency there in.
+As seen in Table \ref{table:retrieval}, experimentation yeilded mixed results.
+The results show a large range of average number of sentences retrieved and varying degrees of relevency.
 Relevency was measured manually using Cohen's Kappa \cite{wood2007understanding}.
 
 Cohen's kappa measures the inter-rater agreement between two raters
@@ -352,7 +353,7 @@ Method & Average \# Sentences Retrieved & Relevency \\
 \end{table}
 
 From these results, method six was chosen as our context extraction method.
-While it does not have the higest relevency, extraction method 3 did not provide
+While it does not return the most relevent results, extraction method 3 did not provide
 a high enough number of sentences on average to build features from.
 
 
@@ -360,14 +361,14 @@ Despite extraction method six not generating a perfect relevency, under the time
 of the project, it  was decided to move forward with the project rather than to incorporate more
 complex solutions to improve relevency.
 
-
+%Link above to below section 
 \subsection{Potential Issues With Data Retrieved}\label{sec:dataIssues}
 Wikipedia was a good choice for our external data source due its large catalogue of events.
 This provided us with more than sufficient data to gather from.
 While we have seen all of these positive atributes of wikipedia, there are certain issues that may have to be addressed
-that, if the content domain was to be altered, may cause issue.
+that, if the content domain was to be altered, may cause an issue.
 
-As Wikipedia is community managed, anybody can edit any page. This has been know to cause 'edit wars' over users
+As Wikipedia is community managed, anybody can edit any page. This has been known to cause 'edit wars' over users
 uploading biast information about subjects \cite{}.
 While in our current domain of long-term history, the facts and timelines are suitably coherent, if we were to apply this project
 to a much more current or hotly contested subject - such as the OJ Simpson trial, or recent presidential election - Wikipedia
