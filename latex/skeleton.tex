@@ -19,7 +19,7 @@
 
 \begin{document}
 
-\title{Aiding Temporal Ordering of Historical Events using Contextual Data}
+\title{Temporal Ordering of Historical Events using Contextual Data}
 
 \author{James Robert Friel}
 % to choose your course
@@ -41,9 +41,9 @@
  
 % to choose your report type
 % please un-comment just one of the following
-\project{Undergraduate Dissertation} % CS&E, E&SE, AI&L
+%\project{Undergraduate Dissertation} % CS&E, E&SE, AI&L
 %\project{Undergraduate Thesis} % AI%Psy
-%\project{4th Year Disertation}
+\project{4th Year Project Report}
 
 \date{\today}
 
@@ -54,7 +54,14 @@
 \maketitle
 
 \section*{Acknowledgements}
-I'd Like to thank Greggs Bakery for being there for me through thick and thin.
+Firstly I would like to thank my supervisor Shay Cohen for his guidance throughout the project.
+
+I would also like to thank the ``School of Memeformatics'' group for assisting as a brain trust
+throughout the project.
+
+Thank you to Greggs Bakery for being there for me through thick and thin.
+
+Lastly, thank you to Emily Wilson for her tireless proofreading and ability to put up with me.
 
 \tableofcontents
 
@@ -458,7 +465,7 @@ using bag-of-words. While this went against our hypothesis of using this techniq
 the main rason that word embedding did not perform as we expected was due to imperfect sentence retrieval causing noise in
 the features.
 
-\section{Classifiers}
+\section{Classifiers}\label{sec:classifiers}
 \subsection{Decision Trees}
 Decision trees were considered as they are a non-parametric, supervised learning method that care commonly used for
 classification and regression.
@@ -544,46 +551,13 @@ An activation fucntion is a function that maps the weighted inputs of each proce
 MLPs are trained using backpropigation.
 
 
-%In order to effectivly use an MLP for our data we experimented with the various parameters.
-%\begin{itemize}
-%  \item Number of hidden layers - the number of neurons per layer
-%  \item Type of activation function
-%  \item Type of solver
-%  \item L2 penalty
-%  \item Maximum number of itterations
-%\end{itemize}
-%
-%After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
-%This aids the model in transforming the inputs into something usable for the output layer.
-%
-%Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
-%The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
-%\begin{eqnarray}
-%  f(x) = \text{max}(0,x)\nonumber\\
-%  \text{where x is a neuron}\nonumber
-%\end{eqnarray}
-%The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
-%
-%In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
-%This algorithm was chosen as it is an itterative model for non-linear optimisation.
-%%Some more stuff about it
-%
-%An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
-%We chose the value of 0.00005 so as to ...
-%
-%The last parameter we has to exeriment with was the number of itterations.
-%We wanted each layer to reach a convergence, so the paramater was set to 100.
-%100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
-
-
-
 \chapter{Experiments}
 \section{Classification}
-In order to see if the retrieved sentences aided in the  ordering of linear event we must investigate machine learning
-techniques. We hope to see that the features generated from these 'important' sentences provide a suitable training model
-to improve orderings against a random assignment baseline. We also hope to see that the use of these features vastly
-improves over the use of titles alone.
-
+In order to investigate if retrieved sentences aided in the  ordering of linear event we experimented with various
+machine learning techniques to try and learn how to order events by sentences.
+We hoped to see that the features generated from these 'important' sentences provided a suitable training model
+to improve orderings against a random assignment baseline. We also hoped to see that the use of these features vastly
+improved over the use of titles alone.
 
 
 \subsection{Approach}
@@ -591,22 +565,22 @@ In order to be able to train a classifier on our data, a method of giving each f
 
  Given that each event in our data set is of the form
   \begin{eqnarray}
-  (t_{i},d_{i}) \hspace{0.5em}for\hspace{0.5em} i \hspace{0.2em}\epsilon \hspace{0.2em} [M]\nonumber
+  (t_{i},d_{i}) \hspace{0.5em} \text{for} \hspace{0.5em} i \hspace{0.2em}\epsilon \hspace{0.2em} [M]\nonumber
     \end{eqnarray}
     where t is the title, d is the associated date and M is the original data set,
 
     Using the Wikipedia extraction techniques discussed in section \ref{sec:retrieval} we constructed a new data set
     \begin{eqnarray}
-      \{(t_{i},s_{i},d_{j})\} \hspace{0.5em} for \hspace{0.5em}i,j  \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+      \{(t_{i},s_{i},d_{j})\} \hspace{0.5em} \text{for} \hspace{0.5em}i,j  \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
     \end{eqnarray}
     
     This formed the basis of our data to generate features.
 
     From this we built a new data set
     \begin{eqnarray}
-      \{(t_{i},s_{i},t_{j},s_{j},b_{ij})\} \hspace{0.5em} for \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+      \{(t_{i},s_{i},t_{j},s_{j},b_{ij})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
     \end{eqnarray}
-    where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.
+    where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.\\
     We used this value as the label for our training data and to evaluate our results against.
     A similar data set was constructed using only the article headlines.
     
@@ -615,68 +589,136 @@ In order to be able to train a classifier on our data, a method of giving each f
 
 Along with building a tuple event dataset, we experimented with triple event entries.
 \begin{eqnarray}
-      \{(t_{i},s_{i},t_{j},s_{j},t_{k},s_{k}b_{ijk})\} \hspace{0.5em} for \hspace{0.5em} i,j,k \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+      \{(t_{i},s_{i},t_{j},s_{j},t_{k},s_{k},b_{ijk})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j,k \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
 \end{eqnarray}
 
 Where $b_{ijk} = [y_i > y_j > y_k]$ indicating if the ordering is correct for these events.
 
+While we did not anticiapte that increasing the dependancy length of each entry would improve accuracy, it was investigated
+for the sake of completness. We anticipated that using more events per feature would diminish the accuracy of the system as
+...FIND A PAPER
 
-As we expected, increasing the number of events associated with each training point greatly decreased the accuracy of results.
-%Some stuff (paper?) about why adding more events makes things worse?
-Due to this, we will not focus on discussing these results, but instead focus on the results gathered from the tuple dataset.
+As we expected, increasing the number of events associated with each training point greatly decreased the accuracy of results in all cases.
+Due to this, we will not focus on discussing these experiments,but instead focus on the results gathered from the tuple dataset.
 
-We split our dataset into 80\% Training, 10\% Dev, 10\% Test. This beaks our 6226 entry dataset into 4982,622,622 for the respective split.
+We split our dataset into 80\% for training, 10\% for development and 10\% for testing.
+This beaks our 6226 entry dataset into 4982,622,622 for the respective split.
 The alotment of the entries into each category was done randomly.
 
-For each of the techniques outlines below, we followed a similar procedure.
-Experimented using the development set to optimise the parameters to give us the most optimal results.
-For each classifier, we feed in the training features and theor associated label. These features will
+%For each of the techniques outlines below, we followed a similar procedure.
+Experimentation was done using the development set to optimise the parameters to give us the most optimal results
+when finally tested on the testing data.
+For each classifier, we feed in the training features and their associated label. These features will
 be either the features generated from titles alone or with the sentences retrieved from wikipedia.
 
-Once training of the model has completed, we feed in a new data point for the system to return a clasification for.
+Once training of the model has completed, we feed in a new data point without a class label.
+The system will return a predicted class label for the new data and a probability score for its categorisation.
 
 Each of these data points is similar to that of the training data
  \begin{eqnarray}
-   \{(t_{i},t_{j})\} \hspace{0.5em} for \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+   \{(t_{i},s_{i},t_{j},s}{j})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
  \end{eqnarray}
 
- Thje classification returned for each data point is of the same style as that of the training data.
- With these new data point classification we can begin to look at finding the optimal path through all of the nodes.
- We will discuss the methods used in Chapter \ref{chapter:graphing}.
-
+ The classification returned for each data point is of the same style as that of the training data.
+ %With these new data point classification we can begin to look at finding the optimal path through all of the nodes.
+ %We will discuss the methods used in Chapter \ref{chapter:graphing}.
+ Each of the classification methods discussed in section \ref{sec:classifiers} reuqired experimentation to optimise the
+ paramters. Once optimisation of the paramaters has occured, we saw the best results from our classifiers.
 
  \subsection{Decision Tree}
- \subsection{SVM}
+ As Decision Trees infer decision rules from the training data provided to it, there are very few parameters to
+ experiment with. With our system being a binary classification system, there is not need to offset the class weightings.
+ From this we did not require any parameters to be used when training the classification tree.
+ 
+ \subsection{Support Vector Model}
+ SVMs have the option of many different parameters to be tuned in order to optimise the results.
+ In out implimentation of an SVM we had the following parameters to experiment with:
+ \begin{itemize}
+ \item Penelty parameter of the error term
+ \item The kernel type to be used in the algorithm
+ \end{itemize}
+
+ From our experimentation with our development data, we found the optimal penelty parameter to be 1.0.
+ This parameter indicates to the model how much you want to avoid misclassification of each example.
+ Setting our penelty to 1.0 will severly penelise the model for misclassification and leads to model producing
+ better results.
+
+ SVMs use a kernel to turn a linear model into a mon-linear model. This is benefital as it allows the system
+ to operate in high-dimentional, implicit feature space without having to compute the coordinates of the feature
+ in space \cite{hofmann2008kernel}.
+ From our experimentation the Radial Based Function (RBF) kernel was chosen as it helps SVMs scale to large numbers of
+ training samples which they do not typically perform well with.
+
+ The RBF kernel for two same vectors, x and \'{x}, is defined as:\\
+ \begin{eqnarray}
+   K_{RBF} (x, \'{x}) = \text{exp}[ \frac{||x =\'{x}||^2}{2\sigma^2}] }\nonumber
+ \end{eqnarray}
+\cite{hofmann2008kernel}
+ This kernel can project into infinite dimentions and therefor allows for easy computiation of new coordinated given that
+ we have a high number of trainign samples.
+ 
  \subsection{Logistic Regression}
+ When using the Logistic Regression model, there were only a few parameters that were of interest to us:
+ \begin{itemize}
+   \item Type of penelty
+   \item Type of solver
+ \end{itemize}
+
+ There are two main types of peneltys that can be applied to Logistic Regression models, L1 and L2 loss functions.
+ L1, also know as  the least absolute deviations, is `a loss function that minimises the sum of of the absolute
+ differences (S) between the target ($Y_i$) and the estimated values ($f(x_{i})$) \cite{l1l2}.
+ \begin{eqnarray}
+   S = \sum_{i=1}^{N} | Y_i - f(x_i)|\nonumber
+   \end{eqnarray}
+ 
+ L2 is also know as least square error. It minimises the sum of the square of differences (S) between
+ the target ($Y_i$) and the estimated values ($f(x_{i})$) \cite{l1l2}.
+ \begin{eqnarray}
+   S = \sum_{i=1}^{N} ( Y_i - f(x_i))^2\nonumber
+   \end{eqnarray}
+
+ L2 was chosen as it will always provide a single, stable solution where as L1 can return multiple solutions
+ which is of no use for our system.
+
+ There are several different solvrs that can be effectivly used with a Logistic Pregression model.
+ For our system, we chose to use the LIBLINEAR solver as it supports L2, provides probabilities
+ for Logistic Regression and is a linear classifier for large data sets\cite{fan2008liblinear}.
+ 
  \subsection{Perceptron}
- \subsection{MLP}
 
+ 
+ \subsection{Multilayer Perceptron}
+ In order to effectivly use an MLP for our data we experimented with the various parameters.
+ \begin{itemize}
+ \item Number of hidden layers - the number of neurons per layer
+ \item Type of activation function
+ \item Type of solver
+ \item L2 penalty
+ \item Maximum number of itterations
+ \end{itemize}
+ 
+ After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
+ This aids the model in transforming the inputs into something usable for the output layer.
+ 
+ Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
+ The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
+ \begin{eqnarray}
+   f(x) = \text{max}(0,x)\nonumber\\
+   \text{where x is a neuron}\nonumber
+ \end{eqnarray}
+ The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
 
-%\subsection{Local Learning}
-%We initially looked at local learning, as opposed to global learning, to try and classify our data.
-%Local learning is ...
-%We chose to look at local learning techniques as .... 
-%\subsection{Results}\label{sec:local-results}
+ In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
+ This algorithm was chosen as it is an itterative model for non-linear optimisation.
+ %Some more stuff about it
 
-%Having experimented with the various classification methods outlined above, we can see from table \ref{table:local-learning}
-%That the use of the retrieved sentences is significantly better at predicting the ordering of tuples of events than that of
-%just titles alone.
-%
-%When using the event titles alone, our results drop below our baseline on 50\% accuracy.
-%Our baseline is the result if every event tuples was randomly assigned an ordering (1 or 0).
-%These poor results for titles alone indicate that using such small amounts of data
-%(mean=8.242531320269837,standard deviation= 3.2204518727095195) makes it difficult to make any reasonable inferences to specify the ordering.
-%
-%
-%As we discussed earler, the difference between using features of two and three events is notable (5\%).
-%
-%The use of the retrieved article data has a noticable positive effect on the accuuracy of our classifiers.
-%
-%
-%
-%As we can see from our results, classification of tuple event orderings improves from the baseline by a significant margin.
-%These results are promising as, the better the individual pauir orderings are, the better the agreement of a traveral across all events will be.
-%With such a large spread of accuracies for our experiemnts with the retrieved articles, it was decided to explore global learning techniques
+ An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
+ We chose the value of 0.00005 so as to ...
+
+ The last parameter we has to exeriment with was the number of itterations.
+ We wanted each layer to reach a convergence, so the paramater was set to 100.
+ 100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
+
 %
 %\begin{table}[H]
 %\centering
@@ -692,48 +734,6 @@ Each of these data points is similar to that of the training data
 %\end{tabular}
 %\caption{Local Learning Results  \\*DT = Decision Tree }
 %\end{table}
-%
-%
-%\subsection{Global Learning}
-%Global learning is a machine learning method that fits a distribution over the data.
-%some waffel \cite{huang2008machine}
-%
-%
-%
-%In order to effectivly use an MLP for our data we experimented with the various parameters.
-%\begin{itemize}
-%  \item Number of hidden layers - the number of neurons per layer
-%  \item Type of activation function
-%  \item Type of solver
-%  \item L2 penalty
-%  \item Maximum number of itterations
-%\end{itemize}
-%
-%After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
-%This aids the model in transforming the inputs into something usable for the output layer.
-%
-%Having looked at logistic and itentity activation functions, we settles on the rectifier activation function.
-%The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
-%\begin{eqnarray}
-%  f(x) = \text{max}(0,x)\nonumber\\
-%  \text{where x is a neuron}\nonumber
-%\end{eqnarray}
-%The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
-%%
-%In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
-%This algorithm was chosen as it is an itterative model for non-linear optimisation.
-%%Some more stuff about it
-%An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
-%We chose the value of 0.00005 so as to ...
-%The last parameter we has to exeriment with was the number of itterations.
-%We wanted each layer to reach a convergence, so the paramater was set to 100.
-%100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
-%
-%
-%\subsection{Results}
-%As we can see from table \ref{table:global-learning},  the use of global learning techniques greatly improves the accuracy
-%of classification to the results seen in section \ref{sec:local-results} and the baseline.
-%
 %\begin{table}[H]
 %\centering
 %\label{table:global-learning}
@@ -748,11 +748,6 @@ Each of these data points is similar to that of the training data
 %\end{tabular}
 %\caption{Global Learning Results}
 %\end{table}
-%
-%From the results of our experiments with various different classification techniques, we have seen that the use of the sentences retrieved
-%from Wikipedia aid in the classification of pairs of events. It is with this information in mind that we decided to take the results from
-%the MLP classifications and use those from now to complete the pathing of our timeline.
-%
 \section{Path Finding} \label{chapter:graphing}
 From our classifier, we have constructed a directional ordering between every two events.
 By placing each of our events in a node and placing each individual ordering on an edge, we constructed
@@ -843,59 +838,59 @@ greedy algorithm.
 
 Similarly to the greedy solution, as we do not know the optimal start and end node, we had to run the algorithm with every possible start and end node combination.
 
-\subsection{Results}\label{sec:graph-results}
-For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
-This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
-
-
-The Tau coefficient is defined as
-\begin{eqnarray}
-  \tau=\frac{(\text{number of concordant pairs})-(\text{number of discordant pairs})}{n(n-1)/2}\nonumber
-\end{eqnarray}\cite{abdi2007kendall}
-
-The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
-This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
-total independence.
-
-
-\begin{table}[H]
-\centering
-\label{table:ILP-results}
-\begin{tabular}{|l|l|l|l|l|l|l|l|}
-  \hline
-  Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
-  \hline
-With Articles & 0.695 & 0.419 & -0.3 & 0.376   & 0.7333  & 0\\
-\hline
-With Titles & nan & Nan & nan & nan  & nan & nan\\
-\hline
-\end{tabular}
-\caption{ILP Pathing Results}
-\end{table}
-
-
-
-\begin{table}[H]
-\centering
-\label{table:greedy-results}
-\begin{tabular}{|l|l|l|l|l|l|l|l|}
-  \hline
-  A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
-  \hline
-With Articles & 0.42 & 0.5151 & 0.3 &    & 0.5454  & 0\\
-\hline
-With Titles & nan & Nan & nan & nan  & nan & nan\\
-\hline
-\end{tabular}
-\caption{Greedy Pathing Results}
-\end{table}
-
-
-\begin{figure}
-  %\includegraphic[]{}
-  \caption{An Example of the Tau Coefficient in Use}
-  \label{fig:tau}
-\end{figure}
+%\subsection{Results}\label{sec:graph-results}
+%For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
+%This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
+%
+%
+%The Tau coefficient is defined as
+%\begin{eqnarray}
+%  \tau=\frac{(\text{number of concordant pairs})-(\text{number of discordant pairs})}{n(n-1)/2}\nonumber
+%\end{eqnarray}\cite{abdi2007kendall}
+%
+%The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
+%This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
+%total independence.
+%
+%
+%\begin{table}[H]
+%\centering
+%\label{table:ILP-results}
+%\begin{tabular}{|l|l|l|l|l|l|l|l|}
+%  \hline
+%  Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
+%  \hline
+%With Articles & 0.695 & 0.419 & -0.3 & 0.376   & 0.7333  & 0\\
+%\hline
+%With Titles & nan & Nan & nan & nan  & nan & nan\\
+%\hline
+%\end{tabular}
+%\caption{ILP Pathing Results}
+%\end{table}
+%
+%
+%
+%\begin{table}[H]
+%\centering
+%\label{table:greedy-results}
+%\begin{tabular}{|l|l|l|l|l|l|l|l|}
+%  \hline
+%  A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
+%  \hline
+%With Articles & 0.42 & 0.5151 & 0.3 &    & 0.5454  & 0\\
+%\hline
+%With Titles & nan & Nan & nan & nan  & nan & nan\\
+%\hline
+%\end{tabular}
+%\caption{Greedy Pathing Results}
+%\end{table}
+%
+%
+%\begin{figure}
+%  %\includegraphic[]{}
+%  \caption{An Example of the Tau Coefficient in Use}
+%  \label{fig:tau}
+%\end{figure}
 
 
 
