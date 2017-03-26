@@ -573,7 +573,7 @@ In order to be able to train a classifier on our data, a method of giving each f
     \begin{eqnarray}
       \{(t_{i},s_{i},d_{j})\} \hspace{0.5em} \text{for} \hspace{0.5em}i,j  \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
     \end{eqnarray}
-    
+    Where $s_i$ is the sentences retrieved from Wikipedia for title $t_i$. 
     This formed the basis of our data to generate features.
 
     From this we built a new data set
@@ -657,7 +657,7 @@ Each of these data points is similar to that of the training data
  This kernel can project into infinite dimentions and therefor allows for easy computiation of new coordinated given that
  we have a high number of trainign samples.
  
- \subsection{Logistic Regression}
+ \subsection{Logistic Regression}\label{sec:log-reg}
  When using the Logistic Regression model, there were only a few parameters that were of interest to us:
  \begin{itemize}
    \item Type of penelty
@@ -665,7 +665,7 @@ Each of these data points is similar to that of the training data
  \end{itemize}
 
  There are two main types of peneltys that can be applied to Logistic Regression models, L1 and L2 loss functions.
- L1, also know as  the least absolute deviations, is `a loss function that minimises the sum of of the absolute
+ L1, also know as  the least absolute deviatinears, is `a loss function that minimises the sum of of the absolute
  differences (S) between the target ($Y_i$) and the estimated values ($f(x_{i})$) \cite{l1l2}.
  \begin{eqnarray}
    S = \sum_{i=1}^{N} | Y_i - f(x_i)|\nonumber
@@ -685,7 +685,10 @@ Each of these data points is similar to that of the training data
  for Logistic Regression and is a linear classifier for large data sets\cite{fan2008liblinear}.
  
  \subsection{Perceptron}
-
+ Duriing our experimentation with Perceptron paramaters, we dicovered that giving the system nine epochs (passes
+ over the training data) and shuffling the training data on each itteration provided results that maximised the
+ estimations. For the same reasons stated in section \ref{sec:log-reg}, we use an L2 penelty with our perceptron
+ model.
  
  \subsection{Multilayer Perceptron}
  In order to effectivly use an MLP for our data we experimented with the various parameters.
@@ -704,7 +707,7 @@ Each of these data points is similar to that of the training data
  The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
  \begin{eqnarray}
    f(x) = \text{max}(0,x)\nonumber\\
-   \text{where x is a neuron}\nonumber
+   \text{where x is the output of a neuron}\nonumber
  \end{eqnarray}
  The rectifier function was chosen as it is more effective than its avaialble counterparts\cite{glorot2011deep}.
 
@@ -715,9 +718,10 @@ Each of these data points is similar to that of the training data
  An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
  We chose the value of 0.00005 so as to ...
 
- The last parameter we has to exeriment with was the number of itterations.
+ The last parameter we has to exeriment with was the number of epochs.
  We wanted each layer to reach a convergence, so the paramater was set to 100.
- 100 layers was chosen as during experimentation with subsets of the data improvments were insignificant showing that the solver was at convergence.
+ 100 layers was chosen as during experimentation with subsets of the data improvments were
+ insignificant showing that the solver was near convergence.
 
 %
 %\begin{table}[H]
