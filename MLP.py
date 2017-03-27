@@ -10,7 +10,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import numpy as np
 import datetime
-
+from sklearn.metrics import confusion_matrix
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 
@@ -48,6 +48,8 @@ def train(features):
 def test(features,B):
     correct = 0
     probs = []
+    labels = []
+    predictions = []
     features = [item for item in features if len(item[0]) != 0]
     for feature in features:
         temp = np.array(feature[0][0:B]).reshape((1, -1))
@@ -63,12 +65,17 @@ def test(features,B):
         #Add list of which came before what
         if(predict == 1):
             G[feature[1][0]].append(feature[1][1])
+            labels.append(1)
+            predictions.append(feature[-1])
         else:
             G[feature[1][1]].append(feature[1][0])
+            labels.append(0)
+            predictions.append(feature[-1])
 
         probs.append([predict, feature[2]])
         if(feature[2] == predict[0]):
             correct +=1
+    print confusion_matrix(labels,predictions)
     print ("Accuracy = " + str(correct) + '/' + str(len(features)))
 
 
@@ -76,7 +83,7 @@ def test(features,B):
 print (datetime.datetime.now())
 p = Pool(20)
 trainFeatures = []
-for I in range(10):#len(trainData)):
+for I in range(len(trainData)):
     if trainData[I] is not None:
         trainFeatures.append(trainData[I])
 B = train(trainFeatures)
@@ -85,7 +92,7 @@ print (datetime.datetime.now())
 print ("Training Complere. Now For Testing")
 testFeatures = []
 testData = eval(testData[0])
-for I in range(5):#len(testData)):
+for I in range(len(testData)):
     if testData[I] != None:
         testFeatures.append(testData[I])
 test(testFeatures,B)
