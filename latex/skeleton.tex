@@ -504,7 +504,7 @@ The logistic regression model estimates the probability of a binary response bas
 This is beneficial as along with providing classification estimates, the model can produce probabilities for its
 decision. These probabilities can allow us to use weighting techniques to improve our path building.
 
-\subsection{Structured Perceptron}
+\subsection{Perceptron}
 The Perceptron is a common algorithm used for large-scale learning.
 It is a type of linear classifier that bases predictions on a linear predictor function that combines a set of optimised weights
 and the input feature vector.
@@ -520,7 +520,7 @@ These include:
 \item It updates its model only on mistakes
 \end{itemize}
 
-Structured Perceptrons also allow for retraining of the model when newer data is added, this allows the perceptron to
+Perceptrons also allow for retraining of the model when newer data is added, this allows the perceptron to
 itterativly improve itself. An example of this improvement can be seen in figure \ref{perceptronExample}.
 \begin{figure}[ht]
   \centering
@@ -742,36 +742,7 @@ Each of these data points is similar to that of the training data
  100 layers was chosen as during experimentation with subsets of the data improvements were
  insignificant showing that the solver was near convergence.
 
-%
-%\begin{table}[H]
-%\centering
-%\label{table:local-learning}
-%\begin{tabular}{|p{5em}|l|l|l|p{4em}|l|}
-%  \hline
-%  Accuracy  & DT* (tuple) & DT* (triple) & SVM & Logistic Regression & Baseline\\
-%  \hline
-%  With Articles    & 53\%  & 48\%    & 66\% &  76\% & 50\%\\
-%\hline
-%With Titles & 43\%  & 36& 51\%    & 52\% & 50\%\\
-%\hline
-%\end{tabular}
-%\caption{Local Learning Results  \\*DT = Decision Tree }
-%\end{table}
-%\begin{table}[H]
-%\centering
-%\label{table:global-learning}
-%\begin{tabular}{|p{5em}|l|l|p{4em}|l|}
-%  \hline
-%  {\small Accuracy}  & {\small Perceptron} & {\small MLP} & Baseline\\
-%  \hline
-%{\small With Articles}    & 66\%  & 83\% & 50\%\\
-%\hline
-%{\small With Titles} & 46\%  & 54\% & 50\%\\
-%\hline
-%\end{tabular}
-%\caption{Global Learning Results}
-%\end{table}
-\section{Path Finding} \label{chapter:graphing}
+ \section{Path Finding} \label{chapter:graphing}
 From our classifier, we have constructed a directional ordering between every two events.
 By placing each of our events in a node and placing each individual ordering on an edge, we constructed
 a digraph of the data.
@@ -863,63 +834,6 @@ Similarly to the greedy solution, as we do not know the optimal start and end no
 
 
 \section{Summary}
-%\subsection{Results}\label{sec:graph-results}
-%For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
-%This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
-%
-%
-%The Tau coefficient is defined as
-%\begin{eqnarray}
-%  \tau=\frac{(\text{number of concordant pairs})-(\text{number of discordant pairs})}{n(n-1)/2}\nonumber
-%\end{eqnarray}\cite{abdi2007kendall}
-%
-%The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
-%This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagrement of the ordering and 0 claiming
-%total independence.
-%
-%
-%\begin{table}[H]
-%\centering
-%\label{table:ILP-results}
-%\begin{tabular}{|l|l|l|l|l|l|l|l|}
-%  \hline
-%  Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
-%  \hline
-%With Articles & 0.695 & 0.419 & -0.3 & 0.376   & 0.7333  & 0\\
-%\hline
-%With Titles & nan & Nan & nan & nan  & nan & nan\\
-%\hline
-%\end{tabular}
-%\caption{ILP Pathing Results}
-%\end{table}
-%
-%
-%
-%\begin{table}[H]
-%\centering
-%\label{table:greedy-results}
-%\begin{tabular}{|l|l|l|l|l|l|l|l|}
-%  \hline
-%  A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
-%  \hline
-%With Articles & 0.42 & 0.5151 & 0.3 &    & 0.5454  & 0\\
-%\hline
-%With Titles & nan & Nan & nan & nan  & nan & nan\\
-%\hline
-%\end{tabular}
-%\caption{Greedy Pathing Results}
-%\end{table}
-%
-%
-%\begin{figure}
-%  %\includegraphic[]{}
-%  \caption{An Example of the Tau Coefficient in Use}
-%  \label{fig:tau}
-%\end{figure}
-
-
-
-%need a table of results
 
 \chapter{Conclusion}
 \section{Results}
@@ -961,6 +875,25 @@ With Titles & 43\%  & 36\% & 51\%    & 52\% & 46\% & 54\% & 50\%\\
 \end{table}
 
 
+\begin{table}[H]
+\centering
+\label{table:classification-results}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  Precision  & DT (tuple) & DT (triple) & SVM & LR & Perceptron & MLP & Baseline\\
+  \hline
+  With Articles    & 0.86 & nan  & 0.8  & 0.82 &  0.82 & 0.82 & 0.5\\
+\hline
+With Titles & 0.318  & \% & 0.42 & 0.12 & 0.18 & 0.78 & 0.5\\
+\hline
+\multicolumn{3}{@{}p{1.5in}}{\footnotesize DT $=$ Decision Tree}\\
+\multicolumn{3}{@{}p{1.5in}}{\footnotesize LR $=$ Logistic Regression}\\
+
+\end{tabular}
+\caption{Precision for Classification Results}
+\end{table}
+
+
 \subsection{Path Finding}
 We measure our path finding results using Kendall's Tau \ref{sec:kendall-tau}. This coefficient
 measures correlation between -1 and 1, where -1 is perfect disagreement and 1 is perfect agreement.
@@ -972,11 +905,11 @@ measures correlation between -1 and 1, where -1 is perfect disagreement and 1 is
 \label{table:ILP-results}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
+  A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
   \hline
-With Articles & 0.695 & 0.419 & -0.3 & 0.376   & 0.7333  & 0\\
+With Articles & 0.695 & 0.419 & 0.3 & 0.376   & 0.7333  & 0\\
 \hline
-With Titles & nan & Nan & nan & nan  & nan & 0\\
+With Titles &0.06  & -0.09 & 0.048 & -0.52  & -0.28 & 0\\
 \hline
 \end{tabular}
 \caption{ILP Pathing Results}
@@ -989,11 +922,11 @@ With Titles & nan & Nan & nan & nan  & nan & 0\\
 \label{table:greedy-results}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
-  A\* Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
+  Beam Search & DT & SVM &Logistic Regression & Perceptron & MLP & Baseline\\
   \hline
-With Articles & 0.42 & 0.5151 & 0.3 &    & 0.5454  & 0\\
+With Articles & 0.42 & 0.5151 & 0.3 &  0.44  & 0.5454  & 0\\
 \hline
-With Titles & nan & Nan & -0.59 & -0.29  & -0.06 & 0\\
+With Titles & 0.214 & -0.62 & 0.17 & 0.09  & 0.32 & 0\\
 \hline
 \end{tabular}
 \caption{Greedy Pathing Results}
@@ -1009,7 +942,6 @@ a particular article.
 
 
 \section{Conclusion}
-F
 % use the following and \cite{} as above if you use BibTeX
 % otherwise generate bibtem entries
 \bibliographystyle{plain}
