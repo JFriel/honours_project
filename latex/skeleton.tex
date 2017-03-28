@@ -16,7 +16,6 @@
 \tcbuselibrary{skins}
 \usetikzlibrary{shadings}
 
-
 \begin{document}
 
 \title{Temporal Ordering of Historical Events using Contextual Data}
@@ -320,24 +319,24 @@ These included:
 
 As seen in Table \ref{table:retrieval}, experimentation yielded mixed results.
 The results show a large range of average number of sentences retrieved and varying degrees of relevancy.
-Relevancy was measured manually using Cohen's Kappa \cite{wood2007understanding}.
+Relevancy was measured manually using Cohen's Kappa (see Section \ref{sec:cohen})\cite{wood2007understanding}.
 
-Cohen's kappa measures the inter-rater agreement between two raters
-who each classify N items into C mutually exclusive categories.
-
-Cohen's Kappa is defined as:\\
-\begin{equation}
-  \kappa = \frac{p_{0} - p_{e}}{1 - p_{e}}\nonumber
-\end{equation}
-Where $p_0$ is the relative observed agreement between raters and $p_e$ is the hypothetical probability
-of a chance agreement using the observed data to calculate the probabilities of each observer randomly saying each category.
-If the raters are in complete agreement then $\kappa$ = 1.
-If there is no agreement among the raters, other than that expected by $p_e$, $\kappa \leq 0$.
-
-Cohen's Kappa is thought to be a more robust measure than a simple percentage agreement.
-This is due to it taking into account the possibility of agreement occurring by chance.
-
-
+%Cohen's kappa measures the inter-rater agreement between two raters
+%who each classify N items into C mutually exclusive categories.
+%
+%Cohen's Kappa is defined as:\\
+%\begin{equation}
+%  \kappa = \frac{p_{0} - p_{e}}{1 - p_{e}}\nonumber
+%\end{equation}
+%Where $p_0$ is the relative observed agreement between raters and $p_e$ is the hypothetical probability
+%of a chance agreement using the observed data to calculate the probabilities of each observer randomly saying each category.
+%If the raters are in complete agreement then $\kappa$ = 1.
+%If there is no agreement among the raters, other than that expected by $p_e$, $\kappa \leq 0$.
+%
+%Cohen's Kappa is thought to be a more robust measure than a simple percentage agreement.
+%This is due to it taking into account the possibility of agreement occurring by chance.
+%
+%
 Given that we wish to categorise our retrieved sentences into either related to the event, or not related,
 we only have two possible categories to assign each of our N sentences to.
 
@@ -551,10 +550,58 @@ An activation function is a function that maps the weighted inputs of each proce
 MLPs are trained using backpropigation.
 
 \section{Evaluation}
-\subsection{Cohen's Kappa}
-\subsection{Kendall's Tau}
+Throughout our experiments, there are several aspects that need to be evaluated.
+The aspects that are required to be measured are:
+\begin{itemize}
+  \item Retrieved Sentence Relevency
+  \item Accuracy of Classifier
+  \item Correlation of Predicted and True Path
+\end{itemize}
+
+There are multiple different staticstic that were considered for each of these problems.
+\subsection{Choice of Sentence Revelency Metric}\label{sec:cohen}
+In order to select a method to extract relevent sentences from Wikipedia, a statistic that measured the agreement
+of relevency. There are two main statistics for measuring inter-rater reliability: Cohen's Kappa and Fleiss' Kappa \cite{}.
+These two statistics measure the agreement between reviewers. The main difference between Cohen's and Fleiss' Kappa is that
+Cohen's Kappa only works for two reviewers, where as Fleiss' Kappa works for any number of fixed reviewers \cite{}.
+Given the short time frame of this project and the length of data reviewed, it was decided to use Cohen's Kappa in order
+to find an agreement between two reviewers selection of relevent sentences gathered from Wikipedia.
+
+Cohen's kappa measures the inter-rater agreement between two raters
+who each classify N items into C mutually exclusive categories.
+
+Cohen's Kappa is defined as:\\
+\begin{equation}
+  \kappa = \frac{p_{0} - p_{e}}{1 - p_{e}}\nonumber
+\end{equation}
+
+Where $p_0$ is the relative observed agreement between raters and $p_e$ is the hypothetical probability
+of a chance agreement using the observed data to calculate the probabilities of each observer randomly saying each category \cite{}.
+
+If the raters are in complete agreement then $\kappa$ = 1.
+If there is no agreement among the raters, other than that expected by $p_e$, $\kappa \leq 0$.
+
+Both statistics are thought to be a more robust measure than a simple percentage agreement.
+This is due to it taking into account the possibility of agreement occurring by chance.
+
+\subsection{Choice Of Correlation Coefficient}\label{sec:kendall}
+
+There are various different correlation coefficents that could be used to evaluate our generated pathways.
+Some popular coefficients include:
+\begin{itemize}
+\item Pearsons Correlation Coefficient ( Pearson's r) - a measure of the strength and direction of the linear relationship between two variables
+\item Intraclass Correlation - describes how strongly units in the same group resemble each other
+\item Kendall Rank Correlation Coefficient -  measure of the portion of ranks that match between two data sets
+\end{itemize}
+
 For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
 This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
+This allows us to evaluate what proportion of our ordering was correct, giving a truer representation of accuracy
+compaired to Pearson's r or Interclass correlation \cite{}.
+Pearson's r was not chosen as it measures the linear corelation between two variables\cite{}.
+This would not produce an accurate representation of the system as a single misaligned event would reduce the
+correlation drastically.
+Kendall's Tau was also prefered over Interclass correlation as ...\cite{}
 
 
 The Tau coefficient is defined as
@@ -565,7 +612,7 @@ The Tau coefficient is defined as
 The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
 This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagreement of the ordering and 0 claiming
 total independence.
-\subsection{Accuracy and Precision}
+
 
 \section{Summary}
 TODO
@@ -838,7 +885,7 @@ Similarly to the greedy solution, as we do not know the optimal start and end no
 \chapter{Conclusion}
 \section{Results}
 From our experiments, we generated results from both our classification and path finding methods.
-Give a spread of results from our classification of tuples of events, we used both of our path finding
+Given a spread of results from our classification of tuples of events, we used both of our path finding
 techniques in each of the resulting graphs. Our results include accuracy's and correlations from
 experiments using both the sentences extracted from Wikipedia and just the event titles alone.   
 
@@ -847,14 +894,15 @@ We measure the results on Table \ref{table:classification-results} are measured 
 (both positive and negative) among the total number of results.
 
 The baseline used for classification is a random assignment. As we use binary classifiers and each class has an even
-weight, our random assignment puts exactly half in each of the classes. This makes our baseline accuracy 50\% as
-giving a direction to an edge has a one in two chance of being correct.
+weight, our random assignment puts exactly half in each of the classes.
+With an even estination distribution across the two classes, this makes our baseline accuracy 50\%.%make better 
 
-From our results, we can see that classification using only the event titles has a large spread of accuracy.
-These accuracy's often fall below the baseline. The precision of these results is ...
+From our results, we can see that classification using only the event titles have a small spread of results
+(mean =47 , standard deviation=15.09) and are centered around the baseline figure.
+
 
 Our experiments that used the retrieved sentences out perform the results using only titles by large margins.
-The precision of ...
+These experiments are centered around 66 and have (mean = 65.\.{3}, standard deviation = 12.1)
 
 \begin{table}[H]
 \centering
@@ -875,30 +923,37 @@ With Titles & 43\%  & 36\% & 51\%    & 52\% & 46\% & 54\% & 50\%\\
 \end{table}
 
 
-\begin{table}[H]
-\centering
-\label{table:classification-results}
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
-  \hline
-  Precision  & DT (tuple) & DT (triple) & SVM & LR & Perceptron & MLP & Baseline\\
-  \hline
-  With Articles    & 0.86 & nan  & 0.8  & 0.82 &  0.82 & 0.82 & 0.5\\
-\hline
-With Titles & 0.318  & \% & 0.42 & 0.12 & 0.18 & 0.78 & 0.5\\
-\hline
-\multicolumn{3}{@{}p{1.5in}}{\footnotesize DT $=$ Decision Tree}\\
-\multicolumn{3}{@{}p{1.5in}}{\footnotesize LR $=$ Logistic Regression}\\
-
-\end{tabular}
-\caption{Precision for Classification Results}
-\end{table}
+%\begin{table}[H]
+%\centering
+%\label{table:classification-results}
+%\begin{tabular}{|c|c|c|c|c|c|c|c|}
+%  \hline
+%  Precision  & DT (tuple) & DT (triple) & SVM & LR & Perceptron & MLP & Baseline\\
+%  \hline
+%  With Articles    & 0.86 & nan  & 0.8  & 0.82 &  0.82 & 0.82 & 0.5\\
+%\hline
+%With Titles & 0.318  & \% & 0.42 & 0.12 & 0.18 & 0.78 & 0.5\\
+%\hline
+%\multicolumn{3}{@{}p{1.5in}}{\footnotesize DT $=$ Decision Tree}\\
+%\multicolumn{3}{@{}p{1.5in}}{\footnotesize LR $=$ Logistic Regression}\\
+%
+%\end{tabular}
+%\caption{Precision for Classification Results}
+%\end{table}
 
 
 \subsection{Path Finding}
-We measure our path finding results using Kendall's Tau \ref{sec:kendall-tau}. This coefficient
-measures correlation between -1 and 1, where -1 is perfect disagreement and 1 is perfect agreement.
+We measure our path finding results using Kendall's Tau.
+
+Our baseline for put generated paths is 0 when using Kendall's Tau.
+This is due to when randomly ordering a set of data it will, on average, score a zero against the true ordering
+when using Kendall's Tau.
 
 
+From the use of ILP pathfinding method, we gathered the results in Table \ref{tabel:ILP-Results}.
+As we can see, the use of articles greatly increases the correlation of estimated path with the true path.
+These results have a much small spread (mean = 0.50466 , standard deviation = 0.1756) than the ILP pathing of titles alone
+(mean = -0.1, standard deviation = 0.219).
 
 \begin{table}[H]
 \centering
@@ -915,7 +970,11 @@ With Titles &0.06  & -0.09 & 0.048 & -0.52  & -0.28 & 0\\
 \caption{ILP Pathing Results}
 \end{table}
 
-
+Using the greedy solution to pathfinding, we found our results when using article data to have a much lower spread
+than the ILP results (mean = 0.46, standard deviation = 0.05 ). Our results in Table \ref{table:greedy-results} indicate that once
+again, using article data aids in the ordering correlations of estimated paths rather than when just using event tiles.
+the results from just event tiles shows no significant difference to that of the ILP results
+(mean = 0.0348, standard deviation= 0.3357).
 
 \begin{table}[H]
 \centering
@@ -933,7 +992,37 @@ With Titles & 0.214 & -0.62 & 0.17 & 0.09  & 0.32 & 0\\
 \end{table}
 
 \section{Discussion}
-%\chapter{Conclusion}
+%discuss wikipedia retrieval
+
+As we see in both Tables \ref{table:ILP-results} and \ref{table:greedy-results}, the use of event titles alone
+provides no real benefit to classification over a random assignment baseline. This may be due to a number of reasons,
+but the key factor on these results is the lack of strong features to learn from. With each event title having an average of
+XXX words, the features generated are typically quite sparce. We believe this is the main reason that ordering using
+only title information is so poor.
+
+With the use of article data retrieved from Wikipedia we see a drastic increase in accuracy of ordering compaired to using
+titles alone. As we see in Tables \ref{table:ILP-results} and \ref{table:greedy-results}, the use of article data
+increases the ordering correlation, on average, by XXX. This shows us that the use of contextual data does improve the ability
+to succesfully temporally order events.
+
+It is on interest how the two pathing methods used were effected by the type of classifier.
+For example, the greedy solution out performed the ILP results, both with and without article data,
+when using the graph generated by the perceptron classifier. This is in contract to most other classifiers, exculding
+the SVM, in which the ILP results outperform the greedy solution when using articles. This may be due to ...\\
+
+The Decision Tree classifier is also substantially more benefitial to temporal ordering of our data than the classifer
+reults would have suggested. Despite this, Mulilayer Perceptrons show a real distinction from the rest in terms of both
+classification and temporal ordering. This is due to...
+
+
+As we originally hypothesised in section \ref{}, the ILP solution to event orderingis typically significantly
+better than the Greedy solution. This conforms to our hypothesis as ILp looks for the globally opimal path through
+the graph, where as the Greedy solution simply looks for the locally optimum, most likely next node, solution.
+
+The relevency score of the sentences retrieved from Wikipedia seen in Table \ref{table:}, while good does leave a lot of
+room from improvment. We believe that given a more relevent sentence set for each event would improve the overall
+performance of the system as this irrelivent data may be causing a random offset to classification results.
+
 \section{Further Work}
 \subsection{Potential Extension of Data Retrieval}
 If this project was to be taken further, we would aim to improve the pool of information we can draw from and mitigate the issues outlined in section \ref{sec:dataIssues}.
@@ -942,7 +1031,7 @@ a particular article.
 
 
 \section{Conclusion}
-% use the following and \cite{} as above if you use BibTeX
+% use the follt owing and \cite{} as above if you use BibTeX
 % otherwise generate bibtem entries
 \bibliographystyle{plain}
 \bibliography{./references.bib}
