@@ -229,17 +229,22 @@ content-analysis. These systems vary vastly in terms of difficulty and use of co
 
 
 \section{Related Work}
-In recent years there has been a growing research into temporal ordering.
+In recent years there has been a growing research interest into temporal ordering.
 A number of different papers have been published on machine-learning approaches to temporal ordering events.
 Although there have been various different approaches to this problem, the most common and successful approaches typically
 use unsupervised learning techniques. These works often use pattern-based approaches and manually crafted rules \cite{chklovski2004mining}.  
 
-\cite{chambers2009unsupervised}addresses unsupervised learning of event relations. Their evaluation
-scenarios deals with binary classification related to event ordering and aims to distin-
-guish ordered set of events from random permutations. Their research into argument representation is beneficial base
-knowledge for our research into event extraction.
+Chambers and Jurafsky\cite{chambers2009unsupervised} addresses unsupervised learning of event relations. Their evaluation
+scenarios deals with binary classification related to event ordering and aims to distinguish ordered set
+of events from random permutations. Their research into argument representation is beneficial base
+knowledge for our research into event extraction. This argumentation representation consists of robusts,
+frame-specific roles about arguments. While frames are commonplace in NLP, the authors aimed to learn information
+about the world without pre-defined frames, roles and corpora. This unsupervised learning of roles and frames has the
+potential to be very useful to our problem as due to the nature of our data, structure and roles are not know prior to
+IE. This representation also has the potential to assist in a variety of NLP applications \cite{chambers2009unsupervised} which
+we intent to build upon.
 
-The paper by \cite{abend2015lexical} addresses the use of
+The paper by  Abend et al. \cite{abend2015lexical} addresses the use of
 edge-factor models in temporal ordering. The classification task we aim to undertake is similar to that of \cite{abend2015lexical}
 but with significantly larger set of events to order. \cite{abend2015lexical} also use a variation of the Hamiltonian path
 to complete an ILP ordering of their events.
@@ -960,10 +965,27 @@ With Titles & 43\%  & 36\% & 51\%    & 52\% & 46\% & 54\% & 50\%\\
 \multicolumn{3}{@{}p{1.5in}}{\footnotesize LR $=$ Logistic Regression}\\
 
 \end{tabular}
-\caption{Classification Results}
+\caption{Classification Results for Tuples}
 \end{table}
 
 
+\begin{table}[H]
+\centering
+\label{table:triple-classification-results}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  Accuracy  & DT (triple) & SVM & LR & Perceptron & MLP & Baseline\\
+  \hline
+  With Articles & 48\%    & nan\% &  nan\% & nan\% & nan\% & 50\%\\
+\hline
+With Titles & nan\% & 36\%    & nan\% & nan\% & nan\% & 50\%\\
+\hline
+\multicolumn{3}{@{}p{1.5in}}{\footnotesize DT $=$ Decision Tree}\\
+\multicolumn{3}{@{}p{1.5in}}{\footnotesize LR $=$ Logistic Regression}\\
+
+\end{tabular}
+\caption{Classification Results for Tuples}
+\end{table
 %\begin{table}[H]
 %\centering
 %\label{table:classification-results}
