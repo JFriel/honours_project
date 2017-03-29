@@ -11,8 +11,10 @@
 \usepackage{mdframed}   % for framing
 \usepackage{csquotes}
 \usepackage{amsmath}
-
+\usepackage{amsmath}
 \usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
+\usepackage{url}
+\usepackage{tabularx}
 \tcbuselibrary{skins}
 \usetikzlibrary{shadings}
 
@@ -122,7 +124,7 @@ with the label associated with the event from the data.
 \chapter{Background \& Related Work}
 
 
-\section{Relation Extraction}
+\section{Relation Extraction}\label{sec:IE-bg}
 Dependency parsing is the core of relation extraction. Focusing on the dependencies between words allows for the relation of these words to become apparent.
 While there are numerous types of dependency representations, relation extraction is mostly focused around semantic dependencies \cite{mcclosky2011event}.
 Semantic dependencies are understood in terms of predicates and arguments.
@@ -137,12 +139,47 @@ In the example semantic dependency in figure \ref{fig:semantic-dependancy} the t
 on the predicate \textit{likes}. This semantic dependency is the basis for relation extraction.
 
 
+The information extraction (IE) techniques used to gather arguments and predicates for relation extraction uses a combination
+of well known Natural Language Processing (NLP) techniques. 
+Given a raw source text, IE typically follows a standard pipeline for entity extraction \cite{bontcheva2013twitie}:\\
+
+\begin{tcolorbox}[width=\textwidth,
+                  %%enhanced,
+                  %%frame hidden,
+                  interior hidden,
+                  boxsep=10pt,
+                  left=0pt,
+                  right=0pt,
+                  top=2pt]
+
+ \begin{tabularx}{\linewidth}{lX}
+
+ Language Identification &  Match source text language to known language footrpints\vspace{1em}\\
+  \multicolumn{2}{c}{$\Downarrow$} \\
+ Tokenization &  Break input into a stream of word, phrases or other meaningful elements, called token\vspace{1em}\\
+
+  \multicolumn{2}{c}{$\Downarrow$} \\
+ Sentence Splitting &  Split tokens into discrete sentences\vspace{1em}\\
+
+  \multicolumn{2}{c}{$\Downarrow$} \\
+ Part-Of-Speech (POS) Tagging &   Assigns word tags, such as noun or verb, to each token\vspace{1em} \\
+
+  \multicolumn{2}{c}{$\Downarrow$} \\
+ Named Entity Recognition (NER) &   Either through handwritten rules or machine-learned NER recognising objects, such as a name or an
+    organisation from the con struction of word tags
+
+ \end{tabularx}
+\end{tcolorbox}
+From the information gathered through IE, dependancies can be build between the entities seen in the text.
+
+
 Historically, dependency parsing has consisted of only highly local models that extract each event and argument independently.
 Modern techniques are building upon this to build systems that can handle more complex arguments. These systems use a tree of
 event-argument relations represented in a re-ranking dependency [parser \cite{mcclosky2011event}.
 This type of system captures both flat relations, such as in figure \ref{fig:semantic-dependancy}, but also nested relations.
 We see an example of these nested relations in figure \ref{fig:nested-relation}. These nested relation allow for more context to be drawn from
 the source text.
+
 
 \begin{figure}[H]
   \centering
@@ -153,8 +190,9 @@ the source text.
 
 
 \section{Machine Reading}
-The core aim of this project is to investigate the usefulness of Wikipedia article content is beneficial to total ordering of events.
-In order to do this we must perform machine reading on said articles.
+The core aim of this project is to investigate the usefulness of Wikipedia article content is beneficial to temporal ordering of events.
+Temporal ordering is defined as the arangment of events in time.
+In order to perform this we must perform machine reading on said articles.
 Machine reading is the core problem of Natural Language Understanding (NLU).
 NLU deals with machine reading comprehension, the problem of dissecting natural language inputs into usable features,
 and is considered an AI-hard problem.
@@ -164,10 +202,12 @@ There are two levels of reading comprehension, shallow (low-level) and deep (hig
 Shallow comprehension involves structural and phonemic recognition along with the processing of sentence and  word
 structure.
 Deep comprehension involves semantic processing, which happens when we encode the meaning of a word and relate it
-to similar words, see section \ref{sec:word-embedding}.
+to similar words, this is fully discussed in section \ref{sec:word-embedding}.
 This levels system of comprehension was first proposed by  Fergus I. M. Craik and Robert S. Lockhart \cite{wagner2009beyond}.
+The ability to read and process text for any level of comprehension build upon the IE pipleine discussed in section \ref{sec:IE=bg}.
 
-One of the earliest known attempts at NLU by a computer \cite{russell1995modern}. Since then, NLU has become an
+One of the earliest known attempts at NLU by a computer was the STUDENT system in 1964 \cite{russell1995modern}.
+Since then, NLU has become an
 umbrella term for a diverse range of problems and applications. These applications range from simple tasks, such as
 issuing simple commands to robots, to highly complex tasks such as full comprehension of poetry passages.
 Most problems within NLU fall somewhere between these extremes and will implement one of the types of comprehension
@@ -181,7 +221,7 @@ involving unstructured data.
 Unstructured data is data that has no pre-defined data model or manner. This type of data is
 commonly seen in NLU with text mining and natural language rarely forming to any cohesive model \cite{feldman2007text}.
 From the data sources typically used with NLU (news articles or free-form speech and text) the unstructured format of
-the data is beneficial as structured data typically has little to no subtler meaning \cite{}.
+the data is beneficial as structured data typically has little to no contextual data \cite{feldman2007text}.
 %Bit more about reading comprehension is CS
 
 In recent years there has been a commercial interest in NLU, mostly focusing on news-gathering, text categorising and
@@ -224,7 +264,7 @@ of a  brief event title and the date in the form ``YYY-MM-DD''.
 An example entry is ``1934-01-01, Alcatraz officially becomes a Federal Prison''.
 This data comes from Wikipedia's Today In History features. This is a feature that provides events from
 throughout history that occurred upon the date of visit. The data is a collection of these events and has
-an even distribution of events across the year(mean 17.05, average XXX events per day).
+an even distribution of events across the year(mean =  17.05, average XXX events per day).
 
 
 This dataset was chosen as the events within are all objective historical events. This is beneficial as it minimised
@@ -246,7 +286,7 @@ easier than that of raw, unstructured data.
 It is the key sentences within articles that we will use to estimate a timeline.
 
 \section{Text Retrieval}
-Using Wikipedia's article retrieval API \cite{wikipediaAPI}, the task of gathering article content
+Using Wikipedia's article retrieval API (Application Programming Interface) \cite{wikipediaAPI}, the task of gathering article content
 from keywords in its title is trivial.
 
 Choosing what information is contextually relevant to the subject is, however, not so straightforward.
@@ -255,7 +295,7 @@ headlines, we must also experiment with methods of extracting contextually relev
 retrieved articles related to the event headline.
 
 \subsubsection{Information Extraction}
-Stanford's natural language processing (NLP) suite,
+Stanford's NLP suite,
 a natural language analysis toolkit,
 was selected to aid in extraction of features from the dataset.
 Using this toolkit, the Open Information Extraction (OpenIE) from
@@ -369,8 +409,8 @@ complex solutions to improve relevancy.
 
 %Link above to below section 
 \subsection{Potential Issues With Data Retrieved}\label{sec:dataIssues}
-Wikipedia was a good choice for our external data source due its large catalogue of events.
-This provided us with more than sufficient data to gather from.
+Wikipedia was a good choice for our external data source due to its large catalogue of events.
+This provided us with an abundance of sufficient data to gather from.
 While we have seen all of these positive attributes of Wikipedia, there are certain issues that may have to be addressed
 that, if the content domain was to be altered, may cause an issue.
 
@@ -384,7 +424,7 @@ may not be the most appropriate source of information due to these bias edit war
 
 \section{Feature Extraction}\label{sec:representation}
 Having extracted a series of sentences for each event in our data, we required a concise method
-of representing these sentences. It is standard in NLP and ML domains to represent features as vectors.
+for representing these sentences. It is standard in NLP and ML domains to represent features as vectors.
 Several different techniques were discussed, but ultimately due to time constraints only two methods were
 experimented with: Bag-Of-Words and Word Embedding.
 \subsection{Bag-Of-Words}
@@ -471,7 +511,7 @@ classification and regression.
 They are based on the idea of asking simple yes/no questions. The algorithm is set up so as to be a binary tree with
 each node being a question and each leaf a decision.
 
-By inferring decision rules from data features, the system creates a model that predicts the value of a target variable,
+By inferring decision rules from data features, the system creates a model that predicts the value of a target variable.
 
 These attributes were promising for our experiments as they fit with our data and generate
 classifications of test data along with probabilities of these estimations.
@@ -621,44 +661,45 @@ TODO
 \section{Classification}
 In order to investigate if retrieved sentences aided in the  ordering of linear event we experimented with various
 machine learning techniques to try and learn how to order events by sentences.
-We hoped to see that the features generated from these 'important' sentences provided a suitable training model
-to improve orderings against a random assignment baseline. We also hoped to see that the use of these features vastly
-improved over the use of titles alone.
+We aimed to determine if features generated from these 'important' sentences provided a suitable training model
+to improve orderings against a random assignment baseline. We then compaired these features to the use of titles alone
+to see if the use of retrieved sentences aids single edge ordering.
 
 
 \subsection{Approach}
-In order to be able to train a classifier on our data, a method of giving each feature a label must be established.
+A labeling technique was established to code our data and train the classifier.
+
 
  Given that each event in our data set is of the form
-  \begin{eqnarray}
+  \begin{equation}
   (t_{i},d_{i}) \hspace{0.5em} \text{for} \hspace{0.5em} i \hspace{0.2em}\epsilon \hspace{0.2em} [M]\nonumber
-    \end{eqnarray}
+    \end{equation}
     where t is the title, d is the associated date and M is the original data set,
 
     Using the Wikipedia extraction techniques discussed in section \ref{sec:retrieval} we constructed a new data set
-    \begin{eqnarray}
+    \begin{equation}
       \{(t_{i},s_{i},d_{j})\} \hspace{0.5em} \text{for} \hspace{0.5em}i,j  \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
-    \end{eqnarray}
+    \end{equation}
     Where $s_i$ is the sentences retrieved from Wikipedia for title $t_i$. 
     This formed the basis of our data to generate features.
 
     From this we built a new data set
-    \begin{eqnarray}
+    \begin{equation}
       \{(t_{i},s_{i},t_{j},s_{j},b_{ij})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
-    \end{eqnarray}
+    \end{equation}
     where $b_{ij} = [y_{i} > y_{j}]$ indicating which event came first.\\
     We used this value as the label for our training data and to evaluate our results against.
     A similar data set was constructed using only the article headlines.
     
-    From each on the entries in this new data set, we use the feature representation techniques discussed in section \ref{sec:representation} to build numerical
+    From each of the entries in this new data set, we used the feature representation techniques discussed in section \ref{sec:representation} to build numerical
     features to train our classifier with.
 
 Along with building a tuple event dataset, we experimented with triple event entries.
-\begin{eqnarray}
+\begin{equation}
       \{(t_{i},s_{i},t_{j},s_{j},t_{k},s_{k},b_{ijk})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j,k \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
-\end{eqnarray}
+\end{equation}
 
-Where $b_{ijk} = [y_i > y_j > y_k]$ indicating if the ordering is correct for these events.
+Where $b_{ijk} = [y_i > y_j > y_k]$ indicating if the ordering was correct for these events.
 
 While we did not anticipate that increasing the dependency length of each entry would improve accuracy, it was investigated
 for the sake of completeness. We anticipated that using more events per feature would diminish the accuracy of the system as
@@ -668,7 +709,7 @@ As we expected, increasing the number of events associated with each training po
 Due to this, we will not focus on discussing these experiments,but instead focus on the results gathered from the tuple dataset.
 
 We split our dataset into 80\% for training, 10\% for development and 10\% for testing.
-This beaks our 6226 entry dataset into 4982,622,622 for the respective split.
+This breaks our 6226 entry dataset into 4982,622,622 respectivly.
 The allotment of the entries into each category was done randomly.
 
 %For each of the techniques outlines below, we followed a similar procedure.
@@ -677,13 +718,13 @@ when finally tested on the testing data.
 For each classifier, we feed in the training features and their associated label. These features will
 be either the features generated from titles alone or with the sentences retrieved from Wikipedia.
 
-Once training of the model has completed, we feed in a new data point without a class label.
-The system will return a predicted class label for the new data and a probability score for its categorisation.
+Once training of the model was completed, we fed in a new data point without a class label.
+The system returned a predicted class label for the new data and a probability score for its categorisation.
 
 Each of these data points is similar to that of the training data
- \begin{eqnarray}
-   \{(t_{i},s_{i},t_{j},s}{j})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
- \end{eqnarray}
+ \begin{equation}
+   \{(t_{i},s_{i},t_{j},s_{j})\} \hspace{0.5em} \text{for} \hspace{0.5em} i,j \hspace{0.2em}\epsilon \hspace{0.2em}[M]\nonumber
+ \end{equation}
 
  The classification returned for each data point is of the same style as that of the training data.
  %With these new data point classification we can begin to look at finding the optimal path through all of the nodes.
@@ -693,7 +734,7 @@ Each of these data points is similar to that of the training data
 
  \subsection{Decision Tree}
  As Decision Trees infer decision rules from the training data provided to it, there are very few parameters to
- experiment with. With our system being a binary classification system, there is not need to offset the class weightings.
+ experiment with. With our system being a binary classification system, there  ns no need to offset the class weightings.
  From this we did not require any parameters to be used when training the classification tree.
  
  \subsection{Support Vector Model}
@@ -709,16 +750,16 @@ Each of these data points is similar to that of the training data
  Setting our penalty to 1.0 will severely penalise the model for classification and leads to model producing
  better results.
 
- SVMs use a kernel to turn a linear model into a mon-linear model. This is benefits as it allows the system
+ SVMs use a kernel to turn a linear model into a mon-linear model. This is benefitial as it allows the system
  to operate in high-dimensionality, implicit feature space without having to compute the coordinates of the feature
  in space \cite{hofmann2008kernel}.
  From our experimentation the Radial Based Function (RBF) kernel was chosen as it helps SVMs scale to large numbers of
  training samples which they do not typically perform well with.
 
- The RBF kernel for two same vectors, x and \'{x}, is defined as:\\
- \begin{eqnarray}
-   K_{RBF} (x, \'{x}) = \text{exp}[ \frac{||x =\'{x}||^2}{2\sigma^2}] }\nonumber
- \end{eqnarray}
+ The RBF kernel for two same vectors, x and $\tilde{x}$, is defined as:
+ \begin{equation}
+   K_{RBF} (x, \tilde{x}) = \text{exp}[ \frac{||x =\tilde{x}||^2}{2\sigma^2}]\nonumber
+ \end{equation}
 \cite{hofmann2008kernel}
  This kernel can project into infinite dimensions and therefor allows for easy computation of new coordinated given that
  we have a high number of training samples.
@@ -730,18 +771,18 @@ Each of these data points is similar to that of the training data
    \item Type of solver
  \end{itemize}
 
- There are two main types of penalty's that can be applied to Logistic Regression models, L1 and L2 loss functions.
+ There are two main types of penalties that can be applied to Logistic Regression models, L1 and L2 loss functions.
  L1, also know as  the least absolute deviations, is `a loss function that minimises the sum of of the absolute
  differences (S) between the target ($Y_i$) and the estimated values ($f(x_{i})$) \cite{l1l2}.
- \begin{eqnarray}
+ \begin{equation}
    S = \sum_{i=1}^{N} | Y_i - f(x_i)|\nonumber
-   \end{eqnarray}
+   \end{equation}
  
  L2 is also know as least square error. It minimises the sum of the square of differences (S) between
  the target ($Y_i$) and the estimated values ($f(x_{i})$) \cite{l1l2}.
- \begin{eqnarray}
+ \begin{equation}
    S = \sum_{i=1}^{N} ( Y_i - f(x_i))^2\nonumber
-   \end{eqnarray}
+   \end{equation}
 
  L2 was chosen as it will always provide a single, stable solution where as L1 can return multiple solutions
  which is of no use for our system.
@@ -757,7 +798,7 @@ Each of these data points is similar to that of the training data
  model.
  
  \subsection{Multilayer Perceptron}
- In order to effectively use an MLP for our data we experimented with the various parameters.
+ In order to effectively use an MLP for our data we experimented with various parameters.
  \begin{itemize}
  \item Number of hidden layers - the number of neurons per layer
  \item Type of activation function
@@ -769,12 +810,12 @@ Each of these data points is similar to that of the training data
  After running experiments on  small subsets of our data, we found the optimal number of hidden layers to be 100. 
  This aids the model in transforming the inputs into something usable for the output layer.
  
- Having looked at logistic and identity activation functions, we settles on the rectifier activation function.
+ Having looked at logistic and identity activation functions, we settled on the rectifier activation function.
  The rectifier activation function is the most popular activation function \cite{lecun2015deep} and if defined as
- \begin{eqnarray}
+ \begin{equation}
    f(x) = \text{max}(0,x)\nonumber\\
    \text{where x is the output of a neuron}\nonumber
- \end{eqnarray}
+ \end{equation}
  The rectifier function was chosen as it is more effective than its available counterparts\cite{glorot2011deep}.
 
  In order to solve the weight optimisation, we used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm.
@@ -784,9 +825,9 @@ Each of these data points is similar to that of the training data
  An L2 penalty 0.00005 was chosen to aid our model beyond the training data.
  We chose the value of 0.00005 so as to ...
 
- The last parameter we has to experiment with was the number of epochs.
+ The last parameter we experimented with was the number of epochs.
  We wanted each layer to reach a convergence, so the parameter was set to 100.
- 100 layers was chosen as during experimentation with subsets of the data improvements were
+ 100 layers were chosen as during experimentation with subsets of the data improvements were
  insignificant showing that the solver was near convergence.
 
  \section{Path Finding} \label{chapter:graphing}
@@ -827,12 +868,12 @@ While the TSP algorithm is still unsolved, we fortunately only had to solve a a 
   the graph.}
 \end{center}
 
-These restriction on the graph make finding an optimal path through the graph much simpler.
+These restrictions on the graph made finding an optimal path through the graph much simpler.
 
 
 \subsection{Pathing Algorithms}
-There have been numerous algorithms developed for the task of finding the shortest and longest paths through various types of graphs.
-As we require a total traversal of our graph, several of these algorithms were eliminated.
+There have been numerous algorithms developed to find the shortest and longest paths through various types of graphs.
+As we required a total traversal of our graph, several of these algorithms were eliminated.
 
 In order to accommodate many shortest-path algorithms, a new graph was constructed with edge weights between nodes being inverted,
 $\frac{1}{W}$ where W is the edge weight. This allowed paths that look for the cheapest path to be usable as they will traverse the
@@ -872,7 +913,7 @@ ILP is common in the field of optimisation and is ideal for our needs. As ILP ai
 should generate the best global path through all nodes, rather than finding the next most optimal node like in a greedy solution.
 
 
-The A\* search algorithm is is special case of the generalisation of branch and bound\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP\cite{ye2012note}.
+The A\* search algorithm is a special case of the generalisation of branch and bound\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP\cite{ye2012note}.
 We chose this algorithm as it it follows the ILP methodology. The algorithm works in a similar way to best-first search, but takes into account the path cost already travelled.
 This is beneficial as it will give us the globally optimum path by finding the most probable total path, rather than the most probable next step that we saw when using a
 greedy algorithm.
@@ -1024,10 +1065,14 @@ room from improvment. We believe that given a more relevent sentence set for eac
 performance of the system as this irrelivent data may be causing a random offset to classification results.
 
 \section{Further Work}
+\subsection{Improvment Of Relevent Sentence Retrieval}
+
 \subsection{Potential Extension of Data Retrieval}
 If this project was to be taken further, we would aim to improve the pool of information we can draw from and mitigate the issues outlined in section \ref{sec:dataIssues}.
 To do this we would consider multiple other sources for our data and cross-reference then with one another in order to suppress any misinformation within
 a particular article.
+
+\subsection{Use Of Global Learning Methods}
 
 
 \section{Conclusion}
