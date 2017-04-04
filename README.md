@@ -3,31 +3,15 @@ Honours Project 2016/17
 "Event Ordering In News Articles"
 Supervisor: Shay Cohen
 
+How to Run:
+Due to the large size of data retrieved from Wikipedia, it is unable to be stored on GitHub.
+To Gather Data yourself
+* getArticles.py will print to sdout a large set of event titles, their associated year and the article itself.
+* getDoubleSets.py will generate features of the  form [[feature vector],[event1,event2], correct classification]
 
-#NOTES
-Training data is 1/1/8 sets for train/dev/test
+If you already have double set data
+* Run one of the available graph generating scripts (MLP.py is reccomended) this will generate an accuracy and will print
+  a dictionary where the value of each key are events that have edges pointing to them from the key.
 
-Uses the goldsmith wikipedia api wrapper for python
-
-Having spoken to Shay, he is pleased w/ the results so far.
-Next, try trigrams of articles etc
-Improve wikipedia retrieval
-
-#Results
-
-Experiment 1:
-using unfiltered sentences from wikipedia the classifier gets an accuracy of 51%
-Will have to look at better feature extraction
-
-
-Experiment 2:
-Initial resuls show 55% accuracy
-
-#Reference Papers
-http://homepages.inf.ed.ac.uk/ballison/pdf/lrec_skipgrams.pdf
-
-http://homepages.inf.ed.ac.uk/scohen/naacl15eventorder.pdf
-
-http://nlp.stanford.edu/software/CRF-NER.shtml
-
-http://nlp.cs.nyu.edu/pubs/papers/sekine-lrec02.pdf
+* Save the dictionary
+* Run pathFinder.py to generate optimal pathing and Tau measurment (Warning, this is fragile) 
