@@ -19,7 +19,6 @@
 \tcbuselibrary{skins}
 \usetikzlibrary{shadings}
 \begin{document}
-
 \title{Temporal Ordering of Historical Events using Contextual Data}
 
 \author{James Robert Friel}
@@ -48,10 +47,12 @@
 
 \date{\today}
 
-\abstract{Meme Extreme}
+\abstract{In this project we investigate the effectiveness of contextual information from external sources as an aid
+  to temporal ordering of historical events. We discuss the ability to extract meaningful content from
+  external data sources and the relevancy of retrieval. The use of edge classification is explored as a means of deriving
+  a temporal ordering of events. By optimising learning using a multilayer perceptron, we are able to see the
+  impact of our edge classification method and the usefulness of external data in temporal ordering.}
 %TODO
-
-
 \maketitle
 
 \section*{Acknowledgements}
@@ -60,9 +61,11 @@ Firstly I would like to thank my supervisor Shay Cohen for his guidance througho
 I would also like to thank the ``School of Memeformatics'' group for assisting as a brain trust
 throughout the project.
 
-Thank you to Greggs Bakery for being there for me through thick and thin.
+Thank you to Greggs Bakery for keeping me caffeinated and well fed.
 
-Lastly, thank you to Emily Wilson for her tireless proofreading and ability to put up with me.
+I wish to also thank my family for their unyielding support throughout my life. 
+
+Lastly, thank you to Emily Wilson for her tireless proofreading and encouragement in times of need.
 
 \tableofcontents
 
@@ -71,11 +74,11 @@ Lastly, thank you to Emily Wilson for her tireless proofreading and ability to p
 
 \chapter{Introduction}
 \section{The Problem}
-In this project we investigate the effectivness of content from external data sources as aids to the temporal
+In this project we investigate the effectiveness of content from external data sources as aids to the temporal
 ordering of events. Temporal ordering is defined as the arrangement of events in time.
 The problem of ordering distinct events is not a new problem. There have been numerous papers published
 in recent years on automatic ordering of events. These papers have typically worked on a single
-topic domain such as cooking recipes or news articles. These related papers will be discussed further in Chapter~\ref{chapter:backgroundandrelatework}.
+topic domain such as cooking recipes or news articles. These related papers are discussed further in Chapter~\ref{chapter:backgroundandrelatework}.
 We intended to build on this work by
 investigating if the reading of external data sources can aid in the temporal ordering of short
 historical news article headlines.
@@ -88,7 +91,7 @@ of an event and a date such as
 
 
 We tackled this problem through the use of summarising related articles and data of particular
-events and determining their feasaility as aids to temporal ordering. 
+events and determining their feasibility as aids to temporal ordering. 
 
 \section{Aims \& Objectives}
 The aim of this project was to experiment with machine reading on external data sources to
@@ -107,7 +110,7 @@ This path is the estimated ordering of history.
 
 
 Using an evaluation metric, we discuss how the use of external data sources affects the system's ability to
-temporally order events. Our methodology for the experiments conducted are discussed in detail in Chapter~\ref{chapter:methodology}
+temporally order events. Our methodology for the experiments conducted are discussed in detail in Chapter~\ref{chapter:methodology}.
 
 \section{Testing \& Evaluation}
 With our data set of 6250 entries, it can
@@ -150,7 +153,7 @@ object and relations of each event in order to gather article data from Wikipedi
 While there has been a recent interest into temporal ordering of events, most papers discussing the topic focus on
 ordering by using data already attributed to each event. Within this project we investigated the usefulness of
 external data sources in aiding the ordering of short event texts. This was done through implementation
-of article retrieval and relevancy, optimising classification of edge categorisation along withy construction and optimisation
+of article retrieval and relevancy, optimising classification of edge categorisation along with construction and optimisation
 of various pathing algorithms based on known theories and existing work. 
 \chapter{Background \& Related Work}\label{chapter:backgroundandrelatework}
 In this chapter we will discuss the current state of the research field relating to our project.
@@ -175,7 +178,7 @@ on the predicate \textit{likes}. This semantic dependency is the basis for relat
 
 The information extraction (IE) techniques used to gather arguments and predicates for relation extraction use a combination
 of well known natural language processing (NLP) techniques. 
-Given a raw source text, IE typically follows a standard pipeline for entity extraction~\ref{fig:pipeline} ~\cite{bontcheva2013twitie}:\\
+Given a raw source text, IE typically follows a standard pipeline for entity extraction~\cite{bontcheva2013twitie}, as seen in Figure~\ref{fig:pipeline}.
 From the information gathered through IE, dependencies are build between the entities seen in the text
 \begin{figure}[H]
 \begin{tcolorbox}[width=\textwidth,
@@ -229,7 +232,7 @@ the source text.
 \section{Machine Reading}
 The core aim of this project was to investigate the usefulness of Wikipedia article content as an aid to temporal ordering of events.
 In order to perform this, we used machine reading on said articles.
-Machine reading is the core problem of NLU.
+Machine reading is the core problem of natural language understanding (NLU).
 NLU deals with machine reading comprehension, the problem of dissecting natural language inputs into usable features,
 and is considered an AI-hard problem ~\cite{yampolskiy2012ai}.
 
@@ -254,7 +257,7 @@ being passed to them, but also the contextual meaning within to better understan
 Machine reading will be able to provide contextual information to provide better task performance when
 involving unstructured data.
 
-Unstructured data is data that has no pre-defined data model or manner. This type of data is
+Unstructured data is data that has no predefined data model or manner. This type of data is
 commonly seen in NLU with text mining and natural language rarely conforming to any cohesive model ~\cite{feldman2007text}.
 From the data sources typically used with NLU (news articles or free-form speech and text) the unstructured format of
 the data is beneficial as structured data typically has little contextual data ~\cite{feldman2007text}.
@@ -280,7 +283,7 @@ Their research into argument representation and semantic roles are a beneficial 
 knowledge for our research into event extraction.
 This argumentation representation consists of robust,
 frame-specific roles about arguments. While frames are commonplace in NLP, the authors aimed to learn information
-about the world without pre-defined frames, roles and corpora. This unsupervised learning of roles and frames could
+about the world without predefined frames, roles and corpora. This unsupervised learning of roles and frames could
 be useful to our problem. Due to the nature of our data, structure and roles are not known prior to
 IE. This representation also has the potential to assist in a variety of NLP applications ~\cite{chambers2009unsupervised}, which
 we intended to build upon.
@@ -300,7 +303,7 @@ anchoring and partial ordering of events. Anchor events are time expressions whi
 context, such as \textit{Last Tuesday}. Although we will not be building upon that papers work with
 anchor events, it provides a good insight into the effectiveness of
 partial orderings. We perform a total ordering without the use of anchored events, as described in this paper
-as we wish to perfom unsupervised ordering of events.
+as we wish to perform unsupervised ordering of events.
 
 While the methods discussed by Mani et al. ~\cite{mani2006machine} did not take into account dependencies between pairs of events, 
 we see an alternative that does encompass
@@ -314,10 +317,10 @@ optimal solutions.
 
 From the various paper discussed, temporal ordering of objects in any domain is of interest.
 The use of argument and relation extraction from unstructured data has been discussed in numerous papers,
-however none have yet succeded in the domain of unstructured, non-framed data.
+however none have yet succeeded in the domain of unstructured, non-framed data.
 There has been a significant improvement in recent years on the temporal ordering of events through the use of
 directed graphs. We can see this from the use of ranking algorithms on weakly-linked
-digraphs by Scapire et al.~\cite{schapire1998learning}, compared to Abend et al.'s ~\cite{abend2015lexical} use of edge-factor models in ordering predictions. 
+digraphs by Schapire et al.~\cite{schapire1998learning}, compared to Abend et al.'s ~\cite{abend2015lexical} use of edge-factor models in ordering predictions. 
 %Should probably expand on each paper, advantages disadvantages etc
 
 \chapter{Methodology}\label{chapter:methodology}
@@ -355,7 +358,7 @@ is taken from a Wikipedia outlet, we can assume
 that most events are contained within its pages.
 
 
-Wikipedia is also written in an reasonably unbiased, procedural manner wich alows more effective comprehension of events
+Wikipedia is also written in an reasonably unbiased, procedural manner which allows more effective comprehension of events
 than that of raw, unstructured data.
 It is the key sentences within articles that we will use to estimate a timeline.
 
@@ -371,7 +374,7 @@ retrieved articles related to the event headline.
 \subsection{Information Extraction}\ref{sec:IE-bg}
 Stanford's NLP suite,
 a natural language analysis toolkit,
-was selected to aid in extraction of features from the dataset.
+was selected to aid in extraction of features from the data set.
 Using this toolkit, the Open Information Extraction (OpenIE) from
 the University of Washington was used to extract subjects, objects
 and their relations from our event titles \cite{schmitz2012open}.
@@ -379,25 +382,25 @@ and their relations from our event titles \cite{schmitz2012open}.
 
 OpenIE implements a number of extraction techniques, such as noun-mediated extraction and N-ary extraction.
 Noun-mediated extraction is an extraction technique where the predicate between the subject and object is a noun \cite{mirrezaei2015triplex}.
-This is in constrast to N-ary extraction which extracts N length relations using a combination of the simpler extraction techniques, including noun-mediated \cite{akbik2012kraken}. 
+This is in contrast to N-ary extraction which extracts N length relations using a combination of the simpler extraction techniques, including noun-mediated \cite{akbik2012kraken}. 
 We have seen through experimentation with the various extraction techniques that no method provided
 usable relations for all inputs. Using OpenIE provided us with the ability to use multiple techniques and
 use the best fitting results.
 
 This system provided better relationship extraction than other systems available. Systems such as
 ReVerb\cite{fader2011identifying} or WOE\cite{wu2010open} suffer from a few key weaknesses. These systems only provide verb mediated relation extraction \cite{schmitz2012open}.
-This is problematic as sentences such as ``US President Donald Trump'' would not have the relation between \textit{US} and \textit{Donald Trump} extracted due to the structure of the relation lacking a verb.
+This was problematic as sentences such as ``US President Donald Trump'' would not have the relation between \textit{US} and \textit{Donald Trump} extracted due to the structure of the relation lacking a verb.
 These systems are also not built to use context for relation extraction and thus extract non-factual relations \cite{schmitz2012open}.
 It is for these reasons that ReVerb and WOE were not chosen as our information extraction technique.
 
 
 Along with OpenIE's ability to seamlessly use multiple extraction techniques to find the best available
 relations for each event, it has numerous other properties that were beneficial to our project.
-OpenIE is also useful as it does not require a schema specified in advance.
-This is useful as we do not know the structure of the content that will be looked at.
-This will allow the system to extract
+OpenIE was also useful as it does not require a schema specified in advance.
+This is useful as we did not know the structure of the content that was being looked at.
+This allowed the system to extract
 more complex relationships, such as those seen in Figure~\ref{fig:compound-relations}, if such
-a relationship can be found.
+a relationship could be found.
 
 
 \begin{figure}[H]
@@ -434,8 +437,8 @@ As shown in Table~\ref{table:retrieval}, experimentation yielded mixed results.
 The results show a large range of average number of sentences retrieved and varying degrees of relevancy.
 Relevancy was measured manually using Cohen's Kappa (see Section~\ref{sec:cohen})\cite{wood2007understanding}.
 
-Given that we wish to categorise our retrieved sentences into either related to the event, or not related,
-we only have two possible categories to assign each of our N sentences to.
+Given that we wished to categorise our retrieved sentences into either related to the event, or not related,
+we only had two possible categories to assign each of our N sentences to.
 
 \begin{table}[H]
 \centering
@@ -456,7 +459,7 @@ Method & Average \# Sentences Retrieved & Relevancy \\
 \end{table}
 
 From these results, method 6 was chosen as our context extraction method.
-While it doed not return the most relevant results, extraction method 3 did not provide
+While it did not return the most relevant results, extraction method 3 did not provide
 a sufficient number of sentences on average to build features.
 
 
@@ -491,7 +494,7 @@ This technique disregards grammar and order, but keeps multiplicity. It is a com
 and other learning situations \cite{sivic2009efficient}.
 
 %Need to talk a bit more abput how we are making tuples of every event set
-For our project, we implemented Bag-of-Words by using the relevant sentences for both of our events as a feature.
+For our project, we implemented bag-of-words by using the relevant sentences for both of our events as a feature.
 We chose to represent our multisets as counts over the vocabulary, so as to build numerical features to easily
 use the data with classifiers. An example of the bag-of-words model can be seen in Figure~\ref{fig:bow}
 %\newpage
@@ -541,7 +544,7 @@ popular as methods to perform natural language processing (NLP) such as syntax p
 Using Gensim's Doc2Vec models \cite{rehurek_lrec}, we used this system to build thought vectors of our sentences.
 Thought vectors are vectors made of whole sentences or documents, typically used in machine translation \cite{deeplearning4j}.
 It was decided to use thought vectors as they correlate words with labels rather than word with words, which is done by bag-of-words.
-This provides better representation of the words relating to ordering label, providing better results.
+This provided better representation of the words relating to ordering label, providing better results.
 
 %Example of word embedding and such
 
@@ -616,8 +619,8 @@ It is these attributes that made the perceptron a suitable model to experiment w
 
 %For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
 \subsection{Multilayer Perceptron}
-Having discussed the use of Perceptrons, the next logical method to experiment with was multilayer perceptrons (MLP).
-A Multilayer Perceptron is an feed-forward artificial neural network that maps the set of inputs
+Having discussed the use of perceptrons, the next logical method to experiment with was multilayer perceptrons (MLP).
+A multilayer perceptron is an feed-forward artificial neural network that maps the set of inputs
 onto a set of appropriate outputs.
 In Figure~\ref{fig:mlp} we see an example layer of an MLP.
 An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
@@ -634,7 +637,7 @@ MLPs are trained using backpropagation.
 
 \section{Evaluation}
 Throughout our experiments, there were several aspects that need to be evaluated.
-The aspects that required measurment were:
+The aspects that required measurement were:
 \begin{itemize}
   \item Retrieved Sentence Relevancy
   \item Accuracy of Classifier
@@ -679,14 +682,14 @@ Some popular coefficients include:
 
 For evaluation of our ordering, we decided to use the Kendall rank correlation coefficient (Tau coefficient).
 This statistic was chosen as it can be used to measure the ordinal association between two measured quantities.
-This allows us to evaluate what proportion of our ordering was correct, giving a truer representation of accuracy
+This allowed us to evaluate what proportion of our ordering was correct, giving a truer representation of accuracy
 compared to Pearson's r or Intraclass correlation~\cite{chok2010pearson}.
 Pearson's r was not chosen as it measures the linear correlation between two variables.
 This would not produce an accurate representation of the system as a single misaligned event would reduce the
 correlation drastically.
 Kendall's Tau was also preferred over Intraclass correlation as Intraclass correlation only quantifies the
 degree to which two variables are related. This was of no value to the correlation of our estimated path
-as this metic groups related items together.
+as this metric groups related items together.
 
 
 The Tau coefficient is defined as
@@ -725,9 +728,9 @@ measured quantities rather than the linear comparison.
 
 
 \chapter{Experiments}
-For the methods discussed in Chaper~\ref{chapter:methodology} we required experimentation to optimise the classifiers.
+For the methods discussed in Chapter~\ref{chapter:methodology} we required experimentation to optimise the classifiers.
 In this Chapter, we will discuss how and why certain choices were made in regards to classifiers.
-We will also discuss the Path-finding methods used to find the optimal path through the graph generated by the
+We will also discuss the pathfinding methods used to find the optimal path through the graph generated by the
 classifiers.
 
 \section{Classification}
@@ -823,7 +826,7 @@ Each of these data points was similar to that of the training data
  SVMs use a kernel to turn a linear model into a non-linear model. This is beneficial as it allows the system
  to operate in high-dimensionality, implicit feature space without having to compute the coordinates of the feature
  in space \cite{hofmann2008kernel}.
- From our experimentation the Radial Based Function (RBF) kernel was chosen as it helps SVMs scale to large numbers of
+ From our experimentation the radial based function (RBF) kernel was chosen as it helps SVMs scale to large numbers of
  training samples which they do not typically perform well with.
 
  The RBF kernel for two same vectors, x and $\tilde{x}$, is defined as:
@@ -835,13 +838,13 @@ Each of these data points was similar to that of the training data
  we have a high number of training samples.
  
  \subsection{Logistic Regression}\label{sec:log-reg}
- When using the Logistic Regression model, there were only a few parameters that were of interest:
+ When using the logistic regression model, there were only a few parameters that were of interest:
  \begin{itemize}
    \item Type of penalty
    \item Type of solver
  \end{itemize}
 
- There are two main types of penalties that can be applied to Logistic Regression models, L1 and L2 loss functions.
+ There are two main types of penalties that can be applied to logistic regression models, L1 and L2 loss functions.
  L1, also known as  the least absolute deviations, is a loss function that minimises the sum of of the absolute
  differences (S) between the target ($Y_i$) and the estimated values ($f(x_{i})$) \cite{l1l2}.
  \begin{equation}
@@ -862,7 +865,7 @@ Each of these data points was similar to that of the training data
  for Logistic Regression and is a linear classifier for large data sets\cite{fan2008liblinear}.
  
  \subsection{Perceptron}
- During our experimentation with Perceptron parameters, we discovered that giving the system nine epochs (passes
+ During our experimentation with perceptron parameters, we discovered that giving the system nine epochs (passes
  over the training data) and shuffling the training data on each iteration provided results that maximised the
  estimations. For the same reasons stated in Section~\ref{sec:log-reg}, we used an L2 penalty with our perceptron
  model.
@@ -945,14 +948,14 @@ As we required a total traversal of our graph, several of these algorithms were 
 
 In order to accommodate many shortest-path algorithms, a new graph was constructed with edge weights between nodes being inverted,
 $\frac{1}{W}$ where W is the edge weight. This allowed paths that look for the cheapest path to be usable as they will traverse the
-true most expensive path, which will encompass all nodes.
+true most expensive path, which encompass all nodes.
 
 There are two main types of solutions to optimal pathing: Greedy and Integer Linear Programming.
 We will discuss the options available in each type of solution and the benefits there in.
 
 \subsection{Greedy Solution}
 A greedy algorithm is an algorithm that follows the problem solving heuristic of making locally optimal choices at each stage with the aim
-of finding a global optimum~\cite{black2004dictionary}.
+of finding a global optimum~\cite{devore1996some}.
 While a greedy strategy does not in general produce a global optimum, it may produce locally optimum solutions that approximate a globally optimum solution.
 
 
@@ -970,7 +973,7 @@ An example of this pruning ability can be seen in Figure~\ref{fig:beam-prune}.
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.5]{BeamSearchPruning.png}
-  \caption{An Example of beam search prunining\\ Iteration 1: Blue Iteration 2: Green, Iteration 3: Yellow}
+  \caption{An Example of beam search pruning\\ Iteration 1: Blue Iteration 2: Green, Iteration 3: Yellow}
   \label{fig:beam-prune}
 \end{figure}
 
@@ -984,8 +987,8 @@ unfeasible as a potential true starting node.
 With this we generated the optimal greedy path through our graph. The results of which can be seen in Section~\ref{sec:graph-results}.
 
 \subsection{Integer Linear Programming Solution}
-Integer Linear Programming (ILP) is a mathematical optimisation where the objective function and the constraints are linear.
-ILP is common in the field of optimisation and is ideal for our needs. ILP aims to find the globally most optimal solution using global interence.
+Integer linear programming (ILP) is a mathematical optimisation where the objective function and the constraints are linear.
+ILP is common in the field of optimisation and is ideal for our needs. ILP aims to find the globally most optimal solution using global inference.
 Global Inference produces the best global solution by inferring predictions from each input~\cite{roth2004linear}.%More here
 When applied to path-finding ILP should generate the best global path through all nodes, rather than finding the next most optimal node like in a greedy solution.
 
@@ -1022,8 +1025,8 @@ The various different path-finding methods for the graph generated from the data
 We looked at both ILP and Greedy solutions to the problem.
 
 \chapter{Results}\label{chapter:results}
-In this chapter we report the results gathered from our experiments dicussed previously.
-We look at both classifcation and path-finding results along with measurements about the data gathered.
+In this chapter we report the results gathered from our experiments discussed previously.
+We look at both classification and path-finding results along with measurements about the data gathered.
 From our experiments, results were generated from both our classification and path-finding methods.
 Given the spread of results from our classification of tuples and triples of events, we used both of our path finding
 techniques in each of the resulting graphs. Our results include accuracies and correlations from
@@ -1048,7 +1051,7 @@ Given that our results are based on 622 events, the baseline accuracy for triple
 
 The results generated using triple sets of events per classification report such poor accuracy with
 (mean = 19.4, standard deviation = 6.22896) or without articles (mean = 20.6, standard deviation = 8.61972). These poor results, regardless of use of article data,
-conform with our original hypothesis in Section~\ref{sec:approach}. 
+conformed with our original hypothesis in Section~\ref{sec:approach}. 
 
 
 The baseline for tuple of events is similar to that of the triples, but as each classification only requires one edge
@@ -1208,7 +1211,7 @@ With Titles & -0.81  & -0.79 & -0.9 & -0.74  & -0.68 & 0\\
 
 \chapter{Discussion \& Further Work}\label{chapter:discussion}
 In this chapter we will discuss the results gathered and what this means in terms of our project goals.
-We will also discuss potential improvments that could be made to the system as a whole under further work.
+We will also discuss potential improvements that could be made to the system as a whole under further work.
 \section{Discussion}
 %discuss wikipedia retrieval
 %%%
@@ -1222,11 +1225,11 @@ As We can see from Tables~\ref{table:triple-classification-results}, ~\ref{table
 ~\ref{table:ILP-results-triple} our original hypothesis, outlined in Section~\ref{sec:approach}
 involving the use of triples of events holds true.
 These results confirm that performing edge classification on three events, per edge, greatly reduces the
-accuracy of classification and subsiquent path-finding. This is due to the dependency of each edge
-increasing with each node added and as the dependency increases the likelyhood of total success lessens \cite{gerdes2013computational}.
+accuracy of classification and subsequent path-finding. This is due to the dependency of each edge
+increasing with each node added and as the dependency increases the likelihood of total success lessens \cite{gerdes2013computational}.
 
 These results are eclipsed by the those seen in Tables~\ref{table:classification-results}, ~\ref{table:ILP-results} and ~\ref{table:greedy-results} with the use of tuples of events.
-Due to these reults being unequivocally better than those using tuples of events, we will focus our discussion from here on
+Due to these results being unequivocally better than those using tuples of events, we will focus our discussion from here on
 the results generated by tuples off events.
 
 As we see in  Tables~\ref{table:ILP-results} and~\ref{table:greedy-results}, the use of event titles alone
@@ -1247,15 +1250,15 @@ It is unusual for SVMs to perform better than Decision Tree Classifiers, in our 
 kernel for the SVM performing linear decision boundaries very well. Decision trees, while simple, may misidentify the important
 aspect of a  feature, in retrospect it may have been useful to look at additive trees, such as MART~\cite{friedman2001greedy}, in order to
 improve upon these results.
-We also note that the use of a single Percpetron is vastly worse than the use of a MLP, this is as expected as
+We also note that the use of a single percpetron is vastly worse than the use of a MLP, this is as expected as
 the properties of an MLP typically provide better results than that of a single Percepton.
 These results for the various classifiers used are as expected, with Logistic Regression and MLP performing the best
-at edge classification. Logistic Regression perfored well due to its ability to deal with linear categorical data.
-While Logistic Regression performed well at the task, MLP overshadowed these reults with it's significantly higher
+at edge classification. Logistic Regression performed well due to its ability to deal with linear categorical data.
+While Logistic Regression performed well at the task, MLP overshadowed these results with it's significantly higher
 accuracy. 
 
 
-Overall, the ILP pathing solution out performed the Greedy solution. This was to be expected as greedy pathfinding can
+Overall, the ILP pathing solution out performed the Greedy solution. This was to be expected as greedy path finding can
 approximate an ILP under favourable conditions ~\cite{schapire1998learning}. We can see from Table~\ref{table:ILP-results} that the
 correlation accuracies do not align perfectly with the classifier accuracies, notably with Logistic Regression moving
 down the rankings. We believe this reordering of most accurate classifiers is due to the pathing algorithms misaligning
@@ -1268,11 +1271,11 @@ sections of the true ordering. An example of this being:
 
 As we can see from this example, the generated order will place a small number of ordered events (6,7,8) earlier or
 later in the path. This is due to an incorrect edge direction with a high probability and relates back to the
-inaccuracies in our classifiers. It this these sort of issue that cause the reordering of prefered methods when considering
+inaccuracies in our classifiers. It this these sort of issue that cause the reordering of preferred methods when considering
 path optimisation.
 
-The most accurate results come from the Decision Tree Classifer and the Multilayer Perceptron classifier.
-Both of these method, using an ILP solution, prove very strong result corelations. This show that, despite there
+The most accurate results come from the decision tree classifer and the multilayer perceptron classifier.
+Both of these method, using an ILP solution, prove very strong result correlations. This show that, despite there
 being room for improvement within the experiments, the use of external data sources does aid in the temporal ordering
 of historical events.
 
@@ -1329,14 +1332,14 @@ an improved runtime.
 
 
 \chapter{Conclusion}
-As we have seen thoughout our experiments, the usefulness of external data in aiding the temporal ordering
-of historical events is valid. We have seen that the use of this external content can impove accuracies by up to
-30\% over the use of event headline alone.
-Article retrieval and relevent sentence extraction proved to substantialy aid in the temporal ordering of events.
+As we have seen throughout our experiments, the usefulness of external data in aiding the temporal ordering
+of historical events is valid. We have seen that the use of this external content can improve accuracies by up to
+30\% over the use of event titles alone.
+Article retrieval and relevant sentence extraction proved to substantially aid in the temporal ordering of events.
 The methods discussed, in combination with experimentation with classification models, performed substantially better
 than using data from event titles only.
-The various classification methods used show this trend with varying success. Using multilayer Perceptrons provided an
-imporved accuracy of 30\% with article usage over titles alone, boasting 83\% accuracy compaired to 54\% when using titles
+The various classification methods used show this trend with varying success. Using multilayer perceptrons provided an
+improved accuracy of 30\% with article usage over titles alone, boasting 83\% accuracy compared to 54\% when using titles
 alone.
 
 
