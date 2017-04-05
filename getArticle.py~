@@ -1,0 +1,51 @@
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+import app.parser.getData as importArticles
+import app.parser.articleRetrieval.getArticles as getContent
+import app.parser.sentences as sent
+import app.parser.getChunks as gc
+import app.analytics.tag as tag
+import app.parser.articleRetrieval.wikipediaParse as wp
+import app.analytics.functions.hasDate as hd
+import nltk
+
+data = open('data/train.txt','r').readlines()
+
+#A
+
+def getArticle(article):
+    
+    singleSets = []
+    print article
+    try:
+        #chunks = gc.getChunks(article)
+        #print "CHUNKS"
+        tags =  tag.getTags(article)
+        #if tags == []:
+        #    continue # check this is right. go to next itteration
+        """The Stanford Open IE tags"""
+        subject = tags['subject']
+        relation = tags['relation']
+        objects = tags['object']
+        #objects = objects.split()
+        print article
+        print "Subject: " + subject
+        print "Relation: " + relation
+        print "Objects: " + objects
+    
+        """content = wp.getArticle(subject)
+        rawSentences = sent.getSentences(content)
+        sentences = []
+        for sentence in rawSentences:
+            if(hd.hasDate(sentence) != []):
+                sentences.append(sentence)
+        listOfYears.append(article[0])
+        SS = {'title':article[1], 'sentences':sentences, 'year':article[0]}
+        singleSets.append(SS)"""
+    except:
+        pass
+
+X = data[15].split(',')
+print X
+print getArticle(X[1])

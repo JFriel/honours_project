@@ -22,11 +22,12 @@ H = {}
 np.seterr(divide='ignore',invalid='ignore')
 
 listOfYears = []
-clf = tree.DecisionTreeClassifier()#neural_network.MLPClassifier(solver='lbfgs', alpha=1e-5,max_iter=1000, hidden_layer_sizes=(100),random_state=2)
+clf = svm.SVC(probability=True)
+#clf = tree.DecisionTreeClassifier()
 probs = []
 titles = []
-trainData = eval(open('data/singleShort.txt','r').readlines()[0])
-testData = open('singleShortTest.txt','r').readlines()
+trainData = eval(open('titleOnlyDouble','r').readlines()[0])
+testData = open('titleOnlyDoubleTest','r').readlines()
 B= None
 #C
 def train(features):
@@ -46,16 +47,22 @@ def train(features):
     return B
 
 def test(features,B):
+    pre1 = 0
+    pre2 = 0
     correct = 0
     probs = []
     labels = []
     predictions = []
     features = [item for item in features if len(item[0]) != 0]
     for feature in features:
+        print (len(feature[0]))
+        if len(feature[0]) < 22:
+            continue
         temp = np.array(feature[0][0:B]).reshape((1, -1))
         predict = clf.predict(temp[0][0:B].reshape((1,-1)))
         #prob = max(clf.predict_proba(temp)[0])
-        #add all articles to G
+	#print (prob)
+	#add all articles to G
         if(feature[1][1] not in G.keys()):
             G.update({feature[1][1]:[]})
             H.update({feature[1][1]:feature[2]})
@@ -67,23 +74,26 @@ def test(features,B):
             G[feature[1][0]].append(feature[1][1])
             labels.append(1)
             predictions.append(feature[-1])
+	    pre1 += 1
         else:
             G[feature[1][1]].append(feature[1][0])
             labels.append(0)
             predictions.append(feature[-1])
-
+            pre2 += 1
+	   
         probs.append([predict, feature[2]])
         if(feature[2] == predict[0]):
             correct +=1
     print confusion_matrix(labels,predictions)
     print ("Accuracy = " + str(correct) + '/' + str(len(features)))
-
+    print (pre1)
+    print (pre2)
 
 
 print (datetime.datetime.now())
 p = Pool(20)
 trainFeatures = []
-for I in range(len(trainData)):
+for I in range(100): #len(trainData)):
     if trainData[I] is not None:
         trainFeatures.append(trainData[I])
 B = train(trainFeatures)
@@ -97,4 +107,3 @@ for I in range(len(testData)):
         testFeatures.append(testData[I])
 test(testFeatures,B)
 print (G)
-print (H)

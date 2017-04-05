@@ -10,7 +10,7 @@ import app.parser.articleRetrieval.wikipediaParse as wp
 import app.analytics.features as fe
 import app.analytics.functions.hasDate as hd
 import app.analytics.filterSentences as fl
-from sklearn import tree, feature_extraction, svm
+from sklearn import tree, feature_extraction, svm, linear_model, neural_network
 from sklearn.feature_extraction.text import CountVectorizer
 from multiprocessing import Pool
 import numpy as np
@@ -34,11 +34,11 @@ for title in range(0,len(testArticles)):
     #print (eval(testArticles[title])['title'])
     testArticleLookupDict[eval(testArticles[title])['title']] = title
 
-clf = svm.SVC(probability=True)#tree.DecisionTreeClassifier()
+clf = neural_network.MLPClassifier()#svm.SVC(probability=True)#tree.DecisionTreeClassifier()
 titles = []
 weights = []
 
-G = nx.DiGraph()#G is an empty graph
+G = {}#nx.DiGraph()#G is an empty graph
 
 
 #A
@@ -62,7 +62,7 @@ def getArticle(article):
             if(hd.hasDate(sentence) != []):
                 sentences.append(sentence)
         listOfYears.append(article[0])
-        SS = {'title':article[1], 'sentences':sentences, 'year':article[0]}
+        SS = {'title':article[1], 'sentences':article[0], 'year':article[0]}
         singleSets.append(SS)
     except:
         pass
@@ -123,26 +123,39 @@ def train(features):
     X = [ item[0] for item in features]
     Y = [item[2] for item in features]
     clf.fit(X,Y)
+    B = min(map(len,X))
+    return B
 
-
-def test(features):
+def test(features,B):
     correct = 0
+    labels = []
+    predictions = []
+    features = [item for item in features if len(item[0]) != 0]
     for feature in features:
-        predict = clf.predict(np.array([feature[0]]))
-        prob = clf.predict_proba(np.array([feature[0]]))
-        prob = prob[0][predict][0]
-        title1 = feature[1][0]
-        title2 = feature[1][1]
-        title3 = feature[1][2]
-        #print "title1 = " + str(title1)
-        #print prob
-        #print str(title1) + "," + str(title2) + "," + str(float(prob))
-        G.add_edge(str(title1),str(title2), weight=float(prob))
-        G.add_edge(str(title1),str(title3), weight=float(prob))
-        G.add_edge(str(title2),str(title3), weight=float(prob))
-        if(feature[2] == predict):
+        temp = np.array(feature[0][0:B]).reshape((1, -1))
+        predict = clf.predict(temp[0][0:B].reshape((1,-1)))
+        #prob = max(clf.predict_proba(temp)[0])
+        #add all articles to G
+        if(feature[1][1] not in G.keys()):
+            G.update({feature[1][1]:[]})
+            #H.update({feature[1][1]:feature[2]})
+        if(feature[1][0] not in G.keys()):
+            G.update({feature[1][0]:[]})
+            #H.update({feature[1][0]:feature[2]})
+        #Add list of which came before what
+        if(predict == 1):
+            G[feature[1][0]].append(feature[1][1])
+            labels.append(1)
+            predictions.append(feature[-1])
+        else:
+            G[feature[1][1]].append(feature[1][0])
+            labels.append(0)
+            predictions.append(feature[-1])
+
+        #probs.append([predict, feature[2]])
+        if(feature[2] == predict[0]):
             correct +=1
-    print "Accuracy = " + str(correct) + '/' + str(len(features))
+    print ("Accuracy = " + str(correct) + '/' + str(len(features)))
 
 
 
@@ -172,7 +185,7 @@ print datetime.datetime.now()
 #print tripleSets[0]
 trainFeatures = p.map(getFeature,tripleSets)
 print datetime.datetime.now()
-train(trainFeatures)
+B = train(trainFeatures)
 print datetime.datetime.now()
 print "Training Complete. Now For Testing"
 
@@ -191,7 +204,7 @@ for i in doubleSets:
 print datetime.datetime.now()
 testFeatures = p.map(getFeature,doubleSets)
 print datetime.datetime.now()
-test(testFeatures)
+test(testFeatures,B)
 print datetime.datetime.now()
 print datetime.datetime.now()
 
@@ -239,7 +252,8 @@ def graph(ttl):
 #for d in Data:
 #graph("1st magazine on microfilm offered to subscribers - Newsweek")
 
-nx.draw(G, node_color='c', edge_color='k', with_labels=True)
-nx.dfs_edges(G)
-plt.show()
+#nx.draw(G, node_color='c', edge_color='k', with_labels=True)
+#nx.dfs_edges(G)
+#plt.show()
+print (G)
 #test(generateDataPoints(testArticles))

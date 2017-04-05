@@ -22,11 +22,11 @@ H = {}
 np.seterr(divide='ignore',invalid='ignore')
 
 listOfYears = []
-clf = tree.DecisionTreeClassifier()#neural_network.MLPClassifier(solver='lbfgs', alpha=1e-5,max_iter=1000, hidden_layer_sizes=(100),random_state=2)
+clf = neural_network.MLPClassifier(solver='lbfgs', alpha=1e-5,max_iter=1000, hidden_layer_sizes=(100),random_state=2)
 probs = []
 titles = []
-trainData = eval(open('data/singleShort.txt','r').readlines()[0])
-testData = open('singleShortTest.txt','r').readlines()
+trainData = eval(open('trainDoubleSet','r').readlines()[0])
+testData = open('testDoubleSet','r').readlines()
 B= None
 #C
 def train(features):
