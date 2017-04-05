@@ -15,6 +15,7 @@
 \usepackage{tcolorbox}% http://ctan.org/pkg/tcolorbox
 \usepackage{url}
 \usepackage{tabularx}
+\usepackage{subcaption}
 \tcbuselibrary{skins}
 \usetikzlibrary{shadings}
 \begin{document}
@@ -176,7 +177,7 @@ The information extraction (IE) techniques used to gather arguments and predicat
 of well known natural language processing (NLP) techniques. 
 Given a raw source text, IE typically follows a standard pipeline for entity extraction~\ref{fig:pipeline} ~\cite{bontcheva2013twitie}:\\
 From the information gathered through IE, dependencies are build between the entities seen in the text
-\begin{figure}
+\begin{figure}[H]
 \begin{tcolorbox}[width=\textwidth,
                   %%enhanced,
                   %%frame hidden,
@@ -304,7 +305,7 @@ as we wish to perfom unsupervised ordering of events.
 While the methods discussed by Mani et al. ~\cite{mani2006machine} did not take into account dependencies between pairs of events, 
 we see an alternative that does encompass
 these dependencies in ~\cite{schapire1998learning}.
-Cohen et al. discuses methods using greedy algorithms to approximate optimum rankings of objects.
+Schapire et al. discuses methods using greedy algorithms to approximate optimum rankings of objects.
 It also discusses the use of ranking algorithms in the ordering of objects. The ranking methods discusses a
 weakly-connected digraph and greedy ranking of said graph. This relates to our problem,
 except we deal with strongly-connected digraph and investigated both greedy and ILP methods of finding
@@ -358,7 +359,7 @@ Wikipedia is also written in an reasonably unbiased, procedural manner wich alow
 than that of raw, unstructured data.
 It is the key sentences within articles that we will use to estimate a timeline.
 
-\section{Text Retrieval}
+\section{Text Retrieval}\label{sec:retrieval}
 Using Wikipedia's article retrieval Application Programming Interface (API) \cite{wikipediaAPI}, the task of gathering article content
 from keywords in its title was trivial.
 
@@ -399,11 +400,11 @@ more complex relationships, such as those seen in Figure~\ref{fig:compound-relat
 a relationship can be found.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[scale=0.4]{openie-train.png}
-  \caption{Example of a compound relationship ~\cite{OpenIE}}
-  \ref{fig:compound-relations}
+  \caption{Example of a compound relationship \protect\cite{OpenIE}}
+\label{fig:compound-relations}
   \end{figure}
 
 OpenIE can also deal more complex relations  than the simple relations.
@@ -436,7 +437,7 @@ Relevancy was measured manually using Cohen's Kappa (see Section~\ref{sec:cohen}
 Given that we wish to categorise our retrieved sentences into either related to the event, or not related,
 we only have two possible categories to assign each of our N sentences to.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \begin{tabular}{|c|c|c|}
   \hline
@@ -494,7 +495,7 @@ For our project, we implemented Bag-of-Words by using the relevant sentences for
 We chose to represent our multisets as counts over the vocabulary, so as to build numerical features to easily
 use the data with classifiers. An example of the bag-of-words model can be seen in Figure~\ref{fig:bow}
 %\newpage
-\begin{figure}
+\begin{figure}[H]
 \begin{tcolorbox}[width=\textwidth,
                   %%enhanced,
                   %%frame hidden,
@@ -518,11 +519,11 @@ use the data with classifiers. An example of the bag-of-words model can be seen 
   Result: [2,3,2,2,2,1,1,1,1,1]
 \end{center}
 \end{tcolorbox}
-\caption{An Exaple Bag-of-Words Usage}
+\caption{An Example Bag-of-Words Usage}
 \label{fig:bow}
 \end{figure}
 
-As Bag-Of-Words only looks at single words at time and the contextual data may be lost through this method, we looked at
+As bag-of-words only looks at single words at time and the contextual data may be lost through this method, we looked at
 alternative methods to improve on this.
 
 \subsection{N-Grams}
@@ -606,11 +607,11 @@ These include:
 Perceptrons allow retraining of the model when newer data is added, this allows the perceptron to
 iteratively improve. An example of this improvement can be seen in Figure~\ref{fig:perceptronExample}.
 It is these attributes that made the perceptron a suitable model to experiment with.
-\begin{figure}[ht]
+\begin{figure}[H]
   \centering
   \includegraphics[scale=0.7]{PerceptronExample.png}
   \caption{A diagram showing a perceptron updating its linear boundary as more training examples are added. \protect{\cite{goodspeed_2015}}}
-  \ref{fig:perceptronExample}
+\label{fig:perceptronExample}
 \end{figure}
 
 %For our experimentation, we trained the Perceptron model using  10 iterations with no regularisation term.
@@ -624,7 +625,7 @@ Each node, except the input node, is a neuron (processing element) with an activ
 An activation function is a function that maps the weighted inputs of each processing element to an output.
 MLPs are trained using backpropagation.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[]{mlp-example.png}
   \caption{An Example one hidden layer MLP \cite{scikit-learn}}
@@ -643,7 +644,7 @@ The aspects that required measurment were:
 There are multiple different statistics that were considered for each of these problems.
 \subsection{Choice of Sentence Relevancy Metric}\label{sec:cohen}
 In order to select a method to extract relevant sentences from Wikipedia, a statistic that measured the agreement
-of relevancy was required. There are two main statistics for measuring inter-rater reliability: Cohen's Kappa and Fleiss' Kappa \cite{}.
+of relevancy was required. There are two main statistics for measuring inter-rater reliability: Cohen's Kappa and Fleiss' Kappa ~\cite{gwet2014handbook}.
 These two statistics measure the agreement between reviewers. The main difference between Cohen's and Fleiss' Kappa is that
 Cohen's Kappa only works for two reviewers, where as Fleiss' Kappa works for any number of fixed reviewers.
 Given the short time frame of this project and availability of reviewers, it was decided to use Cohen's Kappa
@@ -658,7 +659,7 @@ Cohen's Kappa is defined as:\\
 \end{equation}
 
 Where $p_0$ is the relative observed agreement between raters and $p_e$ is the hypothetical probability
-of a chance agreement using the observed data to calculate the probabilities of each observer randomly assigning each category \cite{}.
+of a chance agreement using the observed data to calculate the probabilities of each observer randomly assigning each category.
 
 If the raters are in complete agreement then $\kappa$ = 1.
 If there is no agreement among the raters, other than that expected by $p_e$, $\kappa \leq 0$.
@@ -724,7 +725,7 @@ measured quantities rather than the linear comparison.
 
 
 \chapter{Experiments}
-For the methods discussed in Chaper~\cite{chapter:methodology} we required experimentation to optimise the classifiers.
+For the methods discussed in Chaper~\ref{chapter:methodology} we required experimentation to optimise the classifiers.
 In this Chapter, we will discuss how and why certain choices were made in regards to classifiers.
 We will also discuss the Path-finding methods used to find the optimal path through the graph generated by the
 classifiers.
@@ -773,7 +774,7 @@ Where $b_{ijk} = [y_i > y_j > y_k]$ indicating if the ordering was correct for t
 
 While we did not anticipate that increasing the dependency length of each entry would improve accuracy, it was investigated.
 We anticipated that using more events per feature would diminish the accuracy of the system as
-with a greater dependency tree, the availability of path transitions lessens~ \cite{gerdes2013computational}.
+with a greater dependency tree, the availability of path transitions lessens~\cite{gerdes2013computational}.
 
 As we expected, increasing the number of events associated with each training point greatly decreased the accuracy of results in all cases.
 Due to this, we will not focus on discussing these experiments, but instead focus on the results gathered from the tuple data set.
@@ -782,7 +783,6 @@ We split our data set into 80\% for training, 10\% for development and 10\% for 
 This breaks our 6226 entry data set into 4982, 622, 622 respectively.
 The allotment of the entries into each category was done randomly.
 
-%For each of the techniques outlines below, we followed a similar procedure.
 Experimentation was done using the development set to optimise the parameters to give the most optimal results,
 when finally tested on the testing data.
 For each classifier, we fed in the training features and their associated label. These features were
@@ -913,7 +913,7 @@ It was with this new graph that we began to experiment with methods to construct
 node in the graph.
 
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[scale=0.5]{ExampleDigraph.png}
   \caption{A small example of our results placed in a digraph}
@@ -926,7 +926,7 @@ It is defined as
 \begin{center}
 \enquote{A travelling salesman wants to visit each of a set of towns exactly once, starting
 from and returning to his home town. One of his problems is to find the shortest
-such trip. -~\cite{junger1995traveling}}
+such trip}~\cite{junger1995traveling}
 \end{center}
 
 While the TSP algorithm is still unsolved, we fortunately only had to solve a a modified version of the problem.\\
@@ -967,10 +967,10 @@ It was chosen as it follows the greedy heuristic and also stores partial orderin
 allowing us to prune solutions that do not cover all nodes.
 An example of this pruning ability can be seen in Figure~\ref{fig:beam-prune}.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[scale=0.5]{BeamSearchPruning.png}
-  \caption{An Example of beam search pruning\\ Iteration 1: Blue Iteration 2: Green, Iteration 3: Yellow}
+  \caption{An Example of beam search prunining\\ Iteration 1: Blue Iteration 2: Green, Iteration 3: Yellow}
   \label{fig:beam-prune}
 \end{figure}
 
@@ -993,21 +993,20 @@ When applied to path-finding ILP should generate the best global path through al
 The A$*$ search algorithm is a special case of the generalisation of branch and bound~\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP~\cite{ye2012note}.
 We chose this algorithm as it follows the ILP methodology. The algorithm works similarly way to best-first search, but takes into account the path cost already travelled.
 This was beneficial as it will give us the globally optimum path by finding the most probable total path, rather than the most probable next step when using a
-greedy algorithm. We can see an example of the complete digraph and the estimated path through it in Figure~\ref{figure:minigraph}
-
+greedy algorithm. We can see an example of the complete digraph and the estimated path through it in Figure~\ref{fig:minigraph} and ~\ref{fig:minigraph-clean}.
 Similarly to the greedy solution, as we do not know the optimal start and end node, we had to run the algorithm with every possible start and end node combination.
-\begin{figure}
+\begin{figure}[H]
 \centering
-\begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=0.4\textwidth]{clean-node-graph.png}
-\end{subfigure}%
-\begin{subfigure}
+  \includegraphics[width=\textwidth]{node-graph2.png}
+  \caption{An example graph generated using 10 events, where each edge direction is indicated by a block head. Red edges indicate estimated path}
+  \label{fig:minigraph}
+\end{figure}
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.4\textwidth]{node-graph.png}
-\end{subfigure}
-\caption{An example graph generated using 10 events, where each edge direction is indicated by a block head. Red edges indicate estimated path. We also see a cleaned up path estimation }
-\label{figure:minigraph}
+  \includegraphics[width=\textwidth]{node-graph.png}
+\caption{The example graph from Figure~\ref{fig:minigraph} with only the estimated path shown }
+\label{fig:minigraph-clean}
 \end{figure}
 
 \section{Summary}
@@ -1047,8 +1046,8 @@ accuracy of
 Where N is the number of nodes in the graph.
 Given that our results are based on 622 events, the baseline accuracy for triple set events is $\frac{1}{4^{622}}$.
 
-The results generated using triple sets of events per classification report such poor accuracy
-(mean = , standard deviation = ). These poor results, regardless of use of article data,
+The results generated using triple sets of events per classification report such poor accuracy with
+(mean = 19.4, standard deviation = 6.22896) or without articles (mean = 20.6, standard deviation = 8.61972). These poor results, regardless of use of article data,
 conform with our original hypothesis in Section~\ref{sec:approach}. 
 
 
@@ -1069,26 +1068,25 @@ These experiments are centred around 66 and have a much lower spread that with t
 
 \begin{table}[H]
 \centering
-\label{table:classification-results}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
   \hline
   Accuracy  & DT  & SVM & LR & Perceptron & MLP & Baseline\\
   \hline
-  With Articles    & 53\%   & 66\% &  76\% & 66\% & 83\% & 50\%\\
+  With Articles    & 53\%   & 66\% &  76\% & 66\% & 83\% & $\frac{1}{2^{622}}$\%\\
 \hline
-With Titles & 43\%  & 51\%    & 52\% & 46\% & 54\% & 50\%\\
+With Titles & 43\%  & 51\%    & 52\% & 46\% & 54\% & $\frac{1}{2^{622}}$\%\\
 \hline
 \multicolumn{3}{@{}p{1.5in}}{\footnotesize DT $=$ Decision Tree}\\
 \multicolumn{3}{@{}p{1.5in}}{\footnotesize LR $=$ Logistic Regression}\\
 \multicolumn{3}{@{}p{2in}}{\footnotesize MLP $=$ Multilayer Perceptron}\\
 \end{tabular}
 \caption{Classification Results for Tuples}
+\label{table:classification-results}
 \end{table}
 
 
 \begin{table}[H]
 \centering
-\label{table:triple-classification-results}
 \begin{tabular}{|c|c|c|c|c|c|c|}
   \hline
   Accuracy  & DT & SVM & LR & Perceptron & MLP & Baseline\\
@@ -1103,6 +1101,7 @@ With Titles & 21\% & 13\%    & 24\% & 33\% & 14\% &  $\frac{1}{4^{622}}$\%\\
 \multicolumn{3}{@{}p{2in}}{\footnotesize MLP $=$ Multilayer Perceptron}\\
 \end{tabular}
 \caption{Classification Results for Triples}
+\label{table:triple-classification-results}
 \end{table}
 
 
@@ -1114,14 +1113,13 @@ This is due to when randomly ordering a set of data it will, on average, score a
 when using Kendall's Tau.
 
 
-From the use of ILP path-finding method, we gathered the results for tuples of events in Table~\ref{table:ILP-Results}.
+From the use of ILP path-finding method, we gathered the results for tuples of events in Table~\ref{table:ILP-results}.
 As we can see, the use of articles greatly increases the correlation of estimated path with the true path.
 These results have a much smaller spread (mean = 0.50466 , standard deviation = 0.1756) than the ILP pathing of titles alone
 (mean = -0.1, standard deviation = 0.219).
 
 \begin{table}[H]
 \centering
-\label{table:ILP-results}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
   A$*$ Search & DT & SVM &LR & Perceptron & MLP & Baseline\\
@@ -1135,6 +1133,7 @@ With Titles &0.06  & -0.09 & 0.048 & -0.52  & -0.28 & 0\\
 \multicolumn{3}{@{}p{2in}}{\footnotesize MLP $=$ Multilayer Perceptron}\\
 \end{tabular}
 \caption{ILP Pathing Results for Tuples}
+\label{table:ILP-results}
 \end{table}
 
 Using the greedy solution to path-finding, we found our results to have a much lower spread
@@ -1165,13 +1164,12 @@ With Titles & 0.214 & -0.62 & 0.17 & 0.09  & 0.32 & 0\\
 
 With the use of triples of events, pathing in either greedy or ILP prove fruitless. The results seen in Table
 \ref{table:greedy-results-triples} confirm our hypothesis that longer event dependencies are detrimental to the
-accuracy of the system. The use of Articles (mean= XXX, standard deviation= XXX) shows no significant difference from
-the use with just titles (mean= XXX,standard deviation= XXX) with both results falling far below that of the tuples of events.
+accuracy of the system. The use of Articles (mean= -0.642, standard deviation= 0.16131) shows no significant difference from
+the use with just titles (mean= -0.674,standard deviation= 0.11459) with both results falling far below that of the tuples of events.
 
 
 \begin{table}[H]
 \centering
-\label{table:ILP-results-triple}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
   A$*$ Search & DT & SVM &LR & Perceptron & MLP & Baseline\\
@@ -1185,12 +1183,12 @@ With Titles & -0.62  & -0.68 & -0.87 & -0.61  & -0.59 & 0\\
 \multicolumn{3}{@{}p{2in}}{\footnotesize MLP $=$ Multilayer Perceptron}\\
 \end{tabular}
 \caption{ILP Pathing Results for Triples}
+\label{table:ILP-results-triple}
 \end{table}
 
 
 \begin{table}[H]
 \centering
-\label{table:greedy-results-triples}
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
   \hline
   Beam Search & DT & SVM & LR & Perceptron & MLP & Baseline\\
@@ -1204,6 +1202,7 @@ With Titles & -0.81  & -0.79 & -0.9 & -0.74  & -0.68 & 0\\
 \multicolumn{3}{@{}p{2in}}{\footnotesize MLP $=$ Multilayer Perceptron}\\
 \end{tabular}
 \caption{Greedy Pathing Results for Triples}
+\label{table:greedy-results-triples}
 \end{table}
 
 
@@ -1224,9 +1223,9 @@ As We can see from Tables~\ref{table:triple-classification-results}, ~\ref{table
 involving the use of triples of events holds true.
 These results confirm that performing edge classification on three events, per edge, greatly reduces the
 accuracy of classification and subsiquent path-finding. This is due to the dependency of each edge
-increasing with each node added and as the dependency increases the likelyhood of total success lessens \cite{}.
+increasing with each node added and as the dependency increases the likelyhood of total success lessens \cite{gerdes2013computational}.
 
-These results are eclipsed by the those seen in Tables~\ref{}, ~\ref{} and ~\ref{} with the use of tuples of events.
+These results are eclipsed by the those seen in Tables~\ref{table:classification-results}, ~\ref{table:ILP-results} and ~\ref{table:greedy-results} with the use of tuples of events.
 Due to these reults being unequivocally better than those using tuples of events, we will focus our discussion from here on
 the results generated by tuples off events.
 
@@ -1246,7 +1245,7 @@ With the orderings going from highest to lowest accuracy.
 The results are interesting for several reasons.
 It is unusual for SVMs to perform better than Decision Tree Classifiers, in our situation this may be due to the chosen
 kernel for the SVM performing linear decision boundaries very well. Decision trees, while simple, may misidentify the important
-aspect of a  feature, in retrospect it may have been useful to look at additive trees, such as MART~\cite{}, in order to
+aspect of a  feature, in retrospect it may have been useful to look at additive trees, such as MART~\cite{friedman2001greedy}, in order to
 improve upon these results.
 We also note that the use of a single Percpetron is vastly worse than the use of a MLP, this is as expected as
 the properties of an MLP typically provide better results than that of a single Percepton.
@@ -1257,7 +1256,7 @@ accuracy.
 
 
 Overall, the ILP pathing solution out performed the Greedy solution. This was to be expected as greedy pathfinding can
-approximate an ILP under favourable conditions ~\cite{}. We can see from Table~\ref{table:tuple-correlations} that the
+approximate an ILP under favourable conditions ~\cite{schapire1998learning}. We can see from Table~\ref{table:ILP-results} that the
 correlation accuracies do not align perfectly with the classifier accuracies, notably with Logistic Regression moving
 down the rankings. We believe this reordering of most accurate classifiers is due to the pathing algorithms misaligning
 sections of the true ordering. An example of this being:
@@ -1283,7 +1282,7 @@ data, there are several aspects that could be improved upon and various methodol
 time.
 
 \subsection{Improvement Of Relevant Sentence Retrieval}
-In Section~\ref{sec:text-retrieval} we discussed various possible sentence extraction techniques.
+In Section~\ref{sec:retrieval} we discussed various possible sentence extraction techniques.
 While the relevant and number of sentences extracted was suitable for our purpose, there was certainly room for improvement.
 
 In order to improve the relevancy of sentences extracted, we would suggest exploring the following avenues:
@@ -1296,7 +1295,7 @@ In order to improve the relevancy of sentences extracted, we would suggest explo
 \end{itemize}
 
 \subsection{Potential Extension of Data Retrieval}
-As we discussed in Section~\ref{sec:wikipedia-problems}, while Wikipedia has a large catalogue of articles to extract from,
+As we discussed in Section~\ref{sec:dataIssues}, while Wikipedia has a large catalogue of articles to extract from,
 it does have several points that may be an issue if this project was to be taken further.
 
 These issues include potential bias in information due to Wikipedia's open editing rules~\cite{wikipediaeditrules}. The current lack of
@@ -1337,7 +1336,7 @@ Article retrieval and relevent sentence extraction proved to substantialy aid in
 The methods discussed, in combination with experimentation with classification models, performed substantially better
 than using data from event titles only.
 The various classification methods used show this trend with varying success. Using multilayer Perceptrons provided an
-imporved accuracy of 30\% with article usage over titles alone, boasting 83\% accuracy compaired to XXX\% when using titles
+imporved accuracy of 30\% with article usage over titles alone, boasting 83\% accuracy compaired to 54\% when using titles
 alone.
 
 
