@@ -84,7 +84,7 @@ The problem of ordering distinct events is not a new problem. There have been nu
 in recent years on automatic ordering of events. These papers have typically worked on a single
 topic domain such as cooking recipes or news articles. These related papers are discussed further in Chapter~\ref{chapter:backgroundandrelatework}.
 We intended to build on this work by
-investigating if the reading of external data sources can aid in the temporal ordering of short
+investigating if the reading of external data sources could aid in the temporal ordering of short
 historical news article headlines.
 
 Our event data comes from the ``Today in History'' data set from Mydatamaster~\cite{mydatamaster}. Each of these data points consists
@@ -113,7 +113,7 @@ through every node by experimenting with various path finding techniques.
 This path is the estimated ordering of history.
 
 
-Using an evaluation metric, we discuss how the use of external data sources affects the system's ability to
+Using an evaluation metric, we discuss how the use of external data sources affected the system's ability to
 temporally order events. Our methodology for the experiments conducted are discussed in detail in Chapter~\ref{chapter:methodology}.
 
 \section{Testing \& Evaluation}
@@ -126,7 +126,7 @@ Evaluation of the system was completed using the
 Kendall rank correlation coefficient as it is a statistic
 used to measure the ordinal association between two
 measured quantities. This was applied to our results
-by comparing the systems estimated ordering of events
+by comparing the system's estimated ordering of events
 with the label associated with the event from the data.
 The results of these experiments and discussion of their meaning can be found in Chapters ~\ref{chapter:results} and ~\ref{chapter:discussion} respectively. 
 
@@ -304,15 +304,15 @@ we wished to investigate the usefulness of greedy path-finding in comparison to 
 Mani et al.~\cite{mani2006machine} discussed the use of both hand written and lexical rules for event tagging.
 Their domain-independent approach to temporally anchoring and ordering events in the news is very accurate for both temporal
 anchoring and partial ordering of events. Anchor events are time expressions which are normalised via
-context, such as \textit{Last Tuesday}. Although we did not build upon this papers work with
+context, such as \textit{Last Tuesday}. Although we did not build upon this paper's work with
 anchor events, it provides a good insight into the effectiveness of
-partial orderings. We perform a total ordering without the use of anchored events,
+partial orderings. We performed a total ordering without the use of anchored events,
 as we perform unsupervised ordering of events.
 
 While the methods discussed by Mani et al. ~\cite{mani2006machine} did not take into account dependencies between pairs of events, 
 we see an alternative that does encompass
 these dependencies in ~\cite{schapire1998learning}.
-Schapire et al. discuses methods using greedy algorithms to approximate optimum rankings of objects.
+Schapire et al. discussed methods using greedy algorithms to approximate optimum rankings of objects.
 It also discusses the use of ranking algorithms in the ordering of objects. The ranking methods discusses a
 weakly-connected digraph and greedy ranking of said graph. This relates to our problem,
 except we deal with strongly-connected digraph and investigated both greedy and ILP methods of finding
@@ -328,7 +328,7 @@ digraphs by Schapire et al.~\cite{schapire1998learning}, compared to Abend et al
 %Should probably expand on each paper, advantages disadvantages etc
 
 \chapter{Methodology}\label{chapter:methodology}
-In order to evaluate the usefulness of an external data source, such as Wikipedia, we construct a methodology
+In order to evaluate the usefulness of an external data source, such as Wikipedia, we constructed a methodology
 for our experiments. We will discuss our choice of data set, extraction methods along with the reasoning behind the
 classifiers and pathing methods chosen.
 %Papers I have read and why we are doing this
@@ -339,8 +339,8 @@ classifiers and pathing methods chosen.
 %\section{The Data}%%Potential Chapter name change
 %Intro to the data set
 \section{Today In History Data set}
-The Today In History data set we worked with consists of 6225 entries and is from Mydatamaster \cite{mydatamaster}.
-Each entry consists of a  brief event title and the date in the form ``YYY-MM-DD''.
+The Today In History data set we worked with consisted of 6225 entries and is from Mydatamaster \cite{mydatamaster}.
+Each entry consisted of a  brief event title and the date in the form ``YYY-MM-DD''.
 An example entry is
 \begin{equation}
   \text{Alcatraz officially becomes a Federal Prison, 1934-01-01}\nonumber
@@ -364,7 +364,7 @@ that most events are contained within its pages.
 
 Wikipedia is also written in an reasonably unbiased, procedural manner which allows more effective comprehension of events
 than that of raw, unstructured data.
-It is the key sentences within articles that we will use to estimate a timeline.
+It is the key sentences within articles that we uses to estimate a timeline.
 
 \section{Text Retrieval}\label{sec:retrieval}
 Using Wikipedia's article retrieval Application Programming Interface (API) \cite{wikipediaAPI}, the task of gathering article content
@@ -438,7 +438,7 @@ These included:
 \end{enumerate}
 
 As shown in Table~\ref{table:retrieval}, experimentation yielded mixed results.
-The results show a large range of average number of sentences retrieved and varying degrees of relevancy.
+The results showed a large range of average number of sentences retrieved and varying degrees of relevancy.
 Relevancy was measured manually using Cohen's Kappa (see Section~\ref{sec:cohen})\cite{wood2007understanding}.
 
 Given that we wished to categorise our retrieved sentences into either related to the event, or not related,
@@ -530,7 +530,7 @@ use the data with classifiers. An example of the bag-of-words model can be seen 
 \label{fig:bow}
 \end{figure}
 
-As bag-of-words only looks at single words at time and the contextual data may be lost through this method, we looked at
+As bag-of-words only looks at a single word at time and the contextual data may be lost through this method, we looked at
 alternative methods to improve on this.
 
 \subsection{N-Grams}
@@ -553,8 +553,8 @@ This provided better representation of the words relating to ordering label, pro
 %Example of word embedding and such
 
 
-From our experimentation, we discovered that thought vectors produced an accuracy 54\% less than that when
-using bag-of-words. While this did not conform our hypothesis of using this technique, we believe
+From our experimentation, we discovered that thought vectors produced an accuracy of 54\% less than that when
+using bag-of-words. While this did not conform our hypothesis of using this technique, we believe 
 the main reason that word embedding did not perform as we expected was due to imperfect sentence retrieval causing noise in
 the features. For this reason we did not move forward with word embedding beyond initial testing.
 
@@ -567,7 +567,7 @@ each node being a question and each leaf a decision.
 
 By inferring decision rules from data features, the system creates a model that predicts the value of a target variable.
 
-These attributes were promising for our experiments as they fit with our data and generate
+These attributes were promising for our experiments as they fit with our data and generated
 classifications of test data along with probabilities of these estimations.
 
 %Some issues found with decision trees were that the probabilities generated were too narrowly distributed
@@ -628,7 +628,7 @@ A multilayer perceptron is an feed-forward artificial neural network that maps t
 onto a set of appropriate outputs.
 In Figure~\ref{fig:mlp} we see an example layer of an MLP.
 An MLP consists of layers of  nodes in the form of a directed graph, with each layer connected to the next.
-Each node, except the input node, is a neuron (processing element) with an activation function.%need a ref here
+Each node, except the input node, is a neuron (processing element) with an activation function. %need a ref here
 An activation function is a function that maps the weighted inputs of each processing element to an output.
 MLPs are trained using backpropagation.
 
@@ -640,7 +640,7 @@ MLPs are trained using backpropagation.
 \end{figure}
 
 \section{Evaluation}
-Throughout our experiments, there were several aspects that need to be evaluated.
+Throughout our experiments, there were several aspects that needed to be evaluated.
 The aspects that required measurement were:
 \begin{itemize}
   \item Retrieved Sentence Relevancy
@@ -676,7 +676,7 @@ This is because it takes into account the possibility of agreement occurring by 
 
 \subsection{Choice Of Correlation Coefficient}\label{sec:kendall}
 
-There are various, different correlation coefficients that could have be used to evaluate our generated pathways.
+There are various, different correlation coefficients that could have been used to evaluate our generated pathways.
 Some popular coefficients include:
 \begin{itemize}
 \item Pearsons Correlation Coefficient ( Pearson's r) - a measure of the strength and direction of the linear relationship between two variables
@@ -702,7 +702,7 @@ The Tau coefficient is defined as
 \end{eqnarray}\cite{abdi2007kendall}
 
 The Tau coefficient was used as it measures results in terms of agreement in the range $-1 \leq \tau \geq 1$.
-This allows us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagreement of the ordering and 0 claiming
+This allowed us to show the agreement of our orderings, with 1 being a perfect agreement of the ordering, -1 being a perfect disagreement of the ordering and 0 claiming
 total independence.
 
 
@@ -793,7 +793,7 @@ The allotment of the entries into each category was done randomly.
 Experimentation was done using the development set to optimise the parameters to give the most optimal results,
 when finally tested on the testing data.
 For each classifier, we fed in the training features and their associated label. These features were
-be either the features generated from titles alone or with the sentences retrieved from Wikipedia.
+either the features generated from titles alone or with the sentences retrieved from Wikipedia.
 
 Once training of the model was completed, we fed in a new data point without a class label.
 The system returned a predicted class label for the new data and a probability score for its categorisation.
@@ -815,7 +815,7 @@ Each of these data points was similar to that of the training data
  From this we did not require any parameters to be used when training the classification tree.
  
  \subsection{Support Vector Model}
- SVMs have the option of various parameters to be tune to optimise the results.
+ SVMs have the option of various parameters to be tuned to optimise the results.
  In our implementation of an SVM we had the following parameters to experiment with:
  \begin{itemize}
  \item Penalty parameter of the error term
@@ -827,7 +827,7 @@ Each of these data points was similar to that of the training data
  Setting our penalty to 1.0 severely penalised the model for classification and lead to the model producing
  better results.
 
- SVMs use a kernel to turn a linear model into a non-linear model. This is beneficial as it allows the system
+ SVMs use a kernel to turn a linear model into a non-linear model. This is beneficial as it allowed the system
  to operate in high-dimensionality, implicit feature space without having to compute the coordinates of the feature
  in space \cite{hofmann2008kernel}.
  From our experimentation the radial based function (RBF) kernel was chosen as it helps SVMs scale to large numbers of
@@ -861,7 +861,7 @@ Each of these data points was similar to that of the training data
    S = \sum_{i=1}^{N} ( Y_i - f(x_i))^2\nonumber
    \end{equation}
 
- L2 was chosen as it always provides a single, stable solution where as L1 can return multiple solutions
+ L2 was chosen as it always provides a single, stable solution whereas L1 can return multiple solutions
  which is of no use for our system.
 
  There are several different solvers that can be effectively used with a Logistic Regression model.
@@ -936,7 +936,7 @@ from and returning to his home town. One of his problems is to find the shortest
 such trip}~\cite{junger1995traveling}
 \end{center}
 
-While the TSP algorithm is still unsolved, we fortunately only had to solve a a modified version of the problem.\\
+While the TSP algorithm is still unsolved, we fortunately only had to solve a modified version of the problem.\\
 
 \begin{center}
   \enquote{Given a graph with directed edges, find the optimal path from some starting node through all other nodes in
@@ -955,7 +955,7 @@ $\frac{1}{W}$ where W is the edge weight. This allowed paths that look for the c
 true most expensive path, which encompass all nodes.
 
 There are two main types of solutions to optimal pathing: greedy and integer linear programming.
-We will discuss the options available in each type of solution and the benefits there in.
+We will discuss the options available in each type of solution and the benefits therein.
 
 \subsection{Greedy Solution}
 A greedy algorithm is an algorithm that follows the problem solving heuristic of making locally optimal choices at each stage with the aim
@@ -985,7 +985,7 @@ As we did not know the optimal starting node, we executed our greedy solution fr
 Due to every edge of graph being directional, it was possible that for any given starting node, that a solution for traversal
 of every node is impossible. To counteract this, and allow every node to generate a full path, a penalty system was implemented.
 This penalty system worked by allowing a path to deviate from any edges classified direction given that all other path options
-were exhausted. This deviation cased a large penalty to be applied to the path and typically rendered the paths start node
+were exhausted. This deviation caused a large penalty to be applied to the path and typically rendered the paths start node
 unfeasible as a potential true starting node. 
 
 With this we generated the optimal greedy path through our graph. The results of which can be seen in Section~\ref{sec:graph-results}.
@@ -998,10 +998,10 @@ When applied to path-finding ILP should generate the best global path through al
 
 
 The A$*$ search algorithm is a special case of the generalisation of branch and bound~\cite{balas1983branch} and is derived from the primal-dual algorithm for ILP~\cite{ye2012note}.
-We chose this algorithm as it follows the ILP methodology. The algorithm works similarly way to best-first search, but takes into account the path cost already travelled.
+We chose this algorithm as it follows the ILP methodology. The algorithm works in a similar way to best-first search, but takes into account the path cost already travelled.
 This was beneficial as it will give us the globally optimum path by finding the most probable total path, rather than the most probable next step when using a
 greedy algorithm. We can see an example of the complete digraph and the estimated path through it in Figure~\ref{fig:minigraph} and ~\ref{fig:minigraph-clean}.
-Similarly to the greedy solution, as we do not know the optimal start and end node, we had to run the algorithm with every possible start and end node combination.
+Similar to the greedy solution, as we do not know the optimal start and end node, we had to run the algorithm with every possible start and end node combination.
 \begin{figure}[H]
 \centering
   \centering
@@ -1038,7 +1038,7 @@ experiments using both the sentences extracted from Wikipedia and just the event
 
 \section{Classification}
 The results of edge classification between both two and three events can be seen in Tables~\ref{table:classification-results}
-and~\ref{table:triple-classification-results} respectively. The results of these tables in measured by the
+and~\ref{table:triple-classification-results} respectively. The results of these tables is measured by the
 proportion of true results, both positive and negative, among the total number of results.
 
 The baseline used for classification is a random assignment.
@@ -1225,7 +1225,7 @@ We will also discuss potential improvements that could be made to the system as 
 %Talk about overall how the pathing methods were good/bad
 %Discuss in detail the best 2(?) overall results and what this means
 %%%
-As We can see from Tables~\ref{table:triple-classification-results}, ~\ref{table:greedy-results-triples} and
+As we can see from Tables~\ref{table:triple-classification-results}, ~\ref{table:greedy-results-triples} and
 ~\ref{table:ILP-results-triple} our original hypothesis, outlined in Section~\ref{sec:approach}
 involving the use of triples of events holds true.
 These results confirm that performing edge classification on three events, per edge, greatly reduces the
@@ -1254,15 +1254,15 @@ It is unusual for SVMs to perform better than Decision Tree Classifiers, in our 
 kernel for the SVM performing linear decision boundaries very well. Decision trees, while simple, may misidentify the important
 aspect of a  feature, in retrospect it may have been useful to look at additive trees, such as MART~\cite{friedman2001greedy}, in order to
 improve upon these results.
-We also note that the use of a single percpetron is vastly worse than the use of a MLP, this is as expected as
-the properties of an MLP typically provide better results than that of a single percepton.
+We also note that the use of a single percepetron is vastly worse than the use of a MLP, this is as expected as
+the properties of an MLP typically provide better results than that of a single perceptron.
 These results for the various classifiers used are as expected, with Logistic Regression and MLP performing the best
 at edge classification. Logistic Regression performed well due to its ability to deal with linear categorical data.
 While Logistic Regression performed well at the task, MLP overshadowed these results with it's significantly higher
 accuracy. 
 
 
-Overall, the ILP pathing solution out performed the greedy solution. This was to be expected as greedy path finding can
+Overall, the ILP pathing solution outperformed the greedy solution. This was to be expected as greedy path finding can
 approximate an ILP under favourable conditions ~\cite{schapire1998learning}. We can see from Table~\ref{table:ILP-results} that the
 correlation accuracies do not align perfectly with the classifier accuracies, notably with Logistic Regression moving
 down the rankings. We believe this reordering of most accurate classifiers is due to the pathing algorithms misaligning
@@ -1275,11 +1275,11 @@ sections of the true ordering. An example of this being:
 
 As we can see from this example, the generated order will place a small number of ordered events (6,7,8) earlier or
 later in the path. This is due to an incorrect edge direction with a high probability and relates back to the
-inaccuracies in our classifiers. It this these sort of issue that cause the reordering of preferred methods when considering
+inaccuracies in our classifiers. It is this these sort of issue that cause the reordering of preferred methods when considering
 path optimisation.
 
 The most accurate results come from the decision tree classifer and the multilayer perceptron classifier.
-Both of these method, using an ILP solution, prove very strong result correlations. This show that, despite there
+Both of these methods, using an ILP solution, prove very strong result correlations. This shows that, despite there
 being room for improvement within the experiments, the use of external data sources does aid in the temporal ordering
 of historical events.
 
@@ -1327,7 +1327,7 @@ The implementations of algorithms were not optimal. Looking further into both IL
 be recommended as while ILP typically outperforms Greedy, the runtime of our ILP solution is more computationally
 expensive. Greedy algorithms have been shown to provide approximations that come close to ILP solutions under the right
 conditions, with much lower cost, as shown in Schapire's paper~\cite{schapire1998learning}. With this in mind,
-it such a solution should be investigated for our problem. If this method can
+such a solution should be investigated for our problem. If this method can
 be applied to the problem of temporally ordering events, then the scale of events considered could be greatly increased with
 an improved runtime.
 
@@ -1342,14 +1342,14 @@ of historical events is valid. We have seen that the use of this external conten
 Article retrieval and relevant sentence extraction proved to substantially aid in the temporal ordering of events.
 The methods discussed, in combination with experimentation with classification models, performed substantially better
 than using data from event titles only.
-The various classification methods used show this trend with varying success. Using multilayer perceptrons provided an
+The various classification methods used show this trend with varying success. Using a multilayer perceptron provided an
 improved accuracy of 30\% with article usage over titles alone, boasting 83\% accuracy compared to 54\% when using titles
 alone.
 
 
 These results are not the ceiling for this subject area, methods and approaches discussed in this paper have scope
 to be improved upon. The use of Wikipedia as an external source of content has been proven as a valid source for
-long term historical, but may pose issues if applied to recent history. Overall, we have shown that the use of external
+long term historical information, but may pose issues if applied to recent history. Overall, we have shown that the use of external
 data sources, such as Wikipedia, do aid in the temporal ordering of historical events and provide a promising base for future
 research into this domain.
 % otherwise generate bibtem entries
