@@ -23,9 +23,9 @@ Events using Contextual Data}
     Is the use of contextual data useful to the temporal ordering of events?\vspace{1em}
 
 
-    ``Alaska Becomes 49th US state''DD/MM/YYYY\vspace{1em}
+    ``Alaska Becomes 49th US state''\\1959-01-03\vspace{1em}
 
-    ``Manchester Shipping Canal Opens''DD/MM/YYYY\vspace{4em}
+    ``Manchester Shipping Canal Opens''\\1894-01-01\vspace{4em}
 \end{center}
    Our dataset has 6224 of these.
 \end{tframe}
@@ -54,7 +54,9 @@ Events using Contextual Data}
 \begin{tframe}{Information Extraction}
   Using OpenIE data extraction, extract subject, objects and relation
   \begin{center}
-    \includegraphics[scale=0.3]{../openie-train.png}
+    \includegraphics[scale=0.3]{../openie-train.png}\vspace{2em}
+
+        ``Manchester Shipping Canal Opens''\\Subject: ``Manchester'' Object: ``Shipping Canal'' Relation: ``Opens''
   \end{center}
 \end{tframe}
 \begin{tframe}{Article Retrieval}
@@ -148,6 +150,27 @@ With Titles & 21\% & 13\%    & 24\% & 33\% & 14\% &  $\frac{1}{4^{622}}$\%\\
 \caption{Classification Results for Triples}
 \label{table:triple-classification-results}
 \end{table}
+\end{tframe}
+
+\begin{tframe}{Graphing}
+  \begin{itemize}
+  \item Integer Linear Programming
+    \begin{itemize}
+    \item Find global optimum path
+      \end{itemize}
+  \item Greed
+    \begin{itemize}
+    \item Find local optimum next step
+      \end{itemize}
+  \end{itemize}
+  \centering
+  
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.15]{../BeamSearchPruning.png}
+  \caption{An Example of beam search pruning\\ Iteration 1: Blue Iteration 2: Green, Iteration 3: Yellow}
+  \label{fig:beam-prune}
+\end{figure}
 \end{tframe}
 
 \begin{tframe}{Results - Tuples}
